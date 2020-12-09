@@ -14,10 +14,10 @@
             "App\\LimaBundle\\": "vendor/yanickmorza/limabundle/LimaBundle/"
         }
     },
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.2"
     },
-    "minimum-stability": "stable",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
