@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ headtitle }} {% endblock %}
+{% block body %}
+{{ include('navigation.html.twig') }}
+<!-- EXECUTER UNE REQUETE SQL -->
+<div class="row">
+<div class="col-8">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small">
+    {% if affichebasedonnee != 'postgres' %}
+        <i class="titre">Exécuter une requête SQL dans {{ affichebasedonnee }}</i>
+    {% else %}
+        <i class="titre text-danger">
+            Il est déconseillé d'exécuter du SQL ou de créer des tables dans la base de données Postgres.<br>
+            Pour des raisons de sécurité, ceci ne doit être utilisé que pour travailler avec les autres bases de données
+        </i>
+    {% endif %}
+    {% if champdatatable is defined %}
+        <a href="basesettables" class="close" title="Fermer"><img src="../bundles/lima/assets/images/fermer_24.png"></a>
+    {% endif %}
+</div>
+<div class="card-body">
+<form method="post" action="">
+	<div class="form-group row">
+		<div class="col-12">
+			<input type="hidden" name="_token" value="requete">
+			<textarea rows="14" name="sql" class="form-control" placeholder="CREATE DATABASE databaseName;" required>{% if champdatatable is defined %} {{ champdatatable }} {% endif %}</textarea>
+		</div>
+    </div>
+	<div class="form-group row">
+		<div class="col-12">
+            {% if champdatatable is defined and exportertable is defined %}
+                <input type="hidden" name="_token" value="exporterrequete">
+                <input type="hidden" name="champdatatable" value="{{ champdatatable }}">
+                <button type="submit" class="btn btn-primary" title="Exporter cette liste de requête">Exporter</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary" title="Exécuter cette requête">Exécuter</button>
+            {% endif %}		
+		</div>
+    </div> 
+</form>
+</div>
+</div>
+</div>
+<!-- EXECUTER UNE REQUETE SQL -->
+
+<!-- AFFICHER LES BASES ET LES TABLES -->
+<div class="col-4">
+<div class="card mb-3 ml-3 mt-3">
+<div class="card-header breadcrumb-item small">Bases de données et Tables</div>
+<div class="card-body">
+<div class="form-group row">
+    <div class="col alert alert-danger text-center">
+    <form method="post" action="">
+        <select name="basedonnee" class="custom-select" onchange="this.form.submit();">
+        {% if affichebasedonnee is defined %}
+        <option value=""> -- {{ affichebasedonnee }} -- </option>
+        {% endif %}
+        <option value=""> -- Choisir dans la liste -- </option>
+        {% for bd in listedatabases %}
+            {% if bd != 'postgres' and bd != 'information_schema' and bd != 'mysql' and bd != 'performance_schema' and bd != 'phpmyadmin' %}
+            <option value="{{ bd }}"> -- {{ bd }} -- </option>
+            {% endif %}
+        {% endfor %}
+        </select>
+    </form>
+</div>
+</div>
+<div class="row">
+    <div class="col alert alert-primary text-center">
+        {% for table in listetables %}
+            {% if table != 'doctrine_migration_versions' %}
+                <div class="form-group row">
+                <form method="post" action="">
+                    <input type="hidden" name="_token" value="champdata">
+                    <input type="hidden" name="champdatatable" value="{{ table }}">
+                    <button type="submit" class="btn btn-secondary" title="Afficher le SQL de {{ table }}">SQL</button>
+                </form>&nbsp;&nbsp;
+                <form method="post" action="">
+                    <input type="hidden" name="_token" value="alterdata">
+                    <input type="hidden" name="alterdatatable" value="{{ table }}">
+                    <button type="submit" class="btn btn-secondary" title="Afficher les ALTER TABLE de {{ table }}">Trousse</button>
+                </form>&nbsp;&nbsp;
+                    <a class="btn btn-primary" href="/{{ table }}">{{ table | capitalize }}</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {% if affichebasedonnee != 'postgres' %}
+        <div class="row">
+            <div class="col alert alert-light text-center">
+            <form method="post" action="">
+                <select name="_token" class="custom-select" onchange="this.form.submit();">
+                    <option value=""> -- Que souhaitez-vous exécuter ? -- </option>
+                    <option value="exportertable"> -- Préparer un export des tables {{ affichebasedonnee }} -- </option>
+                    <option value="deletetables"> -- Supprimer toutes les tables {{ affichebasedonnee }} -- </option>
+                    <option value="roleuser"> -- Créer les tables Users et Rôles dans {{ affichebasedonnee }} -- </option>
+                    <option value="message"> -- Créer la table Messages dans {{ affichebasedonnee }} -- </option>
+                    <option value="environnement"> -- Faire savoir à l'ORM la nouvelle Base de données -- </option>
+                    <option value="renamebase"> -- Renommer une base de données -- </option>
+                </select>
+            </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="row alert alert-danger">
+            <div class="col text-center">
+                Il est déconseillé d'exécuter du SQL dans la base de données postgres.
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+</div>
+</div>
+<!-- AFFICHER LES BASES ET LES TABLES -->
+{% endblock %}

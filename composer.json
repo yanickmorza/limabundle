@@ -1,0 +1,27 @@
+{
+    "name": "yanickmorza/limabundle",
+    "type": "library",
+    "description": "Light Interface Maker Application",
+    "homepage": "https://github.com/yanickmorza/limabundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yanick Morza",
+            "email": "yanick.morza@free.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\LimaBundle\\": "vendor/yanickmorza/lima/LimaBundle/"
+        }
+    },
+    "require": {
+        "php": "^7.2"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}

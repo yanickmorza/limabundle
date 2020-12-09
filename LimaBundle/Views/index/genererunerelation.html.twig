@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ headtitle }} {% endblock %}
+{% block body %}
+{{ include('navigation.html.twig') }}
+<!-- LES RELATIONS -->
+<div class="row">
+<div class="col">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small">Enregistrer une relation dans {{ affichebasedonnee }}</div>
+<div class="card-body">
+<form method="post" action="">
+    <div class="form-group row">
+    <div class="col">
+            <input type="hidden" name="_token" value="enregistrerrelation">
+    </div>
+    <div class="col-6">
+    <label for="tables" class="col-2 col-form-label">Tables</label>
+        {% for table in listetables %}
+            {% if table != 'doctrine_migration_versions' %}
+                <div class="form-group row">
+                    <input type="checkbox" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
+                    &nbsp;&nbsp;
+                    <a href="/{{ table }}">{{ table | capitalize }}</a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-5">
+    <label for="tables" class="col-2 col-form-label">Bases</label>
+        {% for bd in listedatabases %}
+            {% if bd != 'postgres' and bd != 'information_schema' and bd != 'mysql' and bd != 'performance_schema' and bd != 'phpmyadmin' %}
+                <div class="form-group row">
+                    <input type="checkbox" name="othernamespace[]" value="{{ bd }}" title="Cocher la base de donnée concernée {{ bd }}">&nbsp;&nbsp;{{ bd | capitalize }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    </div>
+    <div class="form-group row">	
+        <div class="col">
+            <i class="alert-danger">Cocher les tables concernées pour enregistrer leurs relations</i>
+            <img src="../bundles/lima/assets/images/info.png" title="Attention !" alt="info.png">
+        </div>
+    </div>
+    <div class="form-group row">
+    <label for="namespace" class="col-3 col-form-label">Namespace : </label>
+        <div class="col-3">
+            <input type="text" name="namespace" id="switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
+        </div>
+        <div class="col-3">
+            <input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="switchActif" checked>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-3">
+            <input type="radio" name="relation" value="manytoone" title="Relation Many To One" checked> Many To One
+        </div>			
+        <div class="col-3">
+            <input type="radio" name="relation" value="manytomany" title="Relation Many To Many" disabled> <i class="text-danger" title="Désactiver">Many To Many</i>
+        </div>
+        <div class="col-3">
+            <input type="radio" name="relation" value="onetoone" title="Relation One To One"> One To One
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary" title="Enregistrer la relation">Enregistrer</button>
+        </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<!-- LES RELATIONS -->
+<script type="text/javascript">
+	document.getElementById('switchActif').onclick = function() {
+		var $switch = document.getElementById('switch');
+		$switch.disabled = !$switch.disabled;
+	};
+</script>
+{% endblock %}

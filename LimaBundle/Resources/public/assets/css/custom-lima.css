@@ -1,0 +1,54 @@
+.custom-file-input ~ .custom-file-label:lang(fr)::after {
+  content: "Parcourir...";
+}
+
+.contour {
+  margin: 3px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 8px #bbb;
+  -webkit-box-shadow: 2px 2px 8px #bbb;
+  box-shadow: 2px 2px 8px #666;
+}
+
+.overflow {
+  overflow-y: scroll;
+}
+
+.bg-lima {
+  background-color: #268ecb;
+}
+
+.border-lima {
+  border-color: #268ecb;
+  border: 1px solid #268ecb;
+}
+
+.btn-lima {
+  background-color: #268ecb;
+  color: #ffffff;
+  font-weight: bold;
+  border:none;
+	padding:12px;
+	border-radius:2px;
+	box-shadow:3px 3px 12px #999;
+}
+
+.list-group-item-lima {
+  background-color: #268ecb;
+  color: #ffffff;
+}
+
+.alert-link-lima {
+  width: max-content;
+  color: #268ecb;
+  font-size: 1.1rem;
+  border-radius:0 12px 0 12px;
+	border:1px solid #dddddd;
+	font:bold 12px;
+	padding:12px;
+	box-shadow:1px 1px 8px #cccccc;
+}
+
+.table-hover-lima {
+  color: #268ecb;
+}

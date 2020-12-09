@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{ headtitle }}
+{% endblock %}
+{% block body %}
+	{{ include('navigation.html.twig') }}
+	<!-- SUPPRIMER UN CRUD -->
+	<div class="row">
+		<div class="col">
+			<div class="card mb-3 ml-3 mr-3 mt-3">
+				<div class="card-header breadcrumb-item small">Supprimer un SCRUD dans
+					{{ affichebasedonnee }}</div>
+				<div class="card-body">
+					<form method="post" action="">
+						<div class="form-group row">
+							<label for="tables" class="col-2 col-form-label">&nbsp;</label>
+							<div class="form-group row">
+								<input type="hidden" name="_token" value="supprimer">
+							</div>
+							<div class="col-10">
+								{% for table in listetables %}
+									{% if table != 'doctrine_migration_versions' %}
+										<div class="form-group row">
+											<input type="checkbox" class="scheckClass" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
+											&nbsp;&nbsp;
+											<a href="/{{ table }}">{{ table | capitalize }}</a>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="col-3">
+								<input type="radio" id="scocher" title="Tout cocher">
+								Cocher 
+																																								                    &nbsp;&nbsp;
+								<input type="radio" id="sdecocher" title="Tout décocher" checked>
+								Décocher
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="namespace" class="col-3 col-form-label">Namespace :
+							</label>
+							<div class="col-3">
+								<input type="text" name="namespace" id="switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
+							</div>
+							<div class="col-3">
+								<input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="switchActif" checked>
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<div class="col-12">
+								<button type="submit" class="btn btn-danger" title="Supprimer un Crud dans {{ affichebasedonnee }}">Supprimer</button>
+							</div>
+						</div>
+					</form>
+					<!-- SUPPRIMER UN CRUD -->
+
+					<!-- SUPPRIMER REPERTOIRE -->
+					<details>
+						<summary title="Supprimer le répertoire {{ affichebasedonnee | capitalize }}">
+							...
+						</summary>
+						<form method="post" action="">
+							<div class="form-group row">
+								<input type="hidden" name="_token" value="supprimerrepertoire">
+								<input type="hidden" name="repertoire" value="{{ affichebasedonnee | capitalize }}">
+								{% for table in listetables %}
+									{% if table != 'doctrine_migration_versions' %}
+										<input type="hidden" name="tables[]" value="{{ table }}">
+									{% endif %}
+								{% endfor %}
+							</div>
+							<div class="form-group row">
+								<div class="col-12">
+									<button type="submit" class="btn btn-danger" title="Supprimer le répertoire {{ affichebasedonnee | capitalize }}" onclick="return confirm('Attention vous allez supprimer le répertoire {{ affichebasedonnee | capitalize }} ! voulez-vous continuer ?');">Supprimer</button>
+									le répertoire
+									<i>'{{ affichebasedonnee | capitalize }}'</i>
+									de l'arborescence
+								</div>
+							</div>
+						</form>
+					</details>
+					<!-- SUPPRIMER REPERTOIRE -->
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			document.getElementById('switchActif').onclick = function () {
+var $switch = document.getElementById('switch');
+$switch.disabled = ! $switch.disabled;
+};
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function () { // TOUT SCOCHER
+$(":radio#scocher").click(function () {
+$(':checkbox.scheckClass').prop('checked', true);
+$(":radio#sdecocher").prop('checked', false);
+});
+// TOUT SDECOCHER
+$(":radio#sdecocher").click(function () {
+$(':checkbox.scheckClass').prop('checked', false);
+$(":radio#scocher").prop('checked', false);
+});
+// UNCHECK SI UNE CHECKBOX EST SELECTIONNEE
+$(':checkbox.scheckClass').click(function () {
+$(":radio#scocher").prop('checked', false);
+$(":radio#sdecocher").prop('checked', false);
+});
+});
+		</script>
+	{% endblock %}

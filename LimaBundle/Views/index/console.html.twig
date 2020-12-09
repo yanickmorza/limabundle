@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ headtitle }} {% endblock %}
+{% block body %}
+{{ include('navigation.html.twig') }}
+<!-- CONSOLE -->
+<div class="row">
+<div class="col">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small">Exécuter une commande dans {{ affichebasedonnee }}</div>
+<div class="card-body">
+    <form method="post" action="">
+        <div class="form-group row">
+            <div class="col"><input type="hidden" name="_token" value="console"></div>
+            <div class="col-4"><input type="text" name="commande" class="form-control" autocomplete="off" required></div>
+            <div class="col-7"><button type="submit" class="btn btn-primary">Exécuter la commande</button></div>
+        </div>
+    </form>
+    {% if output is defined %}
+        <div class="row m-4">
+            <div class="col">
+                <textarea rows="12" class="form-control overflow" disabled>{{ output }}</textarea>
+            </div>
+        </div>
+    {% endif %}
+</div>
+</div>
+</div>
+<!-- CONSOLE -->
+{% endblock %}

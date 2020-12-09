@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	{{ headtitle }}
+{% endblock %}
+{% block body %}
+	{{ include('navigation.html.twig') }}
+	<div class="row">
+		<div class="col">
+			<div class="card mb-3 ml-3 mr-3 mt-3">
+				<div class="card-header breadcrumb-item small">Bienvenue sur
+					{{ headtitle }}</div>
+				<div class="card-body m-3 p-3">
+					{% for table in listetables %}
+						{% if table != 'doctrine_migration_versions' %}
+							<div class="form-group row">
+								<a href="/{{ table }}">{{ table | capitalize }}</a>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card mb-3 ml-3 mr-3 mt-3">
+				<div class="card-header breadcrumb-item small">
+					{% if bd != 'postgres' and bd != 'information_schema' and bd != 'mysql' and bd != 'performance_schema' and bd != 'phpmyadmin' %}
+						Liste des projets ( pdo_{{ driver }} )
+					{% endif %}
+				</div>
+				<div class="card-body m-3 p-3">
+					{% for bd in listedatabases %}
+						{% if bd != 'postgres' and bd != 'information_schema' and bd != 'mysql' and bd != 'performance_schema' and bd != 'phpmyadmin' %}
+							<div class="form-group row">
+								<form method="post" action="">
+									<input type="hidden" name="basedonnee" value="{{ bd }}">
+									<input type="submit" value="{{ bd | capitalize }}">
+								</form>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

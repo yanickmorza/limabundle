@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ headtitle }} {% endblock %}
+{% block body %}
+{{ include('navigation.html.twig') }}
+<div class="row">
+<!-- SWIFTMAILER FUNCTION -->
+<div class="col">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small"> {{ titrefunction }}</div>
+<div class="card-body">
+    <form method="post" action="">
+        <div class="form-group row">
+            <div class="col"><input type="hidden" name="_token" value="swiftmailerFunction"></div>
+        </div>
+
+        <div class="form-group row">
+		<label for="namespace" class="col col-form-label">Namespace :</label>
+			<div class="col">
+				<input type="text" name="namespace" id="switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
+			</div>
+			<div class="col">
+				<input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="switchActif" checked>
+			</div>
+		</div>
+
+        <div class="form-group row">
+        <label for="namespace" class="col col-form-label">Controller : </label>
+            <div class="col m-2">
+                {% for table in listetables %}
+                    {% if table != 'doctrine_migration_versions' %}
+                        <div class="form-group row">
+                            <input type="checkbox" class="checkClass" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
+                            &nbsp;&nbsp;
+                            <a href="/{{ table }}">{{ table | capitalize }}</a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary" title="Enregistrer">Enregistrer</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+<!-- SWIFTMAILER FUNCTION -->
+
+<!-- SWIFTMAILER YAML -->
+<div class="col">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small"> {{ titreyaml }}</div>
+<div class="card-body">
+    <form method="post" action="">
+        <div class="form-group row">
+            <div class="col"><input type="hidden" name="_token" value="swiftmailerYaml"></div>
+        </div>
+        <div class="form-group row">
+        <label for="namespace" class="col col-form-label">Transport : </label>
+            <div class="col">
+                <select name="transport" class="custom-select" required>
+                    <option value=""> -- Choisir dans la liste -- </option>
+                    <option value="smtp"> -- SMTP -- </option>
+                    <option value="mail"> -- MAIL -- </option>
+                    <option value="sendmail"> -- SENDMAIL -- </option>
+                    <option value="gmail"> -- GMAIL -- </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+        <label for="namespace" class="col col-form-label">Sécurité de la connexion : </label>
+            <div class="col">
+                <select name="encryption" class="custom-select" required>
+                    <option value=""> -- Choisir dans la liste -- </option>
+                    <option value="tls"> -- TLS -- </option>
+                    <option value="ssl"> -- SSL -- </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+        <label for="namespace" class="col col-form-label">Mode d'authentification : </label>
+            <div class="col">
+                <select name="auth_mode" class="custom-select" required>
+                    <option value=""> -- Choisir dans la liste -- </option>
+                    <option value="login"> -- LOGIN -- </option>
+                    <option value="plain"> -- PLAIN -- </option>
+                    <option value="cram-md5"> -- CRAM-MD5 -- </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+        <label for="username" class="col col-form-label">Nom utilisateur : </label>
+            <div class="col">
+                <input type="text" name="username" class="form-control" autocomplete="off" placeholder="james.bond" required>
+            </div>
+        </div>
+        <div class="form-group row">
+        <label for="password" class="col col-form-label">Mot de passe : </label>
+            <div class="col">
+                <input type="password" name="password" class="form-control" autocomplete="off" placeholder="........" required>
+            </div>
+        </div>
+        <div class="form-group row">
+        <label for="host" class="col col-form-label">Nom du serveur : </label>
+            <div class="col">
+                <input type="text" name="host" class="form-control" autocomplete="off" placeholder="smtp.free.fr" required>
+            </div>
+        </div>
+        <div class="form-group row">
+        <label for="port" class="col col-form-label">Port : </label>
+            <div class="col-3">
+                <input type="text" name="port" class="form-control" autocomplete="off" placeholder="587" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary" title="Enregistrer le fichier YAML">Enregistrer</button>
+            </div>
+        </div>
+    </form>
+    <details>
+    <summary title="Regénérer le fichier swiftmailer.yaml à son origine et supprimer le répertoire Swiftmailer"> ... </summary>
+    <form method="post" action="">
+        <div class="form-group row">
+            <div class="col"><input type="hidden" name="_token" value="supprimerswiftmailerYaml"></div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col">
+                <button type="submit" onclick="return confirm('Attention vous allez supprimer le répertoire Swiftmailer ! voulez-vous continuer ?');" class="btn btn-danger" title="Supprimer">Supprimer</button>
+                le répertoire<i>'Swiftmailer'</i>de l'arborescence
+            </div>
+        </div>
+    </form>
+    </details>
+</div>
+</div>
+</div>
+<!-- SWIFTMAILER YAML -->
+</div>
+<script type="text/javascript">
+	document.getElementById('switchActif').onclick = function () {
+	var $switch = document.getElementById('switch');
+	$switch.disabled = ! $switch.disabled;
+};
+</script>
+{% endblock %}

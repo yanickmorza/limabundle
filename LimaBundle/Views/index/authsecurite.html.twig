@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ headtitle }} {% endblock %}
+{% block body %}
+{{ include('navigation.html.twig') }}
+<div class="row">
+<!-- AUTHENTIFICATION -->
+<div class="col">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small">Authentification dans {{ affichebasedonnee }}</div>
+<div class="card-body">
+	<form method="post" action="">
+	<div class="form-group row">
+		<label for="tables" class="col-2 col-form-label">&nbsp;</label>
+		<div class="form-group row">
+			<input type="hidden" name="_token" value="authentification">
+		</div>
+		<div class="col-10">
+				{% for table in listetables %}
+					{% if table != 'doctrine_migration_versions' %}
+						<div class="form-group row">
+							<input type="checkbox" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
+							&nbsp;&nbsp;
+							<a href="/{{ table }}">{{ table | capitalize }}</a>
+						</div>
+					{% endif %}
+				{% endfor %}
+		</div>
+	</div>
+	<div class="form-group row">	
+		<div class="col-12">
+			<i class="alert-danger">Cocher uniquement la table concernée (Users, Utilisateurs, ...)</i>
+			<img src="../bundles/lima/assets/images/info.png" title="Attention !" alt="info.png">
+		</div>
+	</div>
+	<div class="form-group row">
+		<label for="namespace" class="col-3 col-form-label">Namespace : </label>
+		<div class="col">
+			<input type="text" name="namespace" id="switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
+		</div>
+		<div class="col">
+			<input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="switchActif" checked>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-12">Ajouter une authentification : 
+			<input type="radio" name="authuser" value="OUI" title="Ajouter une authentification"> Oui
+				&nbsp;&nbsp;
+			<input type="radio" name="authuser" value="NON" title="Ne pas ajouter d'authentification" checked> Non
+				&nbsp;&nbsp;
+			<input type="radio" name="authuser" value="SUPPRIMER" title="Supprimer authentification"> Supprimer
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-12">
+			<button type="submit" class="btn btn-primary" title="Valider">Valider</button>
+		</div>
+	</div>
+	</form>
+</div>
+</div>
+</div>
+<!-- AUTHENTIFICATION -->
+
+<!-- LA SECURITE -->
+<div class="col">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small">Contrôle d'accès dans {{ affichebasedonnee }}</div>
+<div class="card-body">
+<form method="post" action="">
+	<div class="form-group row">
+	<label for="tables" class="col-2 col-form-label">&nbsp;</label>
+	<div class="form-group row">
+			<input type="hidden" name="_token" value="generersecurite">
+	</div>
+	<div class="col-10">
+		{% for table in listetables %}
+			{% if table != 'doctrine_migration_versions' %}
+				<div class="form-group row">
+					<input type="checkbox" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
+					&nbsp;&nbsp;
+					<a href="/{{ table }}">{{ table | capitalize }}</a>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	</div>
+	<div class="form-group row">	
+		<div class="col">
+			<i class="alert-danger">Cocher les tables concernées pour générer la sécurité</i>
+			<img src="../bundles/lima/assets/images/info.png" title="Attention !" alt="info.png">
+		</div>
+	</div>
+	<div class="form-group row">
+	<label for="namespace" class="col-3 col-form-label">Namespace : </label>
+		<div class="col">
+			<input type="text" name="namespace" id="_switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
+		</div>
+		<div class="col">
+			<input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="_switchActif" checked>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col">
+			<input type="text" name="role" class="form-control" autocomplete="off" placeholder="Exemple : ROLE_ADMIN" required>
+		</div>			
+		<div class="col">
+			<select name="securite" class="custom-select" required>
+				<option value=""> -- Placer la sécurité sur -- </option>		
+				<option value="class">Class</option>
+				<option value="function">Function</option>		
+			</select>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-12">
+			<button type="submit" class="btn btn-primary" title="Valider">Valider</button>
+		</div>
+	</div>
+	</form>
+</details>
+<!-- LA SECURITE -->
+</div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	document.getElementById('switchActif').onclick = function() {
+		var $switch = document.getElementById('switch');
+		$switch.disabled = !$switch.disabled;
+	};
+	document.getElementById('_switchActif').onclick = function() {
+		var $_switch = document.getElementById('_switch');
+		$_switch.disabled = !$_switch.disabled;
+	};
+</script>
+{% endblock %}
