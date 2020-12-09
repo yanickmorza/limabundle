@@ -8,16 +8,10 @@
 
 # Installer
 
-- 1 - <code>composer create-project -s dev yanickmorza/lima nom_projet</code>
-- 1 - <code>git clone https://github.com/yanickmorza/lima.git nom_projet</code>
+- 1 - <code>composer require yanickmorza/limabundle</code>
 
-- 2 - Supprimer le fichier <code>composer.json</code> et renommer le fichier <code>composer-sf5.txt en composer.json</code>
-- 2 - ou remplacer son contenu par celui de <code>composer-sf5.txt</code>
-
-- 3 - <code>composer update</code>
-
-- 4 - Ecrire son mot de passe PostgreSQL dans le fichier :
-<code>/src/LimaBundle/Scaffold/ConnexionDatabase.php</code>
+- 2 - Ecrire son mot de passe PostgreSQL dans le fichier :
+<code>/vendor/yanickmorza/limabundle/LimaBundle/Scaffold/ConnexionDatabase.php</code>
 
 # Démarrer
 
