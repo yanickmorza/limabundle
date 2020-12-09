@@ -47,7 +47,7 @@ class LimaController extends AbstractController
             $driver = $session->get('driver');
         }
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('index.html.twig', [
@@ -110,7 +110,7 @@ class LimaController extends AbstractController
             return $this->redirectToRoute('swiftmailer');
         }
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('swiftmailer.html.twig', [
@@ -133,7 +133,7 @@ class LimaController extends AbstractController
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         if ($request->request->get('_token') == 'console') {
@@ -211,7 +211,7 @@ class LimaController extends AbstractController
             return $this->redirectToRoute('authsecurite');
         }
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('authsecurite.html.twig', [
@@ -247,7 +247,7 @@ class LimaController extends AbstractController
             return $this->redirectToRoute('genererunerelation');
         }
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('genererunerelation.html.twig', [
@@ -342,7 +342,7 @@ class LimaController extends AbstractController
         $session = new Session();
         $db = $session->get('database');
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('supprimeruncrud.html.twig', [
@@ -392,7 +392,7 @@ class LimaController extends AbstractController
         $session = new Session();
         $db = $session->get('database');
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('genereruncrud.html.twig', [
@@ -417,7 +417,7 @@ class LimaController extends AbstractController
             $session->set('database', $basedonnee);
             $db = $session->get('database');
 
-            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
             $twig = new Environment($loader);
 
             return new Response($twig->render('basesettables.html.twig', [
@@ -434,7 +434,7 @@ class LimaController extends AbstractController
                 $champdatatable = $request->request->get('champdatatable', null, true);
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -469,7 +469,7 @@ class LimaController extends AbstractController
                 $alterdatatable = $request->request->get('alterdatatable', null, true);
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -486,7 +486,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'deletetables') {
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -503,7 +503,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'roleuser') {
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -520,7 +520,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'message') {
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -537,7 +537,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'renamebase') {
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -554,7 +554,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'exportertable') {
                 $db = $session->get('database');
 
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
@@ -592,7 +592,7 @@ class LimaController extends AbstractController
             $session->set('database', $basedonnee);
             $db = $session->get('database');
 
-            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
             $twig = new Environment($loader);
 
             return new Response($twig->render('basesettables.html.twig', [
@@ -612,7 +612,7 @@ class LimaController extends AbstractController
 
             // -- Affichage BasesEtTables --
             $db = $session->get('database');
-            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Views/index/');
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/LimaBundle/Resources/views/index/');
             $twig = new Environment($loader);
 
             return new Response($twig->render('basesettables.html.twig', [
