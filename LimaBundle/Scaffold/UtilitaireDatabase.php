@@ -1,8 +1,8 @@
 <?php
 
-namespace App\LimaBundle\Scaffold;
+namespace App\limabundle\LimaBundle\Scaffold;
 
-use App\LimaBundle\Scaffold\ConnexionDatabase;
+use App\limabundle\LimaBundle\Scaffold\ConnexionDatabase;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class UtilitaireDatabase

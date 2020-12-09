@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LimaBundle\Scaffold;
+namespace App\limabundle\LimaBundle\Scaffold;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -36,7 +36,7 @@ class ConnexionDatabase
         $userdb = "postgres";
         $session->set('userdb', $userdb);
 
-        $passdb = "xxxxxx";
+        $passdb = "xxxxxxxx";
         $session->set('passdb', $passdb);
         
         $dbname = $connexionDatabase->iniatialise_db();

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LimaBundle\Scaffold\Postgres;
+namespace App\limabundle\LimaBundle\Scaffold\Postgres;
 
 class ScaffoldPostgresSwiftMailerFunction
 {

@@ -1,31 +1,31 @@
 index:
     path: /
-    controller: App\LimaBundle\Controller\LimaController::index
+    controller: App\limabundle\LimaBundle\Controller\LimaController::index
 
 basesettables:
     path: /basesettables
-    controller: App\LimaBundle\Controller\LimaController::basesettables
+    controller: App\limabundle\LimaBundle\Controller\LimaController::basesettables
 
 genereruncrud:
     path: /genereruncrud
-    controller: App\LimaBundle\Controller\LimaController::genereruncrud
+    controller: App\limabundle\LimaBundle\Controller\LimaController::genereruncrud
 
 supprimeruncrud:
     path: /supprimeruncrud
-    controller: App\LimaBundle\Controller\LimaController::supprimeruncrud
+    controller: App\limabundle\LimaBundle\Controller\LimaController::supprimeruncrud
 
 genererunerelation:
     path: /genererunerelation
-    controller: App\LimaBundle\Controller\LimaController::genererunerelation
+    controller: App\limabundle\LimaBundle\Controller\LimaController::genererunerelation
 
 authsecurite:
     path: /authsecurite
-    controller: App\LimaBundle\Controller\LimaController::authsecurite
+    controller: App\limabundle\LimaBundle\Controller\LimaController::authsecurite
 
 console:
     path: /console
-    controller: App\LimaBundle\Controller\LimaController::console
+    controller: App\limabundle\LimaBundle\Controller\LimaController::console
 
 swiftmailer:
     path: /swiftmailer
-    controller: App\LimaBundle\Controller\LimaController::swiftmailer
+    controller: App\limabundle\LimaBundle\Controller\LimaController::swiftmailer
