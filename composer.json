@@ -14,6 +14,12 @@
             "App\\LimaBundle\\": "vendor/yanickmorza/limabundle/LimaBundle/"
         }
     },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
+    },
     "minimum-stability": "dev",
     "require": {
         "php": "^7.2"
