@@ -9,6 +9,11 @@
             "name": "Yanick Morza"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "App\\LimaBundle\\": "src/"
+        }
+    },
     "minimum-stability": "dev",
     "require": {
         "php": "^7.2"
