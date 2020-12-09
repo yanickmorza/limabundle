@@ -10,7 +10,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "App\\LimaBundle\\": "vendor/" }
+        "psr-4": { "App\\LimaBundle\\": "" }
     },
     "scripts": {
         "auto-scripts": {
