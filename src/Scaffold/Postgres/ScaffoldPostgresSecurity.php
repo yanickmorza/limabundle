@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\limabundle\LimaBundle\Scaffold\Postgres;
+namespace App\LimaBundle\Scaffold\Postgres;
 
 class ScaffoldPostgresSecurity
 {

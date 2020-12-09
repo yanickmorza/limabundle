@@ -1,6 +1,6 @@
 <?php
 
-namespace App\limabundle\LimaBundle\Scaffold;
+namespace App\LimaBundle\Scaffold;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 

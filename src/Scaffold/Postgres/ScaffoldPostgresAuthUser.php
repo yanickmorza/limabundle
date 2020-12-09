@@ -1,9 +1,9 @@
 <?php
 
-namespace App\limabundle\LimaBundle\Scaffold\Postgres;
+namespace App\LimaBundle\Scaffold\Postgres;
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\limabundle\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\UtilitaireDatabase;
 
 class ScaffoldPostgresAuthUser
 {

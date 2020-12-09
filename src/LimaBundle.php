@@ -1,6 +1,6 @@
 <?php
 
-namespace App\limabundle\LimaBundle;
+namespace App\LimaBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

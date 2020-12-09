@@ -11,7 +11,7 @@
 - 1 - <code>composer require yanickmorza/limabundle</code>
 
 - 2 - Ecrire son mot de passe PostgreSQL dans le fichier :
-<code>/vendor/yanickmorza/limabundle/LimaBundle/Scaffold/ConnexionDatabase.php</code>
+<code>/vendor/yanickmorza/limabundle/src/Scaffold/ConnexionDatabase.php</code>
 
 # Démarrer
 
