@@ -1,6 +1,6 @@
 <?php
 
-namespace App\LimaBundle\Scaffold\Postgres;
+namespace App\LimaBundle\Scaffold\Mysql;
 
 use App\LimaBundle\Scaffold\ConnexionDatabase;
 
