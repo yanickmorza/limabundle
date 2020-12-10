@@ -3,7 +3,7 @@
 namespace App\LimaBundle\Scaffold\Postgres;
 
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 
 class ScaffoldPostgresAuthUser
 {
@@ -440,7 +440,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             // ------------ Class AccessDeniedHandler ------------
 
             // ---- Construction de Entity User UserInterface ----
-            $utilitaireDatabase = new UtilitaireDatabase;
+            $utilitaireDatabase = new UtilitairePostgresDatabase;
 
             if ($namespace !== null) {
                 @mkdir("../src/Entity/" . $namespace, 0755, true);

@@ -2,14 +2,14 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 
 class ScaffoldPostgresRelation
 {
     // ---- Generer une Relation entre plusieurs tables ----
     public function genererPostgresRelation($objet, $namespace, $relation, $othernamespace)
     {
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
 
         if ($namespace !== null) {
             @mkdir("../src/Entity/" . $namespace, 0755, true);

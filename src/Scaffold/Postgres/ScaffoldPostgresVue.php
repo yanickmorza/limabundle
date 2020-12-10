@@ -2,7 +2,7 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class ScaffoldPostgresVue
@@ -13,7 +13,7 @@ class ScaffoldPostgresVue
         $session = new Session();
         $db = $session->get('database');
 
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
         // --- Recuperer tous les champs de la table concernee
 
         if ($namespace !== null) {

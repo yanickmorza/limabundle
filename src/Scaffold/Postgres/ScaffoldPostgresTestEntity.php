@@ -2,14 +2,14 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 
 class ScaffoldPostgresTestEntity
 {
     // ---- Generer un TestEntity ----
     public function genererPostgresTestEntity($objet, $namespace)
     {
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
 
         $Objet = ucfirst($objet);
         $ObjetCreate = $Objet."Test";

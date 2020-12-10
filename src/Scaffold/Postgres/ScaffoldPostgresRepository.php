@@ -2,7 +2,7 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class ScaffoldPostgresRepository
@@ -13,7 +13,7 @@ class ScaffoldPostgresRepository
         $session = new Session();
         $db = $session->get('database');
 
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
         
         if ($namespace !== null) {
             @mkdir("../src/Repository/" . $namespace, 0755, true);

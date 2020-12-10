@@ -1,11 +1,11 @@
 <?php
 
-namespace App\LimaBundle\Scaffold;
+namespace App\LimaBundle\Scaffold\Postgres;
 
 use App\LimaBundle\Scaffold\ConnexionDatabase;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
-class UtilitaireDatabase
+class UtilitairePostgresDatabase
 {
 	// ------ Lister les bases de donnees -------
 	public function listerDatabases()
@@ -280,7 +280,7 @@ class UtilitaireDatabase
 	// ------ Supprimer toutes les tables -------
 	public function deleteAllTableDb()
 	{
-		$utilitaireDatabase = new UtilitaireDatabase();
+		$utilitaireDatabase = new UtilitairePostgresDatabase();
 		$count = count($utilitaireDatabase->listerTables());
 		$tableau = "";
 
@@ -342,7 +342,7 @@ class UtilitaireDatabase
 	// ------- Exporter toutes les tables -------
 	public function exporterTables()
 	{
-		$utilitaireDatabase = new UtilitaireDatabase();
+		$utilitaireDatabase = new UtilitairePostgresDatabase();
 		$count = count($utilitaireDatabase->listerTables());
 		$export = "";
 
@@ -395,7 +395,7 @@ class UtilitaireDatabase
 	// ------ Exporter les donnees en CSV -------
 	public function queryToCsv($query, $headers, $download = "") // $headers = TRUE
 	{
-		$utilitaireDatabase = new UtilitaireDatabase;
+		$utilitaireDatabase = new UtilitairePostgresDatabase;
 
 		$colonnes = $utilitaireDatabase->listerChamps($headers);
 		$array = array();

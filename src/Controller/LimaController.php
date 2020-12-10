@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -33,7 +33,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/dbindex", name="index", methods={"GET","POST"})
      */
-    public function index(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function index(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $session = new Session();
 
@@ -62,7 +62,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/swiftmailer", name="swiftmailer", methods={"GET","POST"})
      */
-    public function swiftmailer(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function swiftmailer(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $session = new Session();
         $db = $session->get('database');
@@ -164,7 +164,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/authsecurite", name="authsecurite", methods={"GET","POST"})
      */
-    public function authsecurite(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function authsecurite(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $session = new Session();
         $db = $session->get('database');
@@ -225,7 +225,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/genererunerelation", name="genererunerelation", methods={"GET","POST"})
      */
-    public function genererunerelation(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function genererunerelation(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $session = new Session();
         $db = $session->get('database');
@@ -261,7 +261,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/supprimeruncrud", name="supprimeruncrud", methods={"GET","POST"})
      */
-    public function supprimeruncrud(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function supprimeruncrud(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
         $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
@@ -356,7 +356,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/genereruncrud", name="genereruncrud", methods={"GET","POST"})
      */
-    public function genereruncrud(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function genereruncrud(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
         $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
@@ -406,7 +406,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/basesettables", name="basesettables", methods={"GET","POST"})
      */
-    public function basesettables(Request $request, UtilitaireDatabase $utilitaireDatabase): Response
+    public function basesettables(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
     {
         $session = new Session();
         $scaffoldPostgresEnvironnement = new ScaffoldPostgresEnvironnement();

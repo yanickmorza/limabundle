@@ -2,7 +2,7 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class ScaffoldPostgresEnvironnement
@@ -10,7 +10,7 @@ class ScaffoldPostgresEnvironnement
     public function envDoctrinePostgresYaml()
     {
         $session = new Session();
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
         
         $driver = $session->get('driver');
         $port = $session->get('port');

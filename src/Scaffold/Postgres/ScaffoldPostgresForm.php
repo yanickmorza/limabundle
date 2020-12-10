@@ -2,14 +2,14 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 
 class ScaffoldPostgresForm
 {
     // ---- Generer un FORM ----
     public function genererPostgresForm($objet, $namespace)
     {
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
         if ($namespace !== null) {
             @mkdir("../src/Form/" . $namespace, 0755, true);
             $path_form = "../src/Form/" . $namespace;

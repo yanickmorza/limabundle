@@ -2,14 +2,14 @@
 
 namespace App\LimaBundle\Scaffold\Postgres;
 
-use App\LimaBundle\Scaffold\UtilitaireDatabase;
+use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
 
 class ScaffoldPostgresEntity
 {
     // ---- Generer un Entity ----
     public function genererPostgresEntity($objet, $namespace)
     {
-        $utilitaireDatabase = new UtilitaireDatabase;
+        $utilitaireDatabase = new UtilitairePostgresDatabase;
 
         if ($namespace !== null) {
             @mkdir("../src/Entity/" . $namespace, 0755, true);
