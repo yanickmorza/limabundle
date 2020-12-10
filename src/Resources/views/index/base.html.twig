@@ -30,7 +30,7 @@
     <!-- Sidebar -->
     <ul class="navbar-nav bg-lima sidebar sidebar-dark accordion" id="accordionSidebar">
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="" title="Accueil">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="./" title="Accueil">
         <div class="sidebar-brand-text mx-3">
 			<img src="../bundles/lima/assets/images/lima.png" class="d-inline-block align-top" width="124px" alt="lima.png">
 		</div>
@@ -40,15 +40,15 @@
     <hr class="sidebar-divider my-0">
     <!-- Accueil -->
       <li class="nav-item active">
-        <a class="nav-link" href="" title="Accueil"><span>Accueil</span></a>
+        <a class="nav-link" href="./" title="Accueil"><span>Accueil</span></a>
       </li>
     <!-- Accueil -->
 
-	<!-- Déconnexion -->
+	<!-- Connexion -->
 	<li class="nav-item active">
-        <a class="nav-link" href="/logout" title="Déconnexion" data-toggle="modal" data-target="#logoutModal"><span>Déconnexion</span></a>
+        <a class="nav-link" href="connexion" title="Changer de serveur SQL" data-toggle="modal" data-target="#connexionModal"><span>Serveur SQL</span></a>
     </li>
-    <!-- Déconnexion -->
+    <!-- Connexion -->
 
 	<!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -68,13 +68,13 @@
             <!-- User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2">Bienvenue</span>
+                <span class="mr-2">Back-office LIMA</span>
               </a>             
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href=""><i class="mr-2 text-gray-400"></i>Accueil</a>
+                <a class="dropdown-item" href="./"><i class="mr-2 text-gray-400"></i>Accueil</a>
             
             <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal"><i class="mr-2 text-gray-400"></i>Déconnexion</a>
+                <a class="dropdown-item" href="connexion" data-toggle="modal" data-target="#connexionModal"><i class="mr-2 text-gray-400"></i>Serveur SQL</a>
             </div>
 
             </li>
@@ -120,7 +120,7 @@
   <!-- Page Wrapper -->
 
 	<!-- Logout Modal-->
-	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="connexionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -129,10 +129,10 @@
 				<span aria-hidden="true">×</span>
 			</button>
 			</div>
-			<div class="modal-body">Sélectionnez « Déconnexion » ci-dessous si vous êtes prêt à terminer votre session en cours.</div>
+			<div class="modal-body">Sélectionnez « Nouvelle connexion » ci-dessous si vous souhaitez changer de serveur SQL.</div>
 			<div class="modal-footer">
 			<button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-			<a class="btn btn-primary" href="/logout">Déconnexion</a>
+			<a class="btn btn-primary" href="connexion">Nouvelle connexion</a>
 			</div>
 		</div>
 		</div>
