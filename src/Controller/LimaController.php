@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
+use App\LimaBundle\Scaffold\Mysql\UtilitaireMysqlDatabase;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -33,7 +34,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/dbindex", name="index", methods={"GET","POST"})
      */
-    public function index(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function index(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
 
@@ -47,14 +48,23 @@ class LimaController extends AbstractController
             $driver = $session->get('driver');
         }
 
+        if ($driver == 'pgsql') {
+            $listetables = $utilitairePostgresDatabase->listerTables();
+            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+        }
+        else {
+            $listetables = $utilitaireMysqlDatabase->listerTables();
+            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+        }
+
         $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('index.html.twig', [
             'headtitle' => 'Lima - ' . $db,
-            'listetables' => $utilitaireDatabase->listerTables(),
+            'listetables' => $listetables,
+            'listedatabases' => $listedatabases,
             'affichebasedonnee' => $db,
-            'listedatabases' => $utilitaireDatabase->listerDatabases(),
             'driver' => $driver
         ]));
     }
@@ -62,10 +72,19 @@ class LimaController extends AbstractController
     /**
      * @Route("/swiftmailer", name="swiftmailer", methods={"GET","POST"})
      */
-    public function swiftmailer(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function swiftmailer(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
+
         $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        if ($driver == 'pgsql') {
+            $listetables = $utilitairePostgresDatabase->listerTables();
+        }
+        else {
+            $listetables = $utilitaireMysqlDatabase->listerTables();
+        }
 
         $scaffoldPostgresSwiftMailerYaml = new ScaffoldPostgresSwiftMailerYaml;
         $scaffoldPostgresSwiftMailerFunction = new ScaffoldPostgresSwiftMailerFunction;
@@ -117,7 +136,7 @@ class LimaController extends AbstractController
             'headtitle' => 'Configurer swiftmailer dans ' . $db,
             'titreyaml' => 'Enregistrer la configuration dans le fichier swiftmailer.yaml',
             'titrefunction' => 'Enregistrer la fonctionnalité dans un controller',
-            'listetables' => $utilitaireDatabase->listerTables(),
+            'listetables' => $listetables,
             'affichebasedonnee' => $db
         ]));
     }
@@ -128,6 +147,7 @@ class LimaController extends AbstractController
     public function console(Request $request, KernelInterface $kernel): Response
     {
         $session = new Session();
+
         $db = $session->get('database');
 
         $application = new Application($kernel);
@@ -164,10 +184,21 @@ class LimaController extends AbstractController
     /**
      * @Route("/authsecurite", name="authsecurite", methods={"GET","POST"})
      */
-    public function authsecurite(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function authsecurite(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
+
         $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        if ($driver == 'pgsql') {
+            $listetables = $utilitairePostgresDatabase->listerTables();
+            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+        }
+        else {
+            $listetables = $utilitaireMysqlDatabase->listerTables();
+            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+        }
 
         $scaffoldPostgresSecurity = new ScaffoldPostgresSecurity;
         $scaffoldPostgresAuthUser = new ScaffoldPostgresAuthUser;
@@ -216,8 +247,8 @@ class LimaController extends AbstractController
 
         return new Response($twig->render('authsecurite.html.twig', [
             'headtitle' => 'Authentification et Sécurité dans ' . $db,
-            'listedatabases' => $utilitaireDatabase->listerDatabases(),
-            'listetables' => $utilitaireDatabase->listerTables(),
+            'listetables' => $listetables,
+            'listedatabases' => $listedatabases,
             'affichebasedonnee' => $db
         ]));
     }
@@ -225,10 +256,22 @@ class LimaController extends AbstractController
     /**
      * @Route("/genererunerelation", name="genererunerelation", methods={"GET","POST"})
      */
-    public function genererunerelation(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function genererunerelation(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
+
         $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        if ($driver == 'pgsql') {
+            $listetables = $utilitairePostgresDatabase->listerTables();
+            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+        }
+        else {
+            $listetables = $utilitaireMysqlDatabase->listerTables();
+            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+        }
+
         $scaffoldPostgresRelation = new ScaffoldPostgresRelation;
 
         if ($request->request->get('_token') == 'enregistrerrelation') {
@@ -252,8 +295,8 @@ class LimaController extends AbstractController
 
         return new Response($twig->render('genererunerelation.html.twig', [
             'headtitle' => 'Enregistrer une relation dans ' . $db,
-            'listedatabases' => $utilitaireDatabase->listerDatabases(),
-            'listetables' => $utilitaireDatabase->listerTables(),
+            'listetables' => $listetables,
+            'listedatabases' => $listedatabases,
             'affichebasedonnee' => $db
         ]));
     }
@@ -261,7 +304,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/supprimeruncrud", name="supprimeruncrud", methods={"GET","POST"})
      */
-    public function supprimeruncrud(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function supprimeruncrud(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
         $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
@@ -340,15 +383,26 @@ class LimaController extends AbstractController
         // ---- Supprimer repertoire ---
 
         $session = new Session();
+
         $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        if ($driver == 'pgsql') {
+            $listetables = $utilitairePostgresDatabase->listerTables();
+            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+        }
+        else {
+            $listetables = $utilitaireMysqlDatabase->listerTables();
+            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+        }
 
         $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('supprimeruncrud.html.twig', [
             'headtitle' => 'Supprimer un SCRUD dans ' . $db,
-            'listedatabases' => $utilitaireDatabase->listerDatabases(),
-            'listetables' => $utilitaireDatabase->listerTables(),
+            'listetables' => $listetables,
+            'listedatabases' => $listedatabases,
             'affichebasedonnee' => $db
         ]));
     }
@@ -356,7 +410,7 @@ class LimaController extends AbstractController
     /**
      * @Route("/genereruncrud", name="genereruncrud", methods={"GET","POST"})
      */
-    public function genereruncrud(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function genereruncrud(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
         $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
@@ -390,15 +444,26 @@ class LimaController extends AbstractController
         }
 
         $session = new Session();
+
         $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        if ($driver == 'pgsql') {
+            $listetables = $utilitairePostgresDatabase->listerTables();
+            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+        }
+        else {
+            $listetables = $utilitaireMysqlDatabase->listerTables();
+            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+        }
 
         $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
         $twig = new Environment($loader);
 
         return new Response($twig->render('genereruncrud.html.twig', [
             'headtitle' => 'Générer un SCRUD dans ' . $db,
-            'listedatabases' => $utilitaireDatabase->listerDatabases(),
-            'listetables' => $utilitaireDatabase->listerTables(),
+            'listetables' => $listetables,
+            'listedatabases' => $listedatabases,
             'affichebasedonnee' => $db
         ]));
     }
@@ -406,42 +471,68 @@ class LimaController extends AbstractController
     /**
      * @Route("/basesettables", name="basesettables", methods={"GET","POST"})
      */
-    public function basesettables(Request $request, UtilitairePostgresDatabase $utilitaireDatabase): Response
+    public function basesettables(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
+        $driver = $session->get('driver');
+
         $scaffoldPostgresEnvironnement = new ScaffoldPostgresEnvironnement();
 
         // ---- Liste database et table ----
         if ($request->request->get('basedonnee')) {
+
             $basedonnee = $request->request->get('basedonnee');
+
             $session->set('database', $basedonnee);
             $db = $session->get('database');
+
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            }
 
             $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
             $twig = new Environment($loader);
 
             return new Response($twig->render('basesettables.html.twig', [
                 'headtitle' => 'Bases de données et Tables dans ' . $db,
-                'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                'listetables' => $utilitaireDatabase->listerTables(),
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
                 'affichebasedonnee' => $db
             ]));
-        } elseif ($session->get('database')) {
+        } 
+        elseif ($session->get('database')) {
 
             // ----- Afficher SQL Table ----
             if ($request->request->get('_token') == 'champdata') {
 
                 $champdatatable = $request->request->get('champdatatable', null, true);
-                $db = $session->get('database');
+
+                $db = $session->get('database');               
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->findChampDataTable($champdatatable);
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->findChampDataTable($champdatatable);
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'champdatatable' => $utilitaireDatabase->findChampDataTable($champdatatable),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'listetables' => $listetables,
+                    'listedatabases' => $listedatabases,
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -449,8 +540,12 @@ class LimaController extends AbstractController
 
             // --- Generer environnement ---
             if ($request->request->get('_token') == 'environnement') {
-                $scaffoldPostgresEnvironnement->envDoctrinePostgresYaml();
-                $this->addFlash('success', 'Le nouvel environnement a été créé avec succès');
+
+                if ($driver == 'pgsql') {
+                    $scaffoldPostgresEnvironnement->envDoctrinePostgresYaml();
+                    $this->addFlash('success', 'Le nouvel environnement a été créé avec succès');
+                }
+
                 return $this->redirectToRoute('basesettables');
             }
             // --- Generer environnement ---
@@ -458,7 +553,7 @@ class LimaController extends AbstractController
             // ---- Executer requete SQL ---
             if ($request->request->get('_token') == 'requete') {
                 $sql = $request->request->get('sql', null, true);
-                $utilitaireDatabase->executerSql($sql);
+                $utilitairePostgresDatabase->executerSql($sql);
                 $this->addFlash('success', 'L\'exécution de la requête a été un succès');
                 return $this->redirectToRoute('basesettables');
             }
@@ -466,17 +561,30 @@ class LimaController extends AbstractController
 
             // ---- Afficher ALTER Table ---
             if ($request->request->get('_token') == 'alterdata') {
+
                 $alterdatatable = $request->request->get('alterdatatable', null, true);
+
                 $db = $session->get('database');
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->alterTableDb($alterdatatable);
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->alterTableDb($alterdatatable);
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'champdatatable' => $utilitaireDatabase->alterTableDb($alterdatatable),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'listetables' => $listetables,
+                    'listedatabases' => $listedatabases,                   
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -484,16 +592,28 @@ class LimaController extends AbstractController
 
             // --- Supprimer les tables ----
             if ($request->request->get('_token') == 'deletetables') {
+
                 $db = $session->get('database');
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->deleteAllTableDb();
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->deleteAllTableDb();
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
-                    'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'champdatatable' => $utilitaireDatabase->deleteAllTableDb(),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'headtitle' => 'Bases de données et Tables dans ' . $db,                
+                    'listetables' => $listetables,
+                    'listedatabases' => $listedatabases,
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -501,16 +621,28 @@ class LimaController extends AbstractController
 
             // ------ Roles et Users -------
             if ($request->request->get('_token') == 'roleuser') {
-                $db = $session->get('database');
+
+                $db = $session->get('database');               
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->creerTableRoleUser();
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->creerTableRoleUser();
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'champdatatable' => $utilitaireDatabase->creerTableRoleUser(),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'listetables' => $listetables,                   
+                    'listedatabases' => $listedatabases,
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -518,16 +650,28 @@ class LimaController extends AbstractController
 
             // ------ Table messages -------
             if ($request->request->get('_token') == 'message') {
-                $db = $session->get('database');
+
+                $db = $session->get('database');               
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->creerFormEnvoiMessage();
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->creerFormEnvoiMessage();
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'champdatatable' => $utilitaireDatabase->creerFormEnvoiMessage(),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'listetables' => $listetables,                  
+                    'listedatabases' => $listedatabases,
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -535,16 +679,28 @@ class LimaController extends AbstractController
 
             // ---- Renommer database ------
             if ($request->request->get('_token') == 'renamebase') {
-                $db = $session->get('database');
+
+                $db = $session->get('database');               
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->RenameDatabase();
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->RenameDatabase();
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'champdatatable' => $utilitaireDatabase->RenameDatabase(),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'listetables' => $listetables,                  
+                    'listedatabases' => $listedatabases,
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -552,7 +708,19 @@ class LimaController extends AbstractController
 
             // --- Préparer Exportation ----
             if ($request->request->get('_token') == 'exportertable') {
-                $db = $session->get('database');
+
+                $db = $session->get('database');              
+
+                if ($driver == 'pgsql') {
+                    $listetables = $utilitairePostgresDatabase->listerTables();
+                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                    $champdatatable = $utilitairePostgresDatabase->exporterTables();
+                }
+                else {
+                    $listetables = $utilitaireMysqlDatabase->listerTables();
+                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                    $champdatatable = $utilitaireMysqlDatabase->exporterTables();
+                }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
@@ -560,9 +728,9 @@ class LimaController extends AbstractController
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
                     'exportertable' => $request->request->get('_token'),
-                    'champdatatable' => $utilitaireDatabase->exporterTables(),
-                    'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                    'listetables' => $utilitaireDatabase->listerTables(),
+                    'listetables' => $listetables,
+                    'listedatabases' => $listedatabases,
+                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
             }
@@ -579,7 +747,7 @@ class LimaController extends AbstractController
                     mkdir($path_sql, 0755, true);
                 }
 
-                $fichier = "../var/tmp/sql/" . $db . ".sql";
+                $fichier = "../var/tmp/sql/".$driver."_". $db . ".sql";
                 $contenu = $request->request->get('champdatatable');
 
                 fopen($fichier, "w+");
@@ -590,19 +758,30 @@ class LimaController extends AbstractController
             // -- Affichage BasesEtTables --
             $basedonnee = $session->get('database');
             $session->set('database', $basedonnee);
+
             $db = $session->get('database');
+
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            }
 
             $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
             $twig = new Environment($loader);
 
             return new Response($twig->render('basesettables.html.twig', [
                 'headtitle' => 'Bases de données et Tables dans ' . $db,
-                'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                'listetables' => $utilitaireDatabase->listerTables(),
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
                 'affichebasedonnee' => $db
             ]));
             // -- Affichage BasesEtTables --
-        } else {
+        } 
+        else {
             // --- Creer le repertoire tmp
             $path_cache = "../var/tmp/";
             if (!is_dir($path_cache)) {
@@ -612,13 +791,23 @@ class LimaController extends AbstractController
 
             // -- Affichage BasesEtTables --
             $db = $session->get('database');
+
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            }
+
             $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
             $twig = new Environment($loader);
 
             return new Response($twig->render('basesettables.html.twig', [
                 'headtitle' => 'Bases de données et Tables dans ' . $db,
-                'listedatabases' => $utilitaireDatabase->listerDatabases(),
-                'listetables' => $utilitaireDatabase->listerTables(),
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,             
                 'affichebasedonnee' => $db
             ]));
             // -- Affichage BasesEtTables --
