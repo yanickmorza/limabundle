@@ -2,6 +2,10 @@ index:
     path: /
     controller: App\LimaBundle\Controller\LimaController::index
 
+connexion:
+    path: /connexion
+    controller: App\LimaBundle\Controller\LimaController::connexion
+
 basesettables:
     path: /basesettables
     controller: App\LimaBundle\Controller\LimaController::basesettables

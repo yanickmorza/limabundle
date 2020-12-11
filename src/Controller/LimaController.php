@@ -94,6 +94,17 @@ class LimaController extends AbstractController
     }
 
     /**
+     * @Route("/connexion", name="connexion", methods={"GET"})
+     */
+    public function connexion():Response
+    {
+        $session = new Session();
+        $session->clear();
+
+        return $this->redirectToRoute('index');
+    }
+
+    /**
      * @Route("/swiftmailer", name="swiftmailer", methods={"GET","POST"})
      */
     public function swiftmailer(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
