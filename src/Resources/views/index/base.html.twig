@@ -36,22 +36,23 @@
 		</div>
       </a>
 
-    <!-- Divider -->
+    {% if driver is not empty %}
     <hr class="sidebar-divider my-0">
     <!-- Accueil -->
       <li class="nav-item active">
-        <a class="nav-link" href="./" title="Accueil"><span>Accueil</span></a>
+          <a class="nav-link" href="./" title="Accueil"><span>Accueil</span></a>
       </li>
     <!-- Accueil -->
-
-	<!-- Connexion -->
-	<li class="nav-item active">
-        <a class="nav-link" href="connexion" title="Changer de serveur SQL" data-toggle="modal" data-target="#connexionModal"><span>Serveur SQL</span></a>
+    <hr class="sidebar-divider my-0">
+    <!-- Connexion -->
+    <li class="nav-item active">
+          <a class="nav-link" href="connexion" title="Changer de serveur SQL" data-toggle="modal" data-target="#connexionModal"><span>Serveur SQL</span></a>
     </li>
     <!-- Connexion -->
-
-	<!-- Divider -->
-      <hr class="sidebar-divider my-0">
+    <hr class="sidebar-divider my-0">
+    {% else %}
+      <li class="nav-item active"><a class="nav-link" href=""></a><span>&nbsp;</span></li>
+    {% endif %}
 
     </ul>
     <!-- Sidebar -->
@@ -64,21 +65,23 @@
 
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-lima topbar mb-4 static-top shadow">
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto">         
             <!-- User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2">Back-office LIMA</span>
-              </a>             
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+              </a>
+
+            {% if driver is empty %}
+              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="./"><i class="mr-2 text-gray-400"></i>Accueil</a>
-            
-            <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="connexion" data-toggle="modal" data-target="#connexionModal"><i class="mr-2 text-gray-400"></i>Serveur SQL</a>
-            </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="connexion" data-toggle="modal" data-target="#connexionModal"><i class="mr-2 text-gray-400"></i>Serveur SQL</a>             
+              </div>
+            {% endif %}
 
             </li>
-			<!-- User Information -->
+			      <!-- User Information -->
           </ul>
         </nav>
         <!-- Topbar -->

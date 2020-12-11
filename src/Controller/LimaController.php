@@ -48,14 +48,15 @@ class LimaController extends AbstractController
                 $session->set('userdb', trim($request->request->get('userdb', null, true)));
                 $session->set('passdb', trim($request->request->get('passdb', null, true)));
                 
-                return $this->redirectToRoute('basesettables');
+                return $this->redirectToRoute('index');
             }
             else {
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('connexion.html.twig', [
-                    'headtitle' => 'Connexion à un serveur SQL'
+                    'headtitle' => 'Connexion à un serveur SQL',
+                    'driver' => ''
                 ]));
             }
         }
