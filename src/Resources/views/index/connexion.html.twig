@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ headtitle }}{% endblock %}
+{% block body %}
+<!-- CONNEXION DATABASE -->
+<div class="row">
+<div class="col-6">
+<div class="card mb-3 ml-3 mr-3 mt-3">
+<div class="card-header breadcrumb-item small"> {{ headtitle }}</div>
+<div class="card-body">
+<form method="post" action="">
+    <div class="form-group row">
+            <div class="col"><input type="hidden" name="_token" value="connexiondb"></div>
+    </div>
+    <div class="form-group row">
+        <label for="serveur" class="col col-form-label">Serveur SQL : </label>
+            <div class="col">
+                <input type="text" name="serveur" class="form-control" autocomplete="off" placeholder="localhost" required>
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="port" class="col col-form-label">Port : </label>
+            <div class="col-3">
+                <input type="text" name="port" class="form-control" autocomplete="off" placeholder="5432" required>
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="database" class="col col-form-label">Nom de la Base de données : </label>
+            <div class="col">
+                <input type="text" name="database" class="form-control" autocomplete="off" placeholder="postgres" required>
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="driver" class="col col-form-label">Driver : </label>
+            <div class="col">
+                <select name="driver" class="custom-select" required>
+                    <option value=""> -- Choisir dans la liste -- </option>
+                    <option value="pgsql"> -- PgSQL -- </option>
+                    <option value="mysql"> -- MySQL -- </option>
+                </select>
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="username" class="col col-form-label">Utilisateur : </label>
+            <div class="col">
+                <input type="text" name="userdb" class="form-control" autocomplete="off" placeholder="postgres" required>
+            </div>
+    </div>
+    <div class="form-group row">
+        <label for="password" class="col col-form-label">Mot de passe : </label>
+            <div class="col">
+                <input type="password" name="passdb" class="form-control" autocomplete="off" placeholder="........" required>
+            </div>
+    </div> 
+    <div class="form-group row">
+            <div class="col">
+                <button type="submit" class="btn btn-primary" title="Enregistrer">Connexion</button>
+            </div>
+    </div>
+</form>
+</div>
+</div>
+</div>
+<!-- CONNEXION DATABASE -->
+{% endblock %}

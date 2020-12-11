@@ -32,41 +32,65 @@ use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresVue;
 class LimaController extends AbstractController
 {
     /**
-     * @Route("/dbindex", name="index", methods={"GET","POST"})
+     * @Route("/index", name="index", methods={"GET","POST"})
      */
     public function index(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
 
-        if ($request->request->get('basedonnee')) {
-            $session->set('database', $request->request->get('basedonnee'));
-            $db = $session->get('database');
-            $driver = $session->get('driver');
-        } 
+        if ($session->get('database') == null && $session->get('driver') == null) {
+    
+            if ($request->request->get('_token') == 'connexiondb') {     
+                $session->set('serveur', trim($request->request->get('serveur', null, true)));
+                $session->set('port', trim($request->request->get('port', null, true)));
+                $session->set('driver', trim($request->request->get('driver', null, true)));
+                $session->set('database', trim($request->request->get('database', null, true)));
+                $session->set('userdb', trim($request->request->get('userdb', null, true)));
+                $session->set('passdb', trim($request->request->get('passdb', null, true)));
+                
+                return $this->redirectToRoute('basesettables');
+            }
+            else {
+                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                $twig = new Environment($loader);
+
+                return new Response($twig->render('connexion.html.twig', [
+                    'headtitle' => 'Connexion à un serveur SQL'
+                ]));
+            }
+        }
         else {
-            $db = $session->get('database');
-            $driver = $session->get('driver');
-        }
 
-        if ($driver == 'pgsql') {
-            $listetables = $utilitairePostgresDatabase->listerTables();
-            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            if ($request->request->get('basedonnee')) {
+                $session->set('database', $request->request->get('basedonnee'));
+                $db = $session->get('database');
+                $driver = $session->get('driver');
+            } 
+            else {
+                $db = $session->get('database');
+                $driver = $session->get('driver');
+            }
+    
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            }
+    
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+    
+            return new Response($twig->render('index.html.twig', [
+                'headtitle' => 'Lima - ' . $db,
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
+                'affichebasedonnee' => $db,
+                'driver' => $driver
+            ]));
         }
-        else {
-            $listetables = $utilitaireMysqlDatabase->listerTables();
-            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-        }
-
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
-
-        return new Response($twig->render('index.html.twig', [
-            'headtitle' => 'Lima - ' . $db,
-            'listetables' => $listetables,
-            'listedatabases' => $listedatabases,
-            'affichebasedonnee' => $db,
-            'driver' => $driver
-        ]));
     }
 
     /**
