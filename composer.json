@@ -19,8 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "App\\LimaBundle\\": "vendor/yanickmorza/limabundle/src/"
+            "App\\LimaBundle\\": "*/src/"
         }
     },
     "extra": {
