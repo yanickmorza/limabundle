@@ -14,7 +14,7 @@
 
 - 1 - Démarrer votre serveur web avec la commande 'Symfony' (http ou https) : 
 <code>symfony serve</code>
-- 1 - si vous n'avez pas installé la commande 'Symfony' :
+- 1 - Si vous n'avez pas installé la commande 'Symfony' alors :
 <code>php -S localhost:8000 -t public/</code>
 
 - 2 - Ouvrir votre navigateur internet en http : <a href="http://localhost:8000/lima/">http://localhost:8000/lima/</a>
