@@ -23,10 +23,17 @@
         }
     },
     "scripts": {
-        "@composer install": [
-            "@php vendor/yanickmorza/limabundle/src/command/installation.php"
+        "inst-cmd": [
+          "cp vendor/yanickmorza/limabundle/src/Command/base.html.twig templates/base.html.twig",
+          "cp vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig templates/_flashes.html.twig"
+        ],
+        "post-install-cmd": [
+          "@inst-cmd"
+        ],
+        "post-update-cmd": [
+          "@inst-cmd"
         ]
-    },
+      },
     "extra": {
         "branch-alias": {
             "dev-master": "1.1.9.x-dev"
