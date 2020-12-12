@@ -25,6 +25,12 @@
     "scripts": {
         "installation": [
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
+        ],
+        "post-install-cmd": [
+            "@auto-installation"
+        ],
+        "post-update-cmd": [
+            "@auto-installation"
         ]
     },
     "extra": {
