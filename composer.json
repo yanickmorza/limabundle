@@ -23,17 +23,10 @@
         }
     },
     "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "execute": "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
+        "auto-scripts": [
+            "@execute"
         ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ] 
+        "execute": "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
     },
     "extra": {
         "branch-alias": {
