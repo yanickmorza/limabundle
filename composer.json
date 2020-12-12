@@ -23,9 +23,11 @@
         }
     },
     "scripts":{
-        "post-create-project-cmd": [
+        "execute": [
+            "@composer execute",
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php" 
         ]
+
     },
     "extra": {
         "branch-alias": {
