@@ -23,9 +23,9 @@
         }
     },
     "scripts": {
-        "composer-scripts": {
-            "vendor/yanickmorza/limabundle/src/command/installation.php": "php-script"
-        }
+        "installation": [
+            "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
+        ]
     },
     "extra": {
         "branch-alias": {
