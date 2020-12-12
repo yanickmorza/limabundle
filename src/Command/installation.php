@@ -27,7 +27,7 @@ $path = "config/packages/twig.yaml";
 fopen($path, "a");
 
 $texte = "twig:
-    default_path: '%kernel.project_dir%/templates'    
+    default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_4_layout.html.twig']";
 
 file_put_contents($path, $texte);
