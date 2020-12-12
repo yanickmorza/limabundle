@@ -1,10 +1,10 @@
 # LIMA - Light Interface Maker Application
 - C'est un bundle pour le Framework Symfony <code>Versions 5</code>.
-- Elle permet principalement de générer des SCRUD pour un Back-Office (Seach, Create, Read, Update, Delete).
-- Mais elle n'est pas uniquement dédiée qu'à cette tache.
-- Elle également en mesure de concevoir une application multicomplexe en Symfony avec 60% de No-code, le reste est à votre libre imagination.
+- Le bundle permet principalement de générer des SCRUD pour un Back-Office (Seach, Create, Read, Update, Delete).
+- Mais il n'est pas uniquement dédiée qu'à cette tache.
+- Le bundle est également en mesure de concevoir une application multicomplexe en Symfony avec 60% de No-code, le reste est à votre libre imagination.
 - Prérequis : <code>une version PHP-7.2 et une base de données PostgreSQL</code>.
-- L'ORM LIMA orienté également vers une <code>base de données MySQL</code> est en cours de développement.
+- L'ORM du bundle LIMA sera très prochainement orienté vers une <code>base de données MySQL</code>, ce dernier est en cours de développement.
 
 # Installer
 
