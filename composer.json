@@ -23,7 +23,7 @@
         }
     },
     "scripts":{
-        "auto-scripts": [
+        "post-create-project-cmd": [
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php" 
         ]
     },
