@@ -27,10 +27,10 @@
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
         ],
         "post-install-cmd": [
-            "@auto-installation"
+            "@composer installation"
         ],
         "post-update-cmd": [
-            "@auto-installation"
+            "@composer installation"
         ]
     },
     "extra": {
