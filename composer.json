@@ -23,13 +23,8 @@
         }
     },
     "scripts":{
-        "auto-scripts": {
-            "execute": [ 
-                "@php vendor/yanickmorza/limabundle/src/Command/installation.php" 
-            ]
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
+        "auto-scripts": [
+            "@php vendor/yanickmorza/limabundle/src/Command/installation.php" 
         ]
     },
     "extra": {
