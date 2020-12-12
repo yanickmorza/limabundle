@@ -23,16 +23,10 @@
         }
     },
     "scripts": {
-        "inst-cmd": [
-          "cp vendor/yanickmorza/limabundle/src/Command/base.html.twig templates/base.html.twig",
-          "cp vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig templates/_flashes.html.twig"
-        ],
-        "post-install-cmd": [
-          "@inst-cmd"
-        ],
-        "post-update-cmd": [
-          "@inst-cmd"
-        ]
+        "php": "@php vendor/yanickmorza/limabundle/src/command/installation.php",
+		"test": [
+			"@composer run php"
+		]
       },
     "extra": {
         "branch-alias": {
