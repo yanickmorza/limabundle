@@ -23,7 +23,7 @@
         }
     },
     "scripts": {
-        "installation": [
+        "install": [
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
         ]
     },
