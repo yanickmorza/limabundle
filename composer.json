@@ -22,18 +22,16 @@
             "App\\LimaBundle\\": "src/"
         }
     },
-    "scripts":{
-        "post-create-project-cmd": [
-            "php -r \"copy('vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig', 'templates/_flashes.html.twig');\"",
-            "php -r \"copy('vendor/yanickmorza/limabundle/src/Command/base.html.twig', 'templates/base.html.twig')\""
-
-        ],
+    "scripts": {
         "execute": [
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php" 
         ],
-        "install": [
+        "post-install-cmd": [
             "@composer execute"
-        ]
+        ],
+        "post-update-cmd": [
+            "@composer execute"
+        ] 
     },
     "extra": {
         "branch-alias": {
