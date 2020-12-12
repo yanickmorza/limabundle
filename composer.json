@@ -23,11 +23,16 @@
         }
     },
     "scripts": {
-        "php": "@php vendor/yanickmorza/limabundle/src/command/installation.php",
-		"test": [
-			"@composer run php"
-		]
-      },
+        "auto-scripts": [
+            "@php ./vendor/yanickmorza/limabundle/src/command/installation.php"
+        ],
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.1.9.x-dev"
