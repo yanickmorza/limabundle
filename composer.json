@@ -23,9 +23,9 @@
         }
     },
     "scripts":{
-        "execute": [
-            "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
-        ]
+        "auto-scripts": {
+            "execute": "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
+        }
     },
     "extra": {
         "branch-alias": {
