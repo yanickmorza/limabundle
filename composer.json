@@ -25,10 +25,10 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postPackageInstall"
+            "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postInstall"
         ],
         "post-update-cmd": [
-            "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postPackageInstall"
+            "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postUpdate"
         ]
     },
     "extra": {
