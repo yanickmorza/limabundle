@@ -26,7 +26,7 @@
     "scripts": {
         "auto-scripts": {
             "composer-scripts": {
-                "vendor/yanickmorza/limabundle/src/Command/installation.php": "php-script"
+                "@php vendor/yanickmorza/limabundle/src/Command/installation.php": "php-script"
             }
         }
     },
