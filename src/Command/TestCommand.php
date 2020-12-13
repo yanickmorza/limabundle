@@ -2,10 +2,12 @@
 
 namespace App\LimaBundle;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class TestCommand 
 {
-    public function postPackageInstall()
+    public function postPackageInstall():Response
     {
-        echo "Oups !!!";
+        return new Response('Oups !!!');
     }
 }
