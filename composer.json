@@ -24,10 +24,10 @@
         }
     },
     "scripts": {
-        "pre-package-install": [
+        "post-install-cmd": [
             "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postPackageInstall"
         ],
-        "pre-package-update": [
+        "post-update-cmd": [
             "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postPackageInstall"
         ]
     },
