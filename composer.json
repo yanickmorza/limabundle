@@ -5,6 +5,7 @@
     "homepage": "https://github.com/yanickmorza/limabundle",
     "license": "MIT",
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Yanick Morza"
@@ -23,19 +24,13 @@
         }
     },
     "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
         "installation": [
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
         ],
         "post-install-cmd": [
-            "@auto-scripts",
             "@composer installation"
         ],
         "post-update-cmd": [
-            "@auto-scripts",
             "@composer installation"
         ]
     },
