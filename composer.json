@@ -24,6 +24,9 @@
         }
     },
     "scripts": {
+        "post-create-project-cmd": [
+            "php -r \"copy('vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig', 'templates/_flashes.html.twig');\""
+        ],
         "post-install-cmd": [
             "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postInstall"
         ],
