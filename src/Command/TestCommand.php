@@ -10,13 +10,13 @@ class TestCommand
     public static function postUpdate(Event $event)
     {
         $composer = $event->getComposer();
-        $composer->echo('Installation MAJ !');
+        return $composer->echo('Installation MAJ !');
     }
 
     public static function postInstall(Event $event)
     {
         $composer = $event->getComposer();
-        $composer->echo('Installation OK !');
+        return $composer->echo('Installation OK !');
     }
 
     /* public static function postPackageInstall(PackageEvent $event)
