@@ -1,8 +1,8 @@
 <?php
 
-// $filename = "config/routes/dev/lima_bundle.yaml";
+$filename = "config/routes/dev/lima_bundle.yaml";
 
-// if (!file_exists($filename)) {
+if (!file_exists($filename)) {
 
     // **** Ecriture dans le fichier lima_bundle.yaml ****
     $path = "config/routes/dev/lima_bundle.yaml";
@@ -57,4 +57,4 @@
     copy('vendor/yanickmorza/limabundle/src/Command/base.html.twig', 'templates/base.html.twig');
     // *** Copier les fichiers base.html.twig, _flashes.html.twig dans templates ***
 
-// }
+}
