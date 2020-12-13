@@ -8,7 +8,7 @@
 
 # Installer
 
-- 1 - <code>composer require yanickmorza/limabundle:@dev</code>
+- 1 - <code>composer require yanickmorza/limabundle</code>
 
 # Démarrer
 
