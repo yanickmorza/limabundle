@@ -57,4 +57,8 @@ if (!file_exists($filename)) {
     copy('vendor/yanickmorza/limabundle/src/Command/base.html.twig', 'templates/base.html.twig');
     // *** Copier les fichiers base.html.twig, _flashes.html.twig dans templates ***
 
+    // ***** Supprimer le fichier composer-sf5.txt ****
+    @unlink('composer-sf5.txt');
+    // ***** Supprimer le fichier composer-sf5.txt ****
+
 }
