@@ -23,14 +23,20 @@
         }
     },
     "scripts": {
-        "auto-scripts": [
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "installation": [
             "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
         ],
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@composer installation"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@composer installation"
         ]
     },
     "extra": {
