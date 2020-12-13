@@ -26,6 +26,15 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.1.9.x-dev"
-        }
+        },
+        "installation": [
+            "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
+        ],
+        "post-install-cmd": [
+            "@composer installation"
+        ],
+        "post-update-cmd": [
+            "@composer installation"
+        ]
     }
 }

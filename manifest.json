@@ -1,8 +1,0 @@
-{
-    "bundles": {
-        "App\\LimaBundle": ["dev"]
-    },
-    "composer-scripts": {
-        "vendor/yanickmorza/limabundle/src/Command/installation.php": "php-script"
-    }
-}
