@@ -25,9 +25,17 @@
     },
     "scripts": {
         "auto-scripts": {
-            "installation": {
-                "@php vendor/yanickmorza/limabundle/src/Command/installation.php": "@composer installation"
-            }
+            "installation": [
+                "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
+            ],
+            "post-install-cmd": [
+                "@auto-scripts",
+                "@composer installation"
+            ],
+            "post-update-cmd": [
+                "@auto-scripts",
+                "@composer installation"
+            ]
         }
     },
     "extra": {
