@@ -23,17 +23,6 @@
             "App\\LimaBundle\\": "src/"
         }
     },
-    "scripts": {
-        "post-create-project-cmd": [
-            "php -r \"copy('vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig', 'templates/_flashes.html.twig');\""
-        ],
-        "post-install-cmd": [
-            "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postInstall"
-        ],
-        "post-update-cmd": [
-            "vendor\\yanickmorza\\limabundle\\src\\Command\\TestCommand::postUpdate"
-        ]
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.1.9.x-dev"
