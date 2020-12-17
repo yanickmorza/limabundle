@@ -1,15 +1,15 @@
 <?php
 
-namespace App\LimaBundle\Scaffold\Postgres;
+namespace App\LimaBundle\Scaffold\Mysql;
 
-use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
+use App\LimaBundle\Scaffold\Mysql\UtilitaireMysqlDatabase;
 
-class ScaffoldPostgresRelation
+class ScaffoldMysqlRelation
 {
     // ---- Generer une Relation entre plusieurs tables ----
-    public function genererPostgresRelation($objet, $namespace, $relation, $othernamespace)
+    public function genererMysqlRelation($objet, $namespace, $relation, $othernamespace)
     {
-        $utilitaireDatabase = new UtilitairePostgresDatabase;
+        $utilitaireDatabase = new UtilitaireMysqlDatabase;
 
         if ($namespace !== null) {
             @mkdir("../src/Entity/" . $namespace, 0755, true);
@@ -47,13 +47,12 @@ class ScaffoldPostgresRelation
                 if ($type == "character varying") {
                     $type = "string";
                 } 
-                elseif ($type == "timestamp without time zone") {
+                elseif ($type == "datetime") {
                     $type = "datetime";
                 } 
-                elseif ($type == "double precision") {
+                elseif ($type == "double") {
                     $type = "float";
                 }
-                
                 // --- Controler les types de champs VARCHAR, TIMESTAMP, DOUBLE PRECISION, etc... (postgreSQL)
 
                 // Enleve les '_' met la 1ere lettre en majuscule et supprime les espaces
@@ -247,7 +246,7 @@ class ScaffoldPostgresRelation
                 }
                 else {
                     // --- Getters Setters des autres champs de la table ---
-                    if ($type == "json") {
+                    if ($type == "tinyint") {
                         $crocher = " = []";
                         $private_type_entity .= "/**\n\t";
                         $private_type_entity .= "* @ORM\Column(type=\"$type\")\n\t";
@@ -270,11 +269,11 @@ class ScaffoldPostgresRelation
                     } elseif ($type == "datetime") {
                         $getter_setter .= "public function get$Libelle(): ?\DateTimeInterface\n\t";
                     } else {
-                        if ($type == "boolean") {
+                        if ($type == "tinyint") {
                             $type = "bool";
                             $getter_setter .= "public function get$Libelle(): ?$type\n\t";
                         }
-                        elseif ($type == "json") {
+                        elseif ($type == "longtext") {
                             $getter_setter .= "public function get$Libelle(): ?array\n\t";
                         }
                         else {
@@ -295,11 +294,11 @@ class ScaffoldPostgresRelation
                     } elseif ($type == "datetime") {
                         $getter_setter .= "public function set$Libelle(\DateTimeInterface $$libelle): self\n\t";
                     } else {
-                        if ($type == "boolean") {
+                        if ($type == "tinyint") {
                             $type = "bool";
                             $getter_setter .= "public function set$Libelle($type $$libelle): self\n\t";
                         }
-                        elseif ($type == "json") {
+                        elseif ($type == "longtext") {
                             $getter_setter .= "public function set$Libelle(array $$libelle): self\n\t";
                         }
                         else {

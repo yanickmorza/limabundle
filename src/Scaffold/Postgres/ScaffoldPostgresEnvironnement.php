@@ -3,6 +3,7 @@
 namespace App\LimaBundle\Scaffold\Postgres;
 
 use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
+use App\LimaBundle\Scaffold\Mysql\UtilitaireMysqlDatabase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class ScaffoldPostgresEnvironnement
@@ -10,7 +11,6 @@ class ScaffoldPostgresEnvironnement
     public function envDoctrinePostgresYaml()
     {
         $session = new Session();
-        $utilitaireDatabase = new UtilitairePostgresDatabase;
         
         $driver = $session->get('driver');
         $port = $session->get('port');
@@ -18,7 +18,14 @@ class ScaffoldPostgresEnvironnement
         $login = $session->get('userdb');
         $password = $session->get('passdb');
 
-        $databases = $utilitaireDatabase->listerDatabases();
+        if ($driver == 'pgsql') {
+            $utilitaireDatabase = new UtilitairePostgresDatabase;
+            $databases = $utilitaireDatabase->listerDatabases();
+        }
+        else {
+            $utilitaireDatabase = new UtilitaireMysqlDatabase;
+            $databases = $utilitaireDatabase->listerDatabases();
+        }
         
         $db = $session->get('database');
         $DataBase = ucfirst($db);
@@ -32,7 +39,7 @@ class ScaffoldPostgresEnvironnement
 
         foreach ($databases as $database) 
         {
-            if ($database != 'information_schema' && $database != 'performance_schema' && $database != 'sys' && $database != 'mysql' && $database != 'postgres' && $database != 'template0' && $database != 'template1') {
+            if ($database != 'information_schema' && $database != 'performance_schema' && $database != 'phpmyadmin' && $database != 'sys' && $database != 'mysql' && $database != 'postgres' && $database != 'template0' && $database != 'template1') {
             
                 $DB = ucfirst($database);
                 

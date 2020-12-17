@@ -1,15 +1,15 @@
 <?php
 
-namespace App\LimaBundle\Scaffold\Postgres;
+namespace App\LimaBundle\Scaffold\Mysql;
 
-use App\LimaBundle\Scaffold\Postgres\UtilitairePostgresDatabase;
+use App\LimaBundle\Scaffold\Mysql\UtilitaireMysqlDatabase;
 
-class ScaffoldPostgresEntity
+class ScaffoldMysqlEntity
 {
     // ---- Generer un Entity ----
-    public function genererPostgresEntity($objet, $namespace)
+    public function genererMysqlEntity($objet, $namespace)
     {
-        $utilitaireDatabase = new UtilitairePostgresDatabase;
+        $utilitaireDatabase = new UtilitaireMysqlDatabase;
 
         if ($namespace !== null) {
             @mkdir("../src/Entity/" . $namespace, 0755, true);
@@ -35,19 +35,25 @@ class ScaffoldPostgresEntity
         $entities = $utilitaireDatabase->listerChamps($objet);
 
         foreach ($entities as $entity) {
+
             $typechamps = $utilitaireDatabase->afficherTypeChamp($objet, $entity);
 
             if ($entity != "id") {
                 $type = strtolower($typechamps);
                 $libelle = $entity;
 
-                // Controle du type de champs VARCHAR TIMESTAMP DOUBLE PRECISION etc... dans postgreSQL
-                if ($type == "character varying") {
+                // Controle du type de champs VARCHAR lONGTEXT, TINYINT, INT
+                if ($type == "varchar") {
                     $type = "string";
-                } elseif ($type == "timestamp without time zone") {
-                    $type = "datetime";
-                } elseif ($type == "double precision") {
-                    $type = "float";
+                }
+                elseif ($type == "longtext") {
+                    $type = "json";
+                }
+                elseif ($type == "tinyint") {
+                    $type = "boolean";
+                }
+                elseif ($type == "int") {
+                    $type = "integer";
                 }
 
                 // Enleve les '_' met la 1ere lettre en majuscule et supprime les espaces
@@ -87,7 +93,7 @@ class ScaffoldPostgresEntity
                             $private_mappe .= "\n\t/*** ***/";
 
                             $handle = fopen($mapper, "r");
-
+                            
                             if ($handle) {
                                 while (!feof($handle)) {
                                     $buffer = fgets($handle);
@@ -113,8 +119,7 @@ class ScaffoldPostgresEntity
                     $getter_setter .= "return \$this;\n\t";
                     $getter_setter .= "}\n\n\t";
                     // --- getter setter avec _id ---
-                } 
-                else {
+                } else {
                     // --- getter setter par defaut ---
                     if ($type == "json") {
                         $crocher = " = []";
@@ -129,6 +134,7 @@ class ScaffoldPostgresEntity
                         $private_type_entity .= "*/\n\t";
                         $private_type_entity .= "private $" . $entity . ";\n\n\t";
                     }
+                    
 
                     if ($type == "string") {
                         $getter_setter .= "public function get$Libelle(): ?string\n\t";
@@ -136,7 +142,7 @@ class ScaffoldPostgresEntity
                         $getter_setter .= "public function get$Libelle(): ?string\n\t";
                     } elseif ($type == "integer") {
                         $getter_setter .= "public function get$Libelle(): ?int\n\t";
-                    } elseif ($type == "datetime") {
+                    } elseif ($type == "datetime" or $type == 'timestamp') {
                         $getter_setter .= "public function get$Libelle(): ?\DateTimeInterface\n\t";
                     } elseif ($type == "date") {
                         $getter_setter .= "public function get$Libelle()\n\t";
@@ -163,7 +169,7 @@ class ScaffoldPostgresEntity
                         $getter_setter .= "public function set$Libelle(string $$libelle): self\n\t";
                     } elseif ($type == "integer") {
                         $getter_setter .= "public function set$Libelle(int $$libelle): self\n\t";
-                    } elseif ($type == "datetime") {
+                    } elseif ($type == "datetime" or $type == 'timestamp') {
                         $getter_setter .= "public function set$Libelle(\DateTimeInterface $$libelle): self\n\t";
                     } elseif ($type == "date") {
                         $getter_setter .= "public function set$Libelle($$libelle): self\n\t";
@@ -235,7 +241,7 @@ class $Objet
     // ---- Generer un Entity ----
 
     // --- Supprimer un Entity ---
-    public function supprimerPostgresEntity($objet, $namespace)
+    public function supprimerMysqlEntity($objet, $namespace)
     {
         if ($namespace !== null) {
             $path_entity = "../src/Entity/" . $namespace . "/" . ucfirst($objet) . ".php";

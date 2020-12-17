@@ -73,14 +73,14 @@ class UtilitaireMysqlDatabase
 	// ----- Lister les champs de la table ------
 
 	// ------- Afficher le type du champ --------
-	public function afficherTypeChamp($table, $column_name)
+	public function afficherTypeChamp($table, $colonne)
 	{
 		$ConnexionDatabase = new ConnexionDatabase;
-		$sql = "SHOW COLUMNS FROM $table";
+		$sql = "SELECT column_name, data_type FROM information_schema.columns WHERE table_name = '$table' AND column_name = '$colonne' ORDER BY ORDINAL_POSITION";
 		$stmt = $ConnexionDatabase->db_connect()->prepare($sql);
 		$stmt->execute();
 		while ($row = $stmt->fetch()) {
-			$data_type = $row['Type'];
+			$data_type = $row['data_type'];
 		}
 		return $data_type;
 	}

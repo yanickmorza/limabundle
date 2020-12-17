@@ -28,6 +28,13 @@ use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresSwiftMailerFunction;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresSwiftMailerYaml;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresTestEntity;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresVue;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlAuthUser;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlEntity;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlForm;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlRelation;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlRepository;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlTestEntity;
+use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlVue;
 
 class LimaController extends AbstractController
 {
@@ -230,14 +237,16 @@ class LimaController extends AbstractController
         if ($driver == 'pgsql') {
             $listetables = $utilitairePostgresDatabase->listerTables();
             $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            $scaffoldPostgresAuthUser = new ScaffoldPostgresAuthUser;
         }
         else {
             $listetables = $utilitaireMysqlDatabase->listerTables();
             $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            $scaffoldMysqlAuthUser = new ScaffoldMysqlAuthUser;
         }
 
+        // Commun à Mysql et PostgreSQL
         $scaffoldPostgresSecurity = new ScaffoldPostgresSecurity;
-        $scaffoldPostgresAuthUser = new ScaffoldPostgresAuthUser;
 
         if ($request->request->get('_token') == 'generersecurite') {
 
@@ -263,14 +272,26 @@ class LimaController extends AbstractController
 
             if ($authuser == "OUI") {
                 foreach ($options as $objet) {
-                    $scaffoldPostgresAuthUser->genererPostgresAuthuser($objet, $authuser, $namespace);
+
+                    if ($driver == 'pgsql') {
+                        $scaffoldPostgresAuthUser->genererPostgresAuthuser($objet, $authuser, $namespace);
+                    }
+                    else {
+                        $scaffoldMysqlAuthUser->genererMysqlAuthuser($objet, $authuser, $namespace);
+                    }
                 }
                 $this->addFlash('success', 'La création de l\'interface d\'authentification avec la table ' . $objet . ' a été un succès');
             }
 
             if ($authuser == "SUPPRIMER") {
                 foreach ($options as $objet) {
-                    $scaffoldPostgresAuthUser->supprimerPostgresAuthuser($objet, $namespace);
+
+                    if ($driver == 'pgsql') {
+                        $scaffoldPostgresAuthUser->supprimerPostgresAuthuser($objet, $namespace);
+                    }
+                    else {
+                        $scaffoldMysqlAuthUser->supprimerMysqlAuthuser($objet, $namespace);
+                    }
                 }
                 $this->addFlash('success', 'La suppression de l\'interface d\'authentification a été un succès');
             }
@@ -302,13 +323,13 @@ class LimaController extends AbstractController
         if ($driver == 'pgsql') {
             $listetables = $utilitairePostgresDatabase->listerTables();
             $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            $scaffoldPostgresRelation = new ScaffoldPostgresRelation;
         }
         else {
             $listetables = $utilitaireMysqlDatabase->listerTables();
             $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            $scaffoldMysqlRelation = new ScaffoldMysqlRelation;
         }
-
-        $scaffoldPostgresRelation = new ScaffoldPostgresRelation;
 
         if ($request->request->get('_token') == 'enregistrerrelation') {
 
@@ -318,7 +339,13 @@ class LimaController extends AbstractController
             $othernamespace = $request->request->get('othernamespace', null, true);
 
             foreach ($options as $option) {
-                $scaffoldPostgresRelation->genererPostgresRelation($option, $namespace, $relation, $othernamespace);
+
+                if ($driver == 'pgsql') {
+                    $scaffoldPostgresRelation->genererPostgresRelation($option, $namespace, $relation, $othernamespace);
+                }
+                else {
+                    $scaffoldMysqlRelation->genererMysqlRelation($option, $namespace, $relation, $othernamespace);
+                }
             }
 
             $this->addFlash('success', 'La relation entre ces tables a été un succès');
@@ -342,13 +369,29 @@ class LimaController extends AbstractController
      */
     public function supprimeruncrud(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
+        $session = new Session();
+
+        $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        // commun a Mysql et PostgreSql
         $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
+        $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
+
+        // PostgreSql
         $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
         $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
         $scaffoldPostgresForm = new ScaffoldPostgresForm;
         $scaffoldPostgresVue = new ScaffoldPostgresVue;
         $scaffoldPostgresTestEntity = new ScaffoldPostgresTestEntity;
-        $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
+
+        // Mysql
+        $scaffoldMysqlEntity = new ScaffoldMysqlEntity;
+        $scaffoldMysqlRepository = new ScaffoldMysqlRepository;
+        $scaffoldMysqlForm = new ScaffoldMysqlForm;      
+        $scaffoldMysqlVue = new ScaffoldMysqlVue;
+        $scaffoldMysqlTestEntity = new ScaffoldMysqlTestEntity;
+        
 
         if ($request->request->get('_token') == 'supprimer') {
 
@@ -357,13 +400,24 @@ class LimaController extends AbstractController
 
             foreach ($options as $option) {
 
+                // commun a Mysql et PostgreSql
                 $scaffoldPostgresControleur->supprimerPostgresControleur($option, $namespace);
-                $scaffoldPostgresEntity->supprimerPostgresEntity($option, $namespace);
-                $scaffoldPostgresRepository->supprimerPostgresRepository($option, $namespace);
-                $scaffoldPostgresForm->supprimerPostgresForm($option, $namespace);
-                $scaffoldPostgresVue->supprimerPostgresVue($option, $namespace);
-                $scaffoldPostgresTestEntity->supprimerPostgresTestEntity($option, $namespace);
                 $scaffoldPostgresExtension->supprimerPostgresExtension($option, $namespace);
+
+                if ($driver == 'pgsql') {
+                    $scaffoldPostgresEntity->supprimerPostgresEntity($option, $namespace);
+                    $scaffoldPostgresRepository->supprimerPostgresRepository($option, $namespace);
+                    $scaffoldPostgresForm->supprimerPostgresForm($option, $namespace);
+                    $scaffoldPostgresVue->supprimerPostgresVue($option, $namespace);
+                    $scaffoldPostgresTestEntity->supprimerPostgresTestEntity($option, $namespace);
+                }
+                else {
+                    $scaffoldMysqlEntity->supprimerMysqlEntity($option, $namespace);
+                    $scaffoldMysqlRepository->supprimerMysqlRepository($option, $namespace);
+                    $scaffoldMysqlForm->supprimerMysqlForm($option, $namespace);               
+                    $scaffoldMysqlVue->supprimerMysqlVue($option, $namespace);
+                    $scaffoldMysqlTestEntity->supprimerMysqlTestEntity($option, $namespace);
+                }
 
                 $this->addFlash('success', 'La suppression du SCRUD ' . $option . ' a été un succès');
             }
@@ -448,13 +502,29 @@ class LimaController extends AbstractController
      */
     public function genereruncrud(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
+        $session = new Session();
+
+        $db = $session->get('database');
+        $driver = $session->get('driver');
+
+        // commun a Mysql et PostgreSql
         $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
+        $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
+
+        // PostgreSql
         $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
-        $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
         $scaffoldPostgresForm = new ScaffoldPostgresForm;
+        $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
         $scaffoldPostgresVue = new ScaffoldPostgresVue;
         $scaffoldPostgresTestEntity = new ScaffoldPostgresTestEntity;
-        $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
+
+        // Mysql
+        $scaffoldMysqlEntity = new ScaffoldMysqlEntity;
+        $scaffoldMysqlForm = new ScaffoldMysqlForm;
+        $scaffoldMysqlRepository = new ScaffoldMysqlRepository;
+        $scaffoldMysqlVue = new ScaffoldMysqlVue;
+        $scaffoldMysqlTestEntity = new ScaffoldMysqlTestEntity;
+        
 
         if ($request->request->get('_token') == 'generer') {
 
@@ -465,24 +535,30 @@ class LimaController extends AbstractController
 
             foreach ($options as $option) {
 
+                // commun a Mysql et PostgreSql
                 $scaffoldPostgresControleur->genererPostgresControleur($option, $vue, $namespace);
-                $scaffoldPostgresEntity->genererPostgresEntity($option, $namespace);
-                $scaffoldPostgresRepository->genererPostgresRepository($option, $namespace);
-                $scaffoldPostgresForm->genererPostgresForm($option, $namespace);
-                $scaffoldPostgresVue->genererPostgresVue($option, $vue, $namespace);
-                $scaffoldPostgresTestEntity->genererPostgresTestEntity($option, $namespace);
                 $scaffoldPostgresExtension->genererPostgresExtension($option, $filtre, $namespace);
+
+                if ($driver == 'pgsql') {
+                    $scaffoldPostgresEntity->genererPostgresEntity($option, $namespace);
+                    $scaffoldPostgresForm->genererPostgresForm($option, $namespace);
+                    $scaffoldPostgresRepository->genererPostgresRepository($option, $namespace);
+                    $scaffoldPostgresVue->genererPostgresVue($option, $vue, $namespace);
+                    $scaffoldPostgresTestEntity->genererPostgresTestEntity($option, $namespace);
+                }
+                else {
+                    $scaffoldMysqlEntity->genererMysqlEntity($option, $namespace);
+                    $scaffoldMysqlForm->genererMysqlForm($option, $namespace);
+                    $scaffoldMysqlRepository->genererMysqlRepository($option, $namespace);
+                    $scaffoldMysqlVue->genererMysqlVue($option, $vue, $namespace);
+                    $scaffoldMysqlTestEntity->genererMysqlTestEntity($option, $namespace);
+                }
 
                 $this->addFlash('success', 'La création du SCRUD ' . $option . ' a été un succès');
             }
 
             return $this->redirectToRoute('genereruncrud');
         }
-
-        $session = new Session();
-
-        $db = $session->get('database');
-        $driver = $session->get('driver');
 
         if ($driver == 'pgsql') {
             $listetables = $utilitairePostgresDatabase->listerTables();
@@ -576,11 +652,9 @@ class LimaController extends AbstractController
 
             // --- Generer environnement ---
             if ($request->request->get('_token') == 'environnement') {
-
-                if ($driver == 'pgsql') {
-                    $scaffoldPostgresEnvironnement->envDoctrinePostgresYaml();
-                    $this->addFlash('success', 'Le nouvel environnement a été créé avec succès');
-                }
+                // Commun à Mysql et PostreSQL
+                $scaffoldPostgresEnvironnement->envDoctrinePostgresYaml();
+                $this->addFlash('success', 'Le nouvel environnement a été créé avec succès');
 
                 return $this->redirectToRoute('basesettables');
             }
