@@ -119,69 +119,75 @@ class LimaController extends AbstractController
     {
         $session = new Session();
 
-        $db = $session->get('database');
-        $driver = $session->get('driver');
+        if ($session->get('driver')) {
 
-        if ($driver == 'pgsql') {
-            $listetables = $utilitairePostgresDatabase->listerTables();
-        }
-        else {
-            $listetables = $utilitaireMysqlDatabase->listerTables();
-        }
+            $db = $session->get('database');
+            $driver = $session->get('driver');
 
-        $scaffoldPostgresSwiftMailerYaml = new ScaffoldPostgresSwiftMailerYaml;
-        $scaffoldPostgresSwiftMailerFunction = new ScaffoldPostgresSwiftMailerFunction;
-        $scaffoldPostgresSwiftMailerYaml = new ScaffoldPostgresSwiftMailerYaml;
-        
-        if ($request->request->get('_token') == 'swiftmailerYaml') {
-
-            $transport = trim($request->request->get('transport', null, true));
-            $encryption = trim($request->request->get('encryption', null, true));
-            $auth_mode = trim($request->request->get('auth_mode', null, true));
-            $host = trim($request->request->get('host', null, true));
-            $port = trim($request->request->get('port', null, true));
-            $username = trim($request->request->get('username', null, true));
-            $password = trim($request->request->get('password', null, true)); 
-
-            $scaffoldPostgresSwiftMailerYaml->swiftMailerPostgresYaml($transport, $encryption, $auth_mode, $host, $port, $username, $password);
-            
-            $this->addFlash('success', 'Le fichier "swiftmailer.yaml" a été regénéré avec succès');
-
-            return $this->redirectToRoute('swiftmailer');
-        } 
-        elseif ($request->request->get('_token') == 'swiftmailerFunction') {
-
-            $namespace = trim($request->request->get('namespace', null, true));
-            $options = $request->request->get('options', null, true);
-
-            foreach ($options as $objet) {
-                $scaffoldPostgresSwiftMailerFunction->swiftMailerPostgresFunction($namespace, $objet);
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
             }
 
-            $this->addFlash('success', 'L\'environement pour l\'envoi de mail a été créé avec succès');
+            $scaffoldPostgresSwiftMailerYaml = new ScaffoldPostgresSwiftMailerYaml;
+            $scaffoldPostgresSwiftMailerFunction = new ScaffoldPostgresSwiftMailerFunction;
+            $scaffoldPostgresSwiftMailerYaml = new ScaffoldPostgresSwiftMailerYaml;
+            
+            if ($request->request->get('_token') == 'swiftmailerYaml') {
 
-            return $this->redirectToRoute('swiftmailer');
+                $transport = trim($request->request->get('transport', null, true));
+                $encryption = trim($request->request->get('encryption', null, true));
+                $auth_mode = trim($request->request->get('auth_mode', null, true));
+                $host = trim($request->request->get('host', null, true));
+                $port = trim($request->request->get('port', null, true));
+                $username = trim($request->request->get('username', null, true));
+                $password = trim($request->request->get('password', null, true)); 
 
+                $scaffoldPostgresSwiftMailerYaml->swiftMailerPostgresYaml($transport, $encryption, $auth_mode, $host, $port, $username, $password);
+                
+                $this->addFlash('success', 'Le fichier "swiftmailer.yaml" a été regénéré avec succès');
+
+                return $this->redirectToRoute('swiftmailer');
+            } 
+            elseif ($request->request->get('_token') == 'swiftmailerFunction') {
+
+                $namespace = trim($request->request->get('namespace', null, true));
+                $options = $request->request->get('options', null, true);
+
+                foreach ($options as $objet) {
+                    $scaffoldPostgresSwiftMailerFunction->swiftMailerPostgresFunction($namespace, $objet);
+                }
+
+                $this->addFlash('success', 'L\'environement pour l\'envoi de mail a été créé avec succès');
+
+                return $this->redirectToRoute('swiftmailer');
+
+            }
+            elseif ($request->request->get('_token') == 'supprimerswiftmailerYaml') {
+
+                $scaffoldPostgresSwiftMailerYaml->supprimerSwiftMailerPostgresClass();
+
+                $this->addFlash('success', 'L\'environement pour l\'envoi de mail a été supprimé avec succès');
+
+                return $this->redirectToRoute('swiftmailer');
+            }
+
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+
+            return new Response($twig->render('swiftmailer.html.twig', [
+                'headtitle' => 'Configurer swiftmailer dans ' . $db,
+                'titreyaml' => 'Enregistrer la configuration dans le fichier swiftmailer.yaml',
+                'titrefunction' => 'Enregistrer la fonctionnalité dans un controller',
+                'listetables' => $listetables,
+                'affichebasedonnee' => $db
+            ]));
         }
-        elseif ($request->request->get('_token') == 'supprimerswiftmailerYaml') {
-
-            $scaffoldPostgresSwiftMailerYaml->supprimerSwiftMailerPostgresClass();
-
-            $this->addFlash('success', 'L\'environement pour l\'envoi de mail a été supprimé avec succès');
-
-            return $this->redirectToRoute('swiftmailer');
+        else {
+            return $this->redirectToRoute('connexion');
         }
-
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
-
-        return new Response($twig->render('swiftmailer.html.twig', [
-            'headtitle' => 'Configurer swiftmailer dans ' . $db,
-            'titreyaml' => 'Enregistrer la configuration dans le fichier swiftmailer.yaml',
-            'titrefunction' => 'Enregistrer la fonctionnalité dans un controller',
-            'listetables' => $listetables,
-            'affichebasedonnee' => $db
-        ]));
     }
 
     /**
@@ -193,35 +199,41 @@ class LimaController extends AbstractController
 
         $db = $session->get('database');
 
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
+        if ($session->get('driver')) {
 
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
+            $application = new Application($kernel);
+            $application->setAutoExit(false);
 
-        if ($request->request->get('_token') == 'console') {
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
 
-            $commande = trim($request->request->get('commande', null, true));
+            if ($request->request->get('_token') == 'console') {
 
-            $input = new ArrayInput([
-                'command' => $commande,
-            ]);
+                $commande = trim($request->request->get('commande', null, true));
 
-            $output = new BufferedOutput();
-            $application->run($input, $output);
-            $content = $output->fetch();
+                $input = new ArrayInput([
+                    'command' => $commande,
+                ]);
+
+                $output = new BufferedOutput();
+                $application->run($input, $output);
+                $content = $output->fetch();
+
+                return new Response($twig->render('console.html.twig', [
+                    'affichebasedonnee' => $db,
+                    'output' => $content
+                ]));
+            }
 
             return new Response($twig->render('console.html.twig', [
+                'headtitle' => 'Exécuter une commande dans ' . $db,
                 'affichebasedonnee' => $db,
-                'output' => $content
+                'output' => 'cache:clear | list | asset:install'
             ]));
         }
-
-        return new Response($twig->render('console.html.twig', [
-            'headtitle' => 'Exécuter une commande dans ' . $db,
-            'affichebasedonnee' => $db,
-            'output' => 'cache:clear | list | asset:install'
-        ]));
+        else {
+            return $this->redirectToRoute('connexion');
+        }
     }
 
     /**
@@ -231,83 +243,89 @@ class LimaController extends AbstractController
     {
         $session = new Session();
 
-        $db = $session->get('database');
-        $driver = $session->get('driver');
+        if ($session->get('driver')) {
 
-        if ($driver == 'pgsql') {
-            $listetables = $utilitairePostgresDatabase->listerTables();
-            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-            $scaffoldPostgresAuthUser = new ScaffoldPostgresAuthUser;
+            $db = $session->get('database');
+            $driver = $session->get('driver');
+
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                $scaffoldPostgresAuthUser = new ScaffoldPostgresAuthUser;
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                $scaffoldMysqlAuthUser = new ScaffoldMysqlAuthUser;
+            }
+
+            // Commun à Mysql et PostgreSQL
+            $scaffoldPostgresSecurity = new ScaffoldPostgresSecurity;
+
+            if ($request->request->get('_token') == 'generersecurite') {
+
+                $options = $request->request->get('options', null, true);
+                $namespace = $request->request->get('namespace', null, true);
+                $securite = $request->request->get('securite', null, true);
+                $role = $request->request->get('role', null, true);
+
+                foreach ($options as $objet) {
+                    $scaffoldPostgresSecurity->genererPostgresSecurity($objet, $role, $securite, $namespace);
+                }
+
+                $this->addFlash('success', 'La sécurité ' . $securite . ' a été généré avec succès');
+
+                return $this->redirectToRoute('authsecurite');
+                
+            } 
+            elseif ($request->request->get('_token') == 'authentification') {
+
+                $options = $request->request->get('options', null, true);
+                $namespace = $request->request->get('namespace', null, true);
+                $authuser = $request->request->get('authuser', null, true);
+
+                if ($authuser == "OUI") {
+                    foreach ($options as $objet) {
+
+                        if ($driver == 'pgsql') {
+                            $scaffoldPostgresAuthUser->genererPostgresAuthuser($objet, $authuser, $namespace);
+                        }
+                        else {
+                            $scaffoldMysqlAuthUser->genererMysqlAuthuser($objet, $authuser, $namespace);
+                        }
+                    }
+                    $this->addFlash('success', 'La création de l\'interface d\'authentification avec la table ' . $objet . ' a été un succès');
+                }
+
+                if ($authuser == "SUPPRIMER") {
+                    foreach ($options as $objet) {
+
+                        if ($driver == 'pgsql') {
+                            $scaffoldPostgresAuthUser->supprimerPostgresAuthuser($objet, $namespace);
+                        }
+                        else {
+                            $scaffoldMysqlAuthUser->supprimerMysqlAuthuser($objet, $namespace);
+                        }
+                    }
+                    $this->addFlash('success', 'La suppression de l\'interface d\'authentification a été un succès');
+                }
+
+                return $this->redirectToRoute('authsecurite');
+            }
+
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+
+            return new Response($twig->render('authsecurite.html.twig', [
+                'headtitle' => 'Authentification et Sécurité dans ' . $db,
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
+                'affichebasedonnee' => $db
+            ]));
         }
         else {
-            $listetables = $utilitaireMysqlDatabase->listerTables();
-            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-            $scaffoldMysqlAuthUser = new ScaffoldMysqlAuthUser;
+            return $this->redirectToRoute('connexion');
         }
-
-        // Commun à Mysql et PostgreSQL
-        $scaffoldPostgresSecurity = new ScaffoldPostgresSecurity;
-
-        if ($request->request->get('_token') == 'generersecurite') {
-
-            $options = $request->request->get('options', null, true);
-            $namespace = $request->request->get('namespace', null, true);
-            $securite = $request->request->get('securite', null, true);
-            $role = $request->request->get('role', null, true);
-
-            foreach ($options as $objet) {
-                $scaffoldPostgresSecurity->genererPostgresSecurity($objet, $role, $securite, $namespace);
-            }
-
-            $this->addFlash('success', 'La sécurité ' . $securite . ' a été généré avec succès');
-
-            return $this->redirectToRoute('authsecurite');
-            
-        } 
-        elseif ($request->request->get('_token') == 'authentification') {
-
-            $options = $request->request->get('options', null, true);
-            $namespace = $request->request->get('namespace', null, true);
-            $authuser = $request->request->get('authuser', null, true);
-
-            if ($authuser == "OUI") {
-                foreach ($options as $objet) {
-
-                    if ($driver == 'pgsql') {
-                        $scaffoldPostgresAuthUser->genererPostgresAuthuser($objet, $authuser, $namespace);
-                    }
-                    else {
-                        $scaffoldMysqlAuthUser->genererMysqlAuthuser($objet, $authuser, $namespace);
-                    }
-                }
-                $this->addFlash('success', 'La création de l\'interface d\'authentification avec la table ' . $objet . ' a été un succès');
-            }
-
-            if ($authuser == "SUPPRIMER") {
-                foreach ($options as $objet) {
-
-                    if ($driver == 'pgsql') {
-                        $scaffoldPostgresAuthUser->supprimerPostgresAuthuser($objet, $namespace);
-                    }
-                    else {
-                        $scaffoldMysqlAuthUser->supprimerMysqlAuthuser($objet, $namespace);
-                    }
-                }
-                $this->addFlash('success', 'La suppression de l\'interface d\'authentification a été un succès');
-            }
-
-            return $this->redirectToRoute('authsecurite');
-        }
-
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
-
-        return new Response($twig->render('authsecurite.html.twig', [
-            'headtitle' => 'Authentification et Sécurité dans ' . $db,
-            'listetables' => $listetables,
-            'listedatabases' => $listedatabases,
-            'affichebasedonnee' => $db
-        ]));
     }
 
     /**
@@ -317,51 +335,57 @@ class LimaController extends AbstractController
     {
         $session = new Session();
 
-        $db = $session->get('database');
-        $driver = $session->get('driver');
+        if ($session->get('driver')) {
 
-        if ($driver == 'pgsql') {
-            $listetables = $utilitairePostgresDatabase->listerTables();
-            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-            $scaffoldPostgresRelation = new ScaffoldPostgresRelation;
-        }
-        else {
-            $listetables = $utilitaireMysqlDatabase->listerTables();
-            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-            $scaffoldMysqlRelation = new ScaffoldMysqlRelation;
-        }
+            $db = $session->get('database');
+            $driver = $session->get('driver');
 
-        if ($request->request->get('_token') == 'enregistrerrelation') {
-
-            $options = $request->request->get('options', null, true);
-            $namespace = $request->request->get('namespace', null, true);
-            $relation = $request->request->get('relation', null, true);
-            $othernamespace = $request->request->get('othernamespace', null, true);
-
-            foreach ($options as $option) {
-
-                if ($driver == 'pgsql') {
-                    $scaffoldPostgresRelation->genererPostgresRelation($option, $namespace, $relation, $othernamespace);
-                }
-                else {
-                    $scaffoldMysqlRelation->genererMysqlRelation($option, $namespace, $relation, $othernamespace);
-                }
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                $scaffoldPostgresRelation = new ScaffoldPostgresRelation;
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                $scaffoldMysqlRelation = new ScaffoldMysqlRelation;
             }
 
-            $this->addFlash('success', 'La relation entre ces tables a été un succès');
+            if ($request->request->get('_token') == 'enregistrerrelation') {
 
-            return $this->redirectToRoute('genererunerelation');
+                $options = $request->request->get('options', null, true);
+                $namespace = $request->request->get('namespace', null, true);
+                $relation = $request->request->get('relation', null, true);
+                $othernamespace = $request->request->get('othernamespace', null, true);
+
+                foreach ($options as $option) {
+
+                    if ($driver == 'pgsql') {
+                        $scaffoldPostgresRelation->genererPostgresRelation($option, $namespace, $relation, $othernamespace);
+                    }
+                    else {
+                        $scaffoldMysqlRelation->genererMysqlRelation($option, $namespace, $relation, $othernamespace);
+                    }
+                }
+
+                $this->addFlash('success', 'La relation entre ces tables a été un succès');
+
+                return $this->redirectToRoute('genererunerelation');
+            }
+
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+
+            return new Response($twig->render('genererunerelation.html.twig', [
+                'headtitle' => 'Enregistrer une relation dans ' . $db,
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
+                'affichebasedonnee' => $db
+            ]));
         }
-
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
-
-        return new Response($twig->render('genererunerelation.html.twig', [
-            'headtitle' => 'Enregistrer une relation dans ' . $db,
-            'listetables' => $listetables,
-            'listedatabases' => $listedatabases,
-            'affichebasedonnee' => $db
-        ]));
+        else {
+            return $this->redirectToRoute('connexion');
+        }
     }
 
     /**
@@ -371,130 +395,136 @@ class LimaController extends AbstractController
     {
         $session = new Session();
 
-        $db = $session->get('database');
-        $driver = $session->get('driver');
+        if ($session->get('driver')) {
 
-        // commun a Mysql et PostgreSql
-        $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
-        $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
+            $db = $session->get('database');
+            $driver = $session->get('driver');
 
-        // PostgreSql
-        $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
-        $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
-        $scaffoldPostgresForm = new ScaffoldPostgresForm;
-        $scaffoldPostgresVue = new ScaffoldPostgresVue;
-        $scaffoldPostgresTestEntity = new ScaffoldPostgresTestEntity;
+            // commun a Mysql et PostgreSql
+            $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
+            $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
 
-        // Mysql
-        $scaffoldMysqlEntity = new ScaffoldMysqlEntity;
-        $scaffoldMysqlRepository = new ScaffoldMysqlRepository;
-        $scaffoldMysqlForm = new ScaffoldMysqlForm;      
-        $scaffoldMysqlVue = new ScaffoldMysqlVue;
-        $scaffoldMysqlTestEntity = new ScaffoldMysqlTestEntity;
-        
+            // PostgreSql
+            $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
+            $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
+            $scaffoldPostgresForm = new ScaffoldPostgresForm;
+            $scaffoldPostgresVue = new ScaffoldPostgresVue;
+            $scaffoldPostgresTestEntity = new ScaffoldPostgresTestEntity;
 
-        if ($request->request->get('_token') == 'supprimer') {
+            // Mysql
+            $scaffoldMysqlEntity = new ScaffoldMysqlEntity;
+            $scaffoldMysqlRepository = new ScaffoldMysqlRepository;
+            $scaffoldMysqlForm = new ScaffoldMysqlForm;      
+            $scaffoldMysqlVue = new ScaffoldMysqlVue;
+            $scaffoldMysqlTestEntity = new ScaffoldMysqlTestEntity;
+            
 
-            $options = $request->request->get('options', null, true);
-            $namespace = $request->request->get('namespace', null, true);
+            if ($request->request->get('_token') == 'supprimer') {
 
-            foreach ($options as $option) {
+                $options = $request->request->get('options', null, true);
+                $namespace = $request->request->get('namespace', null, true);
 
-                // commun a Mysql et PostgreSql
-                $scaffoldPostgresControleur->supprimerPostgresControleur($option, $namespace);
-                $scaffoldPostgresExtension->supprimerPostgresExtension($option, $namespace);
+                foreach ($options as $option) {
 
-                if ($driver == 'pgsql') {
-                    $scaffoldPostgresEntity->supprimerPostgresEntity($option, $namespace);
-                    $scaffoldPostgresRepository->supprimerPostgresRepository($option, $namespace);
-                    $scaffoldPostgresForm->supprimerPostgresForm($option, $namespace);
-                    $scaffoldPostgresVue->supprimerPostgresVue($option, $namespace);
-                    $scaffoldPostgresTestEntity->supprimerPostgresTestEntity($option, $namespace);
+                    // commun a Mysql et PostgreSql
+                    $scaffoldPostgresControleur->supprimerPostgresControleur($option, $namespace);
+                    $scaffoldPostgresExtension->supprimerPostgresExtension($option, $namespace);
+
+                    if ($driver == 'pgsql') {
+                        $scaffoldPostgresEntity->supprimerPostgresEntity($option, $namespace);
+                        $scaffoldPostgresRepository->supprimerPostgresRepository($option, $namespace);
+                        $scaffoldPostgresForm->supprimerPostgresForm($option, $namespace);
+                        $scaffoldPostgresVue->supprimerPostgresVue($option, $namespace);
+                        $scaffoldPostgresTestEntity->supprimerPostgresTestEntity($option, $namespace);
+                    }
+                    else {
+                        $scaffoldMysqlEntity->supprimerMysqlEntity($option, $namespace);
+                        $scaffoldMysqlRepository->supprimerMysqlRepository($option, $namespace);
+                        $scaffoldMysqlForm->supprimerMysqlForm($option, $namespace);               
+                        $scaffoldMysqlVue->supprimerMysqlVue($option, $namespace);
+                        $scaffoldMysqlTestEntity->supprimerMysqlTestEntity($option, $namespace);
+                    }
+
+                    $this->addFlash('success', 'La suppression du SCRUD ' . $option . ' a été un succès');
                 }
-                else {
-                    $scaffoldMysqlEntity->supprimerMysqlEntity($option, $namespace);
-                    $scaffoldMysqlRepository->supprimerMysqlRepository($option, $namespace);
-                    $scaffoldMysqlForm->supprimerMysqlForm($option, $namespace);               
-                    $scaffoldMysqlVue->supprimerMysqlVue($option, $namespace);
-                    $scaffoldMysqlTestEntity->supprimerMysqlTestEntity($option, $namespace);
-                }
 
-                $this->addFlash('success', 'La suppression du SCRUD ' . $option . ' a été un succès');
+                return $this->redirectToRoute('supprimeruncrud');
             }
 
-            return $this->redirectToRoute('supprimeruncrud');
-        }
+            // ---- Supprimer repertoire ---
+            if ($request->request->get('_token') == 'supprimerrepertoire') {
 
-        // ---- Supprimer repertoire ---
-        if ($request->request->get('_token') == 'supprimerrepertoire') {
+                $repertoire = $request->request->get('repertoire', null, true);
+                $tables = $request->request->get('tables', null, true);
 
-            $repertoire = $request->request->get('repertoire', null, true);
-            $tables = $request->request->get('tables', null, true);
+                $pathController = "../src/Controller/" . $repertoire;
+                $pathEntity = "../src/Entity/" . $repertoire;
+                $pathForm = "../src/Form/" . $repertoire;
+                $pathModel = "../src/Model/" . $repertoire;
+                $pathRepository = "../src/Repository/" . $repertoire;
+                $pathTwig = "../src/Twig/" . $repertoire;
+                $pathTemplate = "../templates/" . $repertoire;
+                $pathTest = "../tests/Entity/" . $repertoire;
 
-            $pathController = "../src/Controller/" . $repertoire;
-            $pathEntity = "../src/Entity/" . $repertoire;
-            $pathForm = "../src/Form/" . $repertoire;
-            $pathModel = "../src/Model/" . $repertoire;
-            $pathRepository = "../src/Repository/" . $repertoire;
-            $pathTwig = "../src/Twig/" . $repertoire;
-            $pathTemplate = "../templates/" . $repertoire;
-            $pathTest = "../tests/Entity/" . $repertoire;
+                if (is_dir($pathController) || is_dir($pathEntity) || is_dir($pathForm) || is_dir($pathModel) || is_dir($pathRepository) || is_dir($pathTwig) || is_dir($pathTemplate) || is_dir($pathTest)) {
 
-            if (is_dir($pathController) || is_dir($pathEntity) || is_dir($pathForm) || is_dir($pathModel) || is_dir($pathRepository) || is_dir($pathTwig) || is_dir($pathTemplate) || is_dir($pathTest)) {
+                    array_map('unlink', glob($pathController . "/*"));
+                    @rmdir($pathController);
 
-                array_map('unlink', glob($pathController . "/*"));
-                @rmdir($pathController);
+                    array_map('unlink', glob($pathEntity . "/*"));
+                    @rmdir($pathEntity);
 
-                array_map('unlink', glob($pathEntity . "/*"));
-                @rmdir($pathEntity);
+                    array_map('unlink', glob($pathForm . "/*"));
+                    @rmdir($pathForm);
 
-                array_map('unlink', glob($pathForm . "/*"));
-                @rmdir($pathForm);
+                    array_map('unlink', glob($pathModel . "/*"));
+                    @rmdir($pathModel);
 
-                array_map('unlink', glob($pathModel . "/*"));
-                @rmdir($pathModel);
+                    array_map('unlink', glob($pathRepository . "/*"));
+                    @rmdir($pathRepository);
 
-                array_map('unlink', glob($pathRepository . "/*"));
-                @rmdir($pathRepository);
+                    array_map('unlink', glob($pathTwig . "/*"));
+                    @rmdir($pathTwig);
 
-                array_map('unlink', glob($pathTwig . "/*"));
-                @rmdir($pathTwig);
+                    foreach ($tables as $table) {
+                        array_map('unlink', glob($pathTemplate . "/" . $table . "/*"));
+                        @rmdir($pathTemplate . "/" . $table);
+                    }
+                    @rmdir($pathTemplate);
 
-                foreach ($tables as $table) {
-                    array_map('unlink', glob($pathTemplate . "/" . $table . "/*"));
-                    @rmdir($pathTemplate . "/" . $table);
+                    array_map('unlink', glob($pathTest . "/*"));
+                    @rmdir($pathTest);
                 }
-                @rmdir($pathTemplate);
-
-                array_map('unlink', glob($pathTest . "/*"));
-                @rmdir($pathTest);
             }
-        }
-        // ---- Supprimer repertoire ---
+            // ---- Supprimer repertoire ---
 
-        $session = new Session();
+            $session = new Session();
 
-        $db = $session->get('database');
-        $driver = $session->get('driver');
+            $db = $session->get('database');
+            $driver = $session->get('driver');
 
-        if ($driver == 'pgsql') {
-            $listetables = $utilitairePostgresDatabase->listerTables();
-            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            }
+
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+
+            return new Response($twig->render('supprimeruncrud.html.twig', [
+                'headtitle' => 'Supprimer un SCRUD dans ' . $db,
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
+                'affichebasedonnee' => $db
+            ]));
         }
         else {
-            $listetables = $utilitaireMysqlDatabase->listerTables();
-            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            return $this->redirectToRoute('connexion');
         }
-
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
-
-        return new Response($twig->render('supprimeruncrud.html.twig', [
-            'headtitle' => 'Supprimer un SCRUD dans ' . $db,
-            'listetables' => $listetables,
-            'listedatabases' => $listedatabases,
-            'affichebasedonnee' => $db
-        ]));
     }
 
     /**
@@ -504,80 +534,86 @@ class LimaController extends AbstractController
     {
         $session = new Session();
 
-        $db = $session->get('database');
-        $driver = $session->get('driver');
+        if ($session->get('driver')) {
 
-        // commun a Mysql et PostgreSql
-        $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
-        $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
+            $db = $session->get('database');
+            $driver = $session->get('driver');
 
-        // PostgreSql
-        $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
-        $scaffoldPostgresForm = new ScaffoldPostgresForm;
-        $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
-        $scaffoldPostgresVue = new ScaffoldPostgresVue;
-        $scaffoldPostgresTestEntity = new ScaffoldPostgresTestEntity;
+            // commun a Mysql et PostgreSql
+            $scaffoldPostgresControleur = new ScaffoldPostgresControleur;
+            $scaffoldPostgresExtension = new ScaffoldPostgresExtension;
 
-        // Mysql
-        $scaffoldMysqlEntity = new ScaffoldMysqlEntity;
-        $scaffoldMysqlForm = new ScaffoldMysqlForm;
-        $scaffoldMysqlRepository = new ScaffoldMysqlRepository;
-        $scaffoldMysqlVue = new ScaffoldMysqlVue;
-        $scaffoldMysqlTestEntity = new ScaffoldMysqlTestEntity;
-        
+            // PostgreSql
+            $scaffoldPostgresEntity = new ScaffoldPostgresEntity;
+            $scaffoldPostgresForm = new ScaffoldPostgresForm;
+            $scaffoldPostgresRepository = new ScaffoldPostgresRepository;
+            $scaffoldPostgresVue = new ScaffoldPostgresVue;
+            $scaffoldPostgresTestEntity = new ScaffoldPostgresTestEntity;
 
-        if ($request->request->get('_token') == 'generer') {
+            // Mysql
+            $scaffoldMysqlEntity = new ScaffoldMysqlEntity;
+            $scaffoldMysqlForm = new ScaffoldMysqlForm;
+            $scaffoldMysqlRepository = new ScaffoldMysqlRepository;
+            $scaffoldMysqlVue = new ScaffoldMysqlVue;
+            $scaffoldMysqlTestEntity = new ScaffoldMysqlTestEntity;
+            
 
-            $vue = $request->request->get('vue', null, true);
-            $filtre = $request->request->get('filtre', null, true);
-            $options = $request->request->get('options', null, true);
-            $namespace = $request->request->get('namespace', null, true);
+            if ($request->request->get('_token') == 'generer') {
 
-            foreach ($options as $option) {
+                $vue = $request->request->get('vue', null, true);
+                $filtre = $request->request->get('filtre', null, true);
+                $options = $request->request->get('options', null, true);
+                $namespace = $request->request->get('namespace', null, true);
 
-                // commun a Mysql et PostgreSql
-                $scaffoldPostgresControleur->genererPostgresControleur($option, $vue, $namespace);
-                $scaffoldPostgresExtension->genererPostgresExtension($option, $filtre, $namespace);
+                foreach ($options as $option) {
 
-                if ($driver == 'pgsql') {
-                    $scaffoldPostgresEntity->genererPostgresEntity($option, $namespace);
-                    $scaffoldPostgresForm->genererPostgresForm($option, $namespace);
-                    $scaffoldPostgresRepository->genererPostgresRepository($option, $namespace);
-                    $scaffoldPostgresVue->genererPostgresVue($option, $vue, $namespace);
-                    $scaffoldPostgresTestEntity->genererPostgresTestEntity($option, $namespace);
+                    // commun a Mysql et PostgreSql
+                    $scaffoldPostgresControleur->genererPostgresControleur($option, $vue, $namespace);
+                    $scaffoldPostgresExtension->genererPostgresExtension($option, $filtre, $namespace);
+
+                    if ($driver == 'pgsql') {
+                        $scaffoldPostgresEntity->genererPostgresEntity($option, $namespace);
+                        $scaffoldPostgresForm->genererPostgresForm($option, $namespace);
+                        $scaffoldPostgresRepository->genererPostgresRepository($option, $namespace);
+                        $scaffoldPostgresVue->genererPostgresVue($option, $vue, $namespace);
+                        $scaffoldPostgresTestEntity->genererPostgresTestEntity($option, $namespace);
+                    }
+                    else {
+                        $scaffoldMysqlEntity->genererMysqlEntity($option, $namespace);
+                        $scaffoldMysqlForm->genererMysqlForm($option, $namespace);
+                        $scaffoldMysqlRepository->genererMysqlRepository($option, $namespace);
+                        $scaffoldMysqlVue->genererMysqlVue($option, $vue, $namespace);
+                        $scaffoldMysqlTestEntity->genererMysqlTestEntity($option, $namespace);
+                    }
+
+                    $this->addFlash('success', 'La création du SCRUD ' . $option . ' a été un succès');
                 }
-                else {
-                    $scaffoldMysqlEntity->genererMysqlEntity($option, $namespace);
-                    $scaffoldMysqlForm->genererMysqlForm($option, $namespace);
-                    $scaffoldMysqlRepository->genererMysqlRepository($option, $namespace);
-                    $scaffoldMysqlVue->genererMysqlVue($option, $vue, $namespace);
-                    $scaffoldMysqlTestEntity->genererMysqlTestEntity($option, $namespace);
-                }
 
-                $this->addFlash('success', 'La création du SCRUD ' . $option . ' a été un succès');
+                return $this->redirectToRoute('genereruncrud');
             }
 
-            return $this->redirectToRoute('genereruncrud');
-        }
+            if ($driver == 'pgsql') {
+                $listetables = $utilitairePostgresDatabase->listerTables();
+                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            }
+            else {
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            }
 
-        if ($driver == 'pgsql') {
-            $listetables = $utilitairePostgresDatabase->listerTables();
-            $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+
+            return new Response($twig->render('genereruncrud.html.twig', [
+                'headtitle' => 'Générer un SCRUD dans ' . $db,
+                'listetables' => $listetables,
+                'listedatabases' => $listedatabases,
+                'affichebasedonnee' => $db
+            ]));
         }
         else {
-            $listetables = $utilitaireMysqlDatabase->listerTables();
-            $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+            return $this->redirectToRoute('connexion');
         }
-
-        $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-        $twig = new Environment($loader);
-
-        return new Response($twig->render('genereruncrud.html.twig', [
-            'headtitle' => 'Générer un SCRUD dans ' . $db,
-            'listetables' => $listetables,
-            'listedatabases' => $listedatabases,
-            'affichebasedonnee' => $db
-        ]));
     }
 
     /**
@@ -586,55 +622,27 @@ class LimaController extends AbstractController
     public function basesettables(Request $request, UtilitairePostgresDatabase $utilitairePostgresDatabase, UtilitaireMysqlDatabase $utilitaireMysqlDatabase): Response
     {
         $session = new Session();
-        $driver = $session->get('driver');
 
-        $scaffoldPostgresEnvironnement = new ScaffoldPostgresEnvironnement();
+        if ($session->get('driver')) {
 
-        // ---- Liste database et table ----
-        if ($request->request->get('basedonnee')) {
+            $driver = $session->get('driver');
+            $scaffoldPostgresEnvironnement = new ScaffoldPostgresEnvironnement();
 
-            $basedonnee = $request->request->get('basedonnee');
+            // ---- Liste database et table ----
+            if ($request->request->get('basedonnee')) {
 
-            $session->set('database', $basedonnee);
-            $db = $session->get('database');
+                $basedonnee = $request->request->get('basedonnee');
 
-            if ($driver == 'pgsql') {
-                $listetables = $utilitairePostgresDatabase->listerTables();
-                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-            }
-            else {
-                $listetables = $utilitaireMysqlDatabase->listerTables();
-                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-            }
-
-            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-            $twig = new Environment($loader);
-
-            return new Response($twig->render('basesettables.html.twig', [
-                'headtitle' => 'Bases de données et Tables dans ' . $db,
-                'listetables' => $listetables,
-                'listedatabases' => $listedatabases,
-                'affichebasedonnee' => $db
-            ]));
-        } 
-        elseif ($session->get('database')) {
-
-            // ----- Afficher SQL Table ----
-            if ($request->request->get('_token') == 'champdata') {
-
-                $champdatatable = $request->request->get('champdatatable', null, true);
-
-                $db = $session->get('database');               
+                $session->set('database', $basedonnee);
+                $db = $session->get('database');
 
                 if ($driver == 'pgsql') {
                     $listetables = $utilitairePostgresDatabase->listerTables();
                     $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->findChampDataTable($champdatatable);
                 }
                 else {
                     $listetables = $utilitaireMysqlDatabase->listerTables();
                     $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->findChampDataTable($champdatatable);
                 }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
@@ -644,47 +652,270 @@ class LimaController extends AbstractController
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
                     'listetables' => $listetables,
                     'listedatabases' => $listedatabases,
-                    'champdatatable' => $champdatatable,
                     'affichebasedonnee' => $db
                 ]));
-            }
-            // ----- Afficher SQL Table ----
+            } 
+            elseif ($session->get('database')) {
 
-            // --- Generer environnement ---
-            if ($request->request->get('_token') == 'environnement') {
-                // Commun à Mysql et PostreSQL
-                $scaffoldPostgresEnvironnement->envDoctrinePostgresYaml();
-                $this->addFlash('success', 'Le nouvel environnement a été créé avec succès');
+                // ----- Afficher SQL Table ----
+                if ($request->request->get('_token') == 'champdata') {
 
-                return $this->redirectToRoute('basesettables');
-            }
-            // --- Generer environnement ---
+                    $champdatatable = $request->request->get('champdatatable', null, true);
 
-            // ---- Executer requete SQL ---
-            if ($request->request->get('_token') == 'requete') {
-                $sql = $request->request->get('sql', null, true);
-                $utilitairePostgresDatabase->executerSql($sql);
-                $this->addFlash('success', 'L\'exécution de la requête a été un succès');
-                return $this->redirectToRoute('basesettables');
-            }
-            // ---- Executer requete SQL ---
+                    $db = $session->get('database');               
 
-            // ---- Afficher ALTER Table ---
-            if ($request->request->get('_token') == 'alterdata') {
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->findChampDataTable($champdatatable);
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->findChampDataTable($champdatatable);
+                    }
 
-                $alterdatatable = $request->request->get('alterdatatable', null, true);
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,
+                        'listetables' => $listetables,
+                        'listedatabases' => $listedatabases,
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // ----- Afficher SQL Table ----
+
+                // --- Generer environnement ---
+                if ($request->request->get('_token') == 'environnement') {
+                    // Commun à Mysql et PostreSQL
+                    $scaffoldPostgresEnvironnement->envDoctrinePostgresYaml();
+                    $this->addFlash('success', 'Le nouvel environnement a été créé avec succès');
+
+                    return $this->redirectToRoute('basesettables');
+                }
+                // --- Generer environnement ---
+
+                // ---- Executer requete SQL ---
+                if ($request->request->get('_token') == 'requete') {
+                    $sql = $request->request->get('sql', null, true);
+                    $utilitairePostgresDatabase->executerSql($sql);
+                    $this->addFlash('success', 'L\'exécution de la requête a été un succès');
+                    return $this->redirectToRoute('basesettables');
+                }
+                // ---- Executer requete SQL ---
+
+                // ---- Afficher ALTER Table ---
+                if ($request->request->get('_token') == 'alterdata') {
+
+                    $alterdatatable = $request->request->get('alterdatatable', null, true);
+
+                    $db = $session->get('database');
+
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->alterTableDb($alterdatatable);
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->alterTableDb($alterdatatable);
+                    }
+
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,
+                        'listetables' => $listetables,
+                        'listedatabases' => $listedatabases,                   
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // ---- Afficher ALTER Table ---
+
+                // --- Supprimer les tables ----
+                if ($request->request->get('_token') == 'deletetables') {
+
+                    $db = $session->get('database');
+
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->deleteAllTableDb();
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->deleteAllTableDb();
+                    }
+
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,                
+                        'listetables' => $listetables,
+                        'listedatabases' => $listedatabases,
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // --- Supprimer les tables ----
+
+                // ------ Roles et Users -------
+                if ($request->request->get('_token') == 'roleuser') {
+
+                    $db = $session->get('database');               
+
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->creerTableRoleUser();
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->creerTableRoleUser();
+                    }
+
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,
+                        'listetables' => $listetables,                   
+                        'listedatabases' => $listedatabases,
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // ------ Roles et Users -------
+
+                // ------ Table messages -------
+                if ($request->request->get('_token') == 'message') {
+
+                    $db = $session->get('database');               
+
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->creerFormEnvoiMessage();
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->creerFormEnvoiMessage();
+                    }
+
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,
+                        'listetables' => $listetables,                  
+                        'listedatabases' => $listedatabases,
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // ------ Table messages -------
+
+                // ---- Renommer database ------
+                if ($request->request->get('_token') == 'renamebase') {
+
+                    $db = $session->get('database');               
+
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->RenameDatabase();
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->RenameDatabase();
+                    }
+
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,
+                        'listetables' => $listetables,                  
+                        'listedatabases' => $listedatabases,
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // ---- Renommer database ------
+
+                // --- Préparer Exportation ----
+                if ($request->request->get('_token') == 'exportertable') {
+
+                    $db = $session->get('database');              
+
+                    if ($driver == 'pgsql') {
+                        $listetables = $utilitairePostgresDatabase->listerTables();
+                        $listedatabases = $utilitairePostgresDatabase->listerDatabases();
+                        $champdatatable = $utilitairePostgresDatabase->exporterTables();
+                    }
+                    else {
+                        $listetables = $utilitaireMysqlDatabase->listerTables();
+                        $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
+                        $champdatatable = $utilitaireMysqlDatabase->exporterTables();
+                    }
+
+                    $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+                    $twig = new Environment($loader);
+
+                    return new Response($twig->render('basesettables.html.twig', [
+                        'headtitle' => 'Bases de données et Tables dans ' . $db,
+                        'exportertable' => $request->request->get('_token'),
+                        'listetables' => $listetables,
+                        'listedatabases' => $listedatabases,
+                        'champdatatable' => $champdatatable,
+                        'affichebasedonnee' => $db
+                    ]));
+                }
+                // --- Préparer Exportation ----
+
+                // --- Export Table Database ---
+                if ($request->request->get('_token') == 'exporterrequete') {
+
+                    $db = $session->get('database');
+
+                    // --- Creer le repertoire sql
+                    $path_sql = "../var/tmp/sql/";
+                    if (!is_dir($path_sql)) {
+                        mkdir($path_sql, 0755, true);
+                    }
+
+                    $fichier = "../var/tmp/sql/".$driver."_". $db . ".sql";
+                    $contenu = $request->request->get('champdatatable');
+
+                    fopen($fichier, "w+");
+                    file_put_contents($fichier, $contenu);
+                }
+                // --- Export Table Database ---
+
+                // -- Affichage BasesEtTables --
+                $basedonnee = $session->get('database');
+                $session->set('database', $basedonnee);
 
                 $db = $session->get('database');
 
                 if ($driver == 'pgsql') {
                     $listetables = $utilitairePostgresDatabase->listerTables();
                     $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->alterTableDb($alterdatatable);
                 }
                 else {
                     $listetables = $utilitaireMysqlDatabase->listerTables();
                     $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->alterTableDb($alterdatatable);
                 }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
@@ -693,235 +924,46 @@ class LimaController extends AbstractController
                 return new Response($twig->render('basesettables.html.twig', [
                     'headtitle' => 'Bases de données et Tables dans ' . $db,
                     'listetables' => $listetables,
-                    'listedatabases' => $listedatabases,                   
-                    'champdatatable' => $champdatatable,
+                    'listedatabases' => $listedatabases,
                     'affichebasedonnee' => $db
                 ]));
-            }
-            // ---- Afficher ALTER Table ---
+                // -- Affichage BasesEtTables --
+            } 
+            else {
+                // --- Creer le repertoire tmp
+                $path_cache = "../var/tmp/";
+                if (!is_dir($path_cache)) {
+                    mkdir($path_cache, 0755, true);
+                }
+                // --- Creer le repertoire tmp
 
-            // --- Supprimer les tables ----
-            if ($request->request->get('_token') == 'deletetables') {
-
+                // -- Affichage BasesEtTables --
                 $db = $session->get('database');
 
                 if ($driver == 'pgsql') {
                     $listetables = $utilitairePostgresDatabase->listerTables();
                     $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->deleteAllTableDb();
                 }
                 else {
                     $listetables = $utilitaireMysqlDatabase->listerTables();
                     $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->deleteAllTableDb();
                 }
 
                 $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
                 $twig = new Environment($loader);
 
                 return new Response($twig->render('basesettables.html.twig', [
-                    'headtitle' => 'Bases de données et Tables dans ' . $db,                
+                    'headtitle' => 'Bases de données et Tables dans ' . $db,
                     'listetables' => $listetables,
-                    'listedatabases' => $listedatabases,
-                    'champdatatable' => $champdatatable,
+                    'listedatabases' => $listedatabases,             
                     'affichebasedonnee' => $db
                 ]));
+                // -- Affichage BasesEtTables --
             }
-            // --- Supprimer les tables ----
-
-            // ------ Roles et Users -------
-            if ($request->request->get('_token') == 'roleuser') {
-
-                $db = $session->get('database');               
-
-                if ($driver == 'pgsql') {
-                    $listetables = $utilitairePostgresDatabase->listerTables();
-                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->creerTableRoleUser();
-                }
-                else {
-                    $listetables = $utilitaireMysqlDatabase->listerTables();
-                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->creerTableRoleUser();
-                }
-
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-                $twig = new Environment($loader);
-
-                return new Response($twig->render('basesettables.html.twig', [
-                    'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'listetables' => $listetables,                   
-                    'listedatabases' => $listedatabases,
-                    'champdatatable' => $champdatatable,
-                    'affichebasedonnee' => $db
-                ]));
-            }
-            // ------ Roles et Users -------
-
-            // ------ Table messages -------
-            if ($request->request->get('_token') == 'message') {
-
-                $db = $session->get('database');               
-
-                if ($driver == 'pgsql') {
-                    $listetables = $utilitairePostgresDatabase->listerTables();
-                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->creerFormEnvoiMessage();
-                }
-                else {
-                    $listetables = $utilitaireMysqlDatabase->listerTables();
-                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->creerFormEnvoiMessage();
-                }
-
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-                $twig = new Environment($loader);
-
-                return new Response($twig->render('basesettables.html.twig', [
-                    'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'listetables' => $listetables,                  
-                    'listedatabases' => $listedatabases,
-                    'champdatatable' => $champdatatable,
-                    'affichebasedonnee' => $db
-                ]));
-            }
-            // ------ Table messages -------
-
-            // ---- Renommer database ------
-            if ($request->request->get('_token') == 'renamebase') {
-
-                $db = $session->get('database');               
-
-                if ($driver == 'pgsql') {
-                    $listetables = $utilitairePostgresDatabase->listerTables();
-                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->RenameDatabase();
-                }
-                else {
-                    $listetables = $utilitaireMysqlDatabase->listerTables();
-                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->RenameDatabase();
-                }
-
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-                $twig = new Environment($loader);
-
-                return new Response($twig->render('basesettables.html.twig', [
-                    'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'listetables' => $listetables,                  
-                    'listedatabases' => $listedatabases,
-                    'champdatatable' => $champdatatable,
-                    'affichebasedonnee' => $db
-                ]));
-            }
-            // ---- Renommer database ------
-
-            // --- Préparer Exportation ----
-            if ($request->request->get('_token') == 'exportertable') {
-
-                $db = $session->get('database');              
-
-                if ($driver == 'pgsql') {
-                    $listetables = $utilitairePostgresDatabase->listerTables();
-                    $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-                    $champdatatable = $utilitairePostgresDatabase->exporterTables();
-                }
-                else {
-                    $listetables = $utilitaireMysqlDatabase->listerTables();
-                    $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-                    $champdatatable = $utilitaireMysqlDatabase->exporterTables();
-                }
-
-                $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-                $twig = new Environment($loader);
-
-                return new Response($twig->render('basesettables.html.twig', [
-                    'headtitle' => 'Bases de données et Tables dans ' . $db,
-                    'exportertable' => $request->request->get('_token'),
-                    'listetables' => $listetables,
-                    'listedatabases' => $listedatabases,
-                    'champdatatable' => $champdatatable,
-                    'affichebasedonnee' => $db
-                ]));
-            }
-            // --- Préparer Exportation ----
-
-            // --- Export Table Database ---
-            if ($request->request->get('_token') == 'exporterrequete') {
-
-                $db = $session->get('database');
-
-                // --- Creer le repertoire sql
-                $path_sql = "../var/tmp/sql/";
-                if (!is_dir($path_sql)) {
-                    mkdir($path_sql, 0755, true);
-                }
-
-                $fichier = "../var/tmp/sql/".$driver."_". $db . ".sql";
-                $contenu = $request->request->get('champdatatable');
-
-                fopen($fichier, "w+");
-                file_put_contents($fichier, $contenu);
-            }
-            // --- Export Table Database ---
-
-            // -- Affichage BasesEtTables --
-            $basedonnee = $session->get('database');
-            $session->set('database', $basedonnee);
-
-            $db = $session->get('database');
-
-            if ($driver == 'pgsql') {
-                $listetables = $utilitairePostgresDatabase->listerTables();
-                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-            }
-            else {
-                $listetables = $utilitaireMysqlDatabase->listerTables();
-                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-            }
-
-            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-            $twig = new Environment($loader);
-
-            return new Response($twig->render('basesettables.html.twig', [
-                'headtitle' => 'Bases de données et Tables dans ' . $db,
-                'listetables' => $listetables,
-                'listedatabases' => $listedatabases,
-                'affichebasedonnee' => $db
-            ]));
-            // -- Affichage BasesEtTables --
-        } 
-        else {
-            // --- Creer le repertoire tmp
-            $path_cache = "../var/tmp/";
-            if (!is_dir($path_cache)) {
-                mkdir($path_cache, 0755, true);
-            }
-            // --- Creer le repertoire tmp
-
-            // -- Affichage BasesEtTables --
-            $db = $session->get('database');
-
-            if ($driver == 'pgsql') {
-                $listetables = $utilitairePostgresDatabase->listerTables();
-                $listedatabases = $utilitairePostgresDatabase->listerDatabases();
-            }
-            else {
-                $listetables = $utilitaireMysqlDatabase->listerTables();
-                $listedatabases = $utilitaireMysqlDatabase->listerDatabases();
-            }
-
-            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
-            $twig = new Environment($loader);
-
-            return new Response($twig->render('basesettables.html.twig', [
-                'headtitle' => 'Bases de données et Tables dans ' . $db,
-                'listetables' => $listetables,
-                'listedatabases' => $listedatabases,             
-                'affichebasedonnee' => $db
-            ]));
-            // -- Affichage BasesEtTables --
+            // ---- Liste database et table ----
         }
-        // ---- Liste database et table ----
+        else {
+            return $this->redirectToRoute('connexion');
+        }
     }
 }

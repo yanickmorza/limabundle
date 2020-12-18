@@ -243,7 +243,8 @@ class UtilitaireMysqlDatabase
 		$contenu .= "nomColonne TEXT;\n";
 		$contenu .= "nomColonne VARCHAR(255);\n";
 		$contenu .= "nomColonne DATE;\n";
-		$contenu .= "nomColonne TIMESTAMP WITHOUT TIME ZONE;\n";
+		$contenu .= "nomColonne DATETIME;\n";
+		$contenu .= "nomColonne TIMESTAMP;\n";
 		$contenu .= "nomColonne JSON;\n";
 		$contenu .= "nomColonne FLOAT;\n";
 		$contenu .= "nomColonne BOOLEAN;\n";

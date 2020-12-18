@@ -4,19 +4,14 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>
-			{% block title %}
-				{{ headtitle }}
-			{% endblock %}
-		</title>
+		<title>{% block title %}{{ headtitle }}{% endblock %}</title>
 		{% block stylesheets %}
 			<!-- Styles CSS -->
 			<link rel="shortcut icon" href="{{ asset('bundles/lima/assets/images/araignee.ico') }}"/>
 			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/bootstrap.min.css') }}"/>
 			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/sb_admin.css') }}"/>
-			<link
-			rel="stylesheet" href="{{ asset('bundles/lima/assets/css/custom-lima.css') }}"/>
-		<!-- Styles CSS -->
+			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/custom-lima.css') }}"/>
+			<!-- Styles CSS -->
 		{% endblock %}
 		{% block javascripts %}
 			<!-- Jquery && Bootstrap -->
@@ -28,147 +23,57 @@
 			<!-- Jquery && Bootstrap -->
 		{% endblock %}
 	</head>
-	<body>
-		<!-- Page Wrapper -->
-		<div id="wrapper">
+<body>
 
+	<nav class="navbar navbar-expand-lg navbar-dark bg-lima static-top">
+		<div class="container-fluid">
+		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="" title="Accueil">
+			<div class="sidebar-brand-text mx-3">
+				<img src="{{ asset('bundles/lima/assets/images/lima.png') }}" class="d-inline-block align-top" width="124px" alt="lima.png">
+			</div>
+		</a>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="#">Home
+				<span class="sr-only">(current)</span>
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">About</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Services</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">Contact</a>
+			</li>
 			{% if app.user.username is defined %}
-				<!-- Sidebar -->
-				<ul
-					class="navbar-nav bg-lima sidebar sidebar-dark accordion" id="accordionSidebar">
-					<!-- Sidebar - Brand -->
-					<a class="sidebar-brand d-flex align-items-center justify-content-center" href="" title="Accueil">
-						<div class="sidebar-brand-text mx-3">
-							<img src="{{ asset('bundles/lima/assets/images/lima.png') }}" class="d-inline-block align-top" width="124px" alt="lima.png">
-						</div>
-					</a>
-
-					<!-- Divider -->
-					<hr
-					class="sidebar-divider my-0">
-					<!-- Accueil -->
-					<li class="nav-item active">
-						<a class="nav-link" href="" title="Accueil">
-							<span>Accueil</span>
-						</a>
-					</li>
-					<!-- Accueil -->
-
-					<!-- Déconnexion -->
-					<li class="nav-item active">
-						<a class="nav-link" href="/logout" title="Déconnexion" data-toggle="modal" data-target="#logoutModal">
-							<span>Déconnexion</span>
-						</a>
-					</li>
-					<!-- Déconnexion -->
-
-					<!-- Divider -->
-					<hr class="sidebar-divider my-0">
-
-				</ul>
-				<!-- Sidebar -->
+				<li class="nav-item">
+					<span class="mr-2">Bienvenue {{ app.user.username is defined ? app.user.prenom ~' '~ app.user.nom : '' }}</span>
+				</li>
 			{% endif %}
-
-			<!-- Content Wrapper -->
-			<div
-				id="content-wrapper" class="d-flex flex-column">
-
-				<!-- Main Content -->
-				<div
-					id="content">
-
-					<!-- Topbar -->
-					<nav class="navbar navbar-expand navbar-light bg-lima topbar mb-4 static-top shadow">
-
-						{% if app.user.username is defined %}
-							<ul
-								class="navbar-nav ml-auto">
-								<!-- User Information -->
-								<li class="nav-item dropdown no-arrow">
-									<a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="mr-2">Bienvenue
-											{{ app.user.username is defined ? app.user.prenom ~' '~ app.user.nom : '' }}</span>
-									</a>
-									<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-										<a class="dropdown-item" href="">
-											<i class="mr-2 text-gray-400"></i>Accueil</a>
-
-										<div class="dropdown-divider"></div>
-										<a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
-											<i class="mr-2 text-gray-400"></i>Déconnexion</a>
-									</div>
-								</li>
-								<!-- User Information -->
-							</ul>
-						{% endif %}
-
-					</nav>
-					<!-- Topbar -->
-
-					<!-- Content -->
-					<div
-						class="container-fluid">
-
-						<!-- Page Heading -->
-						{% if titre is defined %}
-							<h1 class="h6 mb-0 text-gray-900">
-								<a href="{{ path('index') }}" title="Accueil">DASHBOARD</a>
-								-
-								{{ titre | upper }}
-								(
-								{{ countliste is defined ? countliste : '' }}
-								)
-							</h1>
-						{% endif %}
-						<!-- Page Heading -->
-
-						<!-- Page Content Row -->
-						{% block content %}
-							{{ include('_flashes.html.twig') }}
-						{% endblock %}
-						{% block body %}{% endblock %}
-						<!-- Page Content Row -->
-
-					</div>
-					<!-- Content -->
-
-				</div>
-				<!-- Main Content -->
-
-				<!-- Footer -->
-				<footer class="sticky-footer bg-light mb-4">
-					<div class="container my-auto">
-						<div class="text-secondary small text-center py-3">© Light Interface Maker Application - Développé et maintenu par Yanick MORZA -
-							{{ "now"|date("Y") }}</div>
-					</div>
-				</footer>
-				<!-- Footer -->
-
-			</div>
-			<!-- Content Wrapper -->
-
+			</ul>
 		</div>
-		<!-- Page Wrapper -->
-
-		<!-- Logout Modal-->
-		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Prêt à partir ?</h5>
-						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-					</div>
-					<div class="modal-body">Sélectionnez « Déconnexion » ci-dessous si vous êtes prêt à terminer votre session en cours.</div>
-					<div class="modal-footer">
-						<button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-						<a class="btn btn-primary" href="/logout">Déconnexion</a>
-					</div>
-				</div>
-			</div>
 		</div>
-		<!-- Logout Modal-->
+	</nav>
 
-	</body>
+	<div class="container-fluid">
+
+		{% if titre is defined %}
+			<h1 class="h6 m-4 text-gray-900">
+				<a href="{{ path('index') }}" title="Accueil">HOME</a> - {{ titre | upper }} ( {{ countliste is defined ? countliste : '' }} )
+			</h1>
+		{% endif %}
+	
+		{% block content %}{{ include('_flashes.html.twig') }}{% endblock %}                   
+		{% block body %}{% endblock %}
+
+		<footer class="sticky-footer m-4">
+			<div class="text-secondary small text-center">© Light Interface Maker Application - Développé et maintenu par Yanick MORZA - {{ "now"|date("Y") }}</div>
+		</footer>
+
+	</div>
+
+</body>
 </html>
