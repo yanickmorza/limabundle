@@ -804,7 +804,13 @@ class RegistrationFormType extends AbstractType
     {
         \$builder
             ->add('username')
-            ->add('password', PasswordType::class, [
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les champs du mot de passe doivent correspondre.',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => true,
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Répéter mot de passe'],
                 // N'est pas mis sur l'objet directement, c'est lu et encodé dans le contrôleur
                 'mapped' => false,
                 'constraints' => [
