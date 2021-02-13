@@ -9,18 +9,9 @@
 			<!-- Styles CSS -->
 			<link rel="shortcut icon" href="{{ asset('bundles/lima/assets/images/araignee.ico') }}"/>
 			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/bootstrap.min.css') }}"/>
-			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/sb_admin.css') }}"/>
+			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/dataTables.bootstrap4.css') }}"/>
 			<link rel="stylesheet" href="{{ asset('bundles/lima/assets/css/custom-lima.css') }}"/>
 			<!-- Styles CSS -->
-		{% endblock %}
-		{% block javascripts %}
-			<!-- Jquery && Bootstrap -->
-			<script src="{{ asset('bundles/lima/assets/js/jquery.min.js') }}"></script>
-			<script src="{{ asset('bundles/lima/assets/js/popper.min.js') }}"></script>
-			<script src="{{ asset('bundles/lima/assets/js/bootstrap.min.js') }}"></script>
-			<script src="{{ asset('bundles/lima/assets/js/easyTable.js') }}"></script>
-			<script src="{{ asset('bundles/lima/assets/js/paginathing.js') }}"></script>
-			<!-- Jquery && Bootstrap -->
 		{% endblock %}
 	</head>
 <body>
@@ -68,6 +59,16 @@
 	
 		{% block content %}{{ include('_flashes.html.twig') }}{% endblock %}                   
 		{% block body %}{% endblock %}
+		{% block javascripts %}
+			<!-- Jquery && Bootstrap -->
+			<script src="{{ asset('bundles/lima/assets/js/jquery.min.js') }}"></script>
+			<script src="{{ asset('bundles/lima/assets/js/jquery.dataTables.min.js') }}"></script>
+			<script src="{{ asset('bundles/lima/assets/js/dataTables.bootstrap4.min.js') }}"></script>
+			<script src="{{ asset('bundles/lima/assets/js/bootstrap.bundle.min.js') }}"></script>
+			<script src="{{ asset('bundles/lima/assets/js/jquery.easing.min.js') }}"></script>
+			<script src="{{ asset('bundles/lima/assets/js/datatables-lima.js') }}"></script>
+			<!-- Jquery && Bootstrap -->
+		{% endblock %}
 
 		<footer class="sticky-footer m-4">
 			<div class="text-secondary small text-center">© Light Interface Maker Application - Développé et maintenu par Yanick MORZA - {{ "now"|date("Y") }}</div>

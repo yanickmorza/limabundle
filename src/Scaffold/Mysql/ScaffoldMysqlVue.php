@@ -61,7 +61,7 @@ class ScaffoldMysqlVue
                 }
 
                 if ($UCfield != 'Plainpassword') {
-                    $champs_titre .= "<th>" . $UCfield . "&uarr;&darr;</th>\n\t\t\t\t";
+                    $champs_titre .= "<th>" . $UCfield . "</th>\n\t\t\t\t";
                 }
 
                 if ($type == 'date' || $type == 'datetime') {
@@ -178,14 +178,15 @@ class ScaffoldMysqlVue
 <div class=\"col-sm-8\">
 <div class=\"card mt-3 mb-3 mr-3 border-lima\">
 <div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
+<div class=\"card-body\">
 <div class=\"table-responsive\">
-<div class=\"card-body\"><br />
-<table class=\"table paginer\" id=\"table\">
+<table class=\"table\" id=\"dataTable\">
         <thead>
             <tr class=\"list-group-item-lima bg-lima text-white\">
                 <th>#</th>
                 $champs_titre
-                <th colspan=\"2\"></th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -236,34 +237,6 @@ class ScaffoldMysqlVue
 </div>
 </div>
 </div>
-
-<script>
-  $(\"input[type=file]\").change(function (e){\$(this).next('.custom-file-label').text(e.target.files[0].name);})
-</script>
-<script>
-	jQuery(document).ready(function($){	
-		$('.paginer tbody').paginathing({
-		  // Pagination controles
-		  prevNext: true,
-		  firstLast: true,
-		  prevText: '«',
-		  nextText: '»',
-		  firstText: 'Début',
-		  lastText: 'Fin',
-		  containerClass: 'pagination-container',
-	    	  ulClass: 'pagination',
-	    	  liClass: 'page-item',
-	    	  activeClass: 'active',
-		  limitPagination: true,  // false pour afficher tous les numéros de page
-		  insertAfter: '.table'
-		});		
-	});
-</script>
-<script>
-	var foo = '';
-	$(\"#table\").find('tbody').append(foo);
-	var table = $(\"#table\").easyTable();
-</script>
 {% endblock %}";
         }
         // ------ 1 vue cochée ------
@@ -312,14 +285,15 @@ class ScaffoldMysqlVue
 <div class=\"col\">
 <div class=\"card mt-3 mb-3 ml-3 mr-3 border-lima\">
 <div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
+<div class=\"card-body\">
 <div class=\"table-responsive\">
-<div class=\"card-body\"><br />
-<table class=\"table paginer\" id=\"table\">
+<table class=\"table\" id=\"dataTable\">
         <thead>
             <tr class=\"list-group-item-lima bg-lima text-white\">
                 <th>#</th>
                 $champs_titre
-                <th colspan=\"2\"></th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -392,35 +366,8 @@ class ScaffoldMysqlVue
 </div>
 </div>
 </div>
-
-<script>
-  $(\"input[type=file]\").change(function (e){\$(this).next('.custom-file-label').text(e.target.files[0].name);})
-</script>
-<script>
-	jQuery(document).ready(function($){	
-		$('.paginer tbody').paginathing({
-		  // Pagination controles
-		  prevNext: true,
-		  firstLast: true,
-		  prevText: '«',
-		  nextText: '»',
-		  firstText: 'Début',
-		  lastText: 'Fin',
-		  containerClass: 'pagination-container',
-	    	  ulClass: 'pagination',
-	    	  liClass: 'page-item',
-	    	  activeClass: 'active',
-		  limitPagination: true,  // false pour afficher tous les numéros de page
-		  insertAfter: '.table'
-		});		
-	});
-</script>
-<script>
-	var foo = '';
-	$(\"#table\").find('tbody').append(foo);
-	var table = $(\"#table\").easyTable();
-</script>
 {% endblock %}";
+
             $fichier_view2 = $path_vue . "/form_" . $objet . ".html.twig";
             $texte_view2 = "{% extends 'base.html.twig' %}
 {% block title %} {{ titre }} {% endblock %}
