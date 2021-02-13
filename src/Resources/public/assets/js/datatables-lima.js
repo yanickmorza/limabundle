@@ -1,4 +1,14 @@
-// Call the dataTables jQuery plugin
 $(document).ready(function() {
-  $('#dataTable').DataTable();
+  $('#dataTable').DataTable( {
+    "language": {
+      "info": "",
+      "infoFiltered": "",
+        "paginate": {
+          "previous": "Précédente",
+          "next": "Suivante"
+        },
+      "lengthMenu": "Afficher : _MENU_",
+      "search": "Rechercher : _INPUT_"
+    }
+  });
 });
