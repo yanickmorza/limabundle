@@ -83,6 +83,7 @@ class ScaffoldMysqlVue
                 $colspan++;
             }
         }
+        $colspan2 = ($colspan + 2);
         $champs_titre = trim($champs_titre);
         $champs_donnee = trim($champs_donnee);
         // --- Recuperer tous les champs de la table concernee
@@ -215,7 +216,7 @@ class ScaffoldMysqlVue
                 </td>
             </tr>
             <tr>
-                <td colspan=\"($colspan + 2)\">
+                <td colspan=\"$colspan2\">
                     <form action=\"{{ path('$nameUploader') }}\" method=\"post\" enctype=\"multipart/form-data\">
                     <div class=\"form-group row\">
                         <div class=\"col-12\"><label for=\"charger\"><b>Charger un fichier au format CSV : </b></label></div>

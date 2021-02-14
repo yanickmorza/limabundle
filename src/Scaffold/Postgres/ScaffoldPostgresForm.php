@@ -198,7 +198,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityManagerInterface;
-$entityType$datetimetype$datetype$choicetype$textareatype$champPassword$champPlainPassword
+$entityType$datetimetype$datetype$choicetype$textareatype$champPassword$champPlainPassword/*** UseUpload ***/\n
 class $ObjetCreate extends AbstractType
 {
     $construct

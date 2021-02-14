@@ -27,6 +27,7 @@ use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresSecurity;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresSwiftMailerFunction;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresSwiftMailerYaml;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresTestEntity;
+use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresUploaderFunction;
 use App\LimaBundle\Scaffold\Postgres\ScaffoldPostgresVue;
 use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlAuthUser;
 use App\LimaBundle\Scaffold\Mysql\ScaffoldMysqlEntity;
@@ -110,6 +111,59 @@ class LimaController extends AbstractController
         $session->clear();
 
         return $this->redirectToRoute('index');
+    }
+
+    /**
+     * @Route("/uploader", name="uploader", methods={"GET","POST"})
+     */
+    public function uploader(Request $request): Response
+    {
+        $session = new Session();
+
+        if ($session->get('driver')) {
+
+            $db = $session->get('database');
+            $driver = $session->get('driver');
+
+            if ($driver == 'pgsql') {
+                $utilitairePostgresDatabase = new UtilitairePostgresDatabase;
+                $listetables = $utilitairePostgresDatabase->listerTables();
+            }
+            else {
+                $utilitaireMysqlDatabase = new UtilitaireMysqlDatabase;
+                $listetables = $utilitaireMysqlDatabase->listerTables();
+            }
+
+            $caffoldPostgresUploaderFunction = new ScaffoldPostgresUploaderFunction;
+
+            if ($request->request->get('_token') == 'uploaderFunction') {
+
+                $namespace = trim($request->request->get('namespace', null, true));
+                $options = $request->request->get('options', null, true);
+                $intitule = $request->request->get('intitule', null, true);
+
+                    foreach ($options as $objet) {
+                        $caffoldPostgresUploaderFunction->uploaderPostgresFunction($namespace, $objet, $intitule);
+                    }
+
+                    $this->addFlash('success', 'La fonctionnalité pour uploder un fichier a été créé avec succès');
+
+                    return $this->redirectToRoute('uploader');
+            }
+
+            $loader = new FilesystemLoader($this->getParameter('kernel.project_dir') . '/vendor/yanickmorza/limabundle/src/Resources/views/index/');
+            $twig = new Environment($loader);
+
+            return new Response($twig->render('uploader.html.twig', [
+                'headtitle' => 'Configurer un uplaod dans ' . $db,
+                'titrefunction' => 'Enregistrer la fonctionnalité pour uploder un fichier',
+                'listetables' => $listetables,
+                'affichebasedonnee' => $db
+            ]));
+        }
+        else {
+            return $this->redirectToRoute('connexion');
+        }
     }
 
     /**
@@ -623,6 +677,13 @@ class LimaController extends AbstractController
     {
         $session = new Session();
 
+        // --- Creer le repertoire tmp
+        $path_cache = "../var/tmp/";
+        if (!is_dir($path_cache)) {
+            mkdir($path_cache, 0755, true);
+        }
+        // --- Creer le repertoire tmp
+
         if ($session->get('driver')) {
 
             $driver = $session->get('driver');
@@ -930,13 +991,6 @@ class LimaController extends AbstractController
                 // -- Affichage BasesEtTables --
             } 
             else {
-                // --- Creer le repertoire tmp
-                $path_cache = "../var/tmp/";
-                if (!is_dir($path_cache)) {
-                    mkdir($path_cache, 0755, true);
-                }
-                // --- Creer le repertoire tmp
-
                 // -- Affichage BasesEtTables --
                 $db = $session->get('database');
 

@@ -33,3 +33,7 @@ console:
 swiftmailer:
     path: /swiftmailer
     controller: App\LimaBundle\Controller\LimaController::swiftmailer
+
+uploader:
+    path: /uploader
+    controller: App\LimaBundle\Controller\LimaController::uploader
