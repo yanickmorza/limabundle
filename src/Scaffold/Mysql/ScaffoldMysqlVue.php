@@ -155,22 +155,6 @@ class ScaffoldMysqlVue
         <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
     </div>
     {{ form_end(form) }}
-<hr />
-<form action=\"{{ path('$nameUploader') }}\" method=\"post\" enctype=\"multipart/form-data\">
-<div class=\"form-group row\">
-    <div class=\"col-12\"><label for=\"charger\"><b>Charger un fichier au format CSV : </b></label></div>
-</div>
-<div class=\"form-group row\">
-<div class=\"col-7 custom-file\">
-    <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('uploader') }}\" />
-    <input type=\"file\" class=\"custom-file-input\" id=\"charger\" name=\"charger\" lang=\"fr\" accept=\".csv,.pdf\" required />
-    <label class=\"custom-file-label\" for=\"charger\">Sélectionner un fichier</label>
-</div>
-<div class=\"col-5\">
-    <button type=\"submit\" class=\"btn btn-primary\">Charger</button>
-</div>
-</div>
-</form>
 </div>
 </div>
 </div>
@@ -227,6 +211,25 @@ class ScaffoldMysqlVue
                     <form method=\"post\" action=\"{{ path('$nameTruncate') }}\" onsubmit=\"return confirm('Attention vous allez vider cette liste, voulez-vous continuer ?');\">
                     <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('truncate') }}\">
                     <input type=\"image\" title=\"Vider cette liste\" src=\"{{ asset('bundles/lima/assets/images/corbeille.png') }}\">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=\"($colspan + 2)\">
+                    <form action=\"{{ path('$nameUploader') }}\" method=\"post\" enctype=\"multipart/form-data\">
+                    <div class=\"form-group row\">
+                        <div class=\"col-12\"><label for=\"charger\"><b>Charger un fichier au format CSV : </b></label></div>
+                    </div>
+                    <div class=\"form-group row\">
+                    <div class=\"col-7 custom-file\">
+                        <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('uploader') }}\" />
+                        <input type=\"file\" class=\"custom-file-input\" id=\"charger\" name=\"charger\" lang=\"fr\" accept=\".csv,.pdf\" required />
+                        <label class=\"custom-file-label\" for=\"charger\">Sélectionner un fichier</label>
+                    </div>
+                    <div class=\"col-5\">
+                        <button type=\"submit\" class=\"btn btn-primary\">Charger</button>
+                    </div>
+                    </div>
                     </form>
                 </td>
             </tr>
