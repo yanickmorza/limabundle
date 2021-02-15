@@ -59,18 +59,23 @@ class ScaffoldPostgresUploaderFunction
 
             if ($handleupload) {
 
+                $file = $intitule."File";
+                $originalFilename = $file."->getClientOriginalName()";
+                $guessExtension = $file."->guessExtension()";
+                $move = $file."->move";
+
                 $upload .= "\n\t\t\t";
-                $upload .= "\$brochureFile = \$form->get('$intitule')->getData();\n\n\t\t\t";
-                $upload .= "if (\$brochureFile) {\n\n\t\t\t\t";
-                $upload .= "\$originalFilename = pathinfo(\$brochureFile->getClientOriginalName(), PATHINFO_FILENAME);\n\t\t\t\t";
+                $upload .= "\$$file = \$form->get('$intitule')->getData();\n\n\t\t\t";
+                $upload .= "if (\$$file) {\n\n\t\t\t\t";
+                $upload .= "\$originalFilename = pathinfo(\$$originalFilename, PATHINFO_FILENAME);\n\t\t\t\t";
                 $upload .= "\$safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', \$originalFilename);\n\t\t\t\t";
-                $upload .= "\$newFilename = \$safeFilename.'-'.uniqid().'.'.\$brochureFile->guessExtension();\n\n\t\t\t\t";
+                $upload .= "\$newFilename = \$safeFilename.'-'.uniqid().'.'.\$$guessExtension;\n\n\t\t\t\t";
                 $upload .= "try {\n\t\t\t\t\t";
-                $upload .= "\$brochureFile->move('../public/uploads/brochures', \$newFilename);\n\t\t\t\t";
+                $upload .= "\$$move('../public/uploads/brochures', \$newFilename);\n\t\t\t\t";
                 $upload .= "} catch (FileException \$e) {}\n\n\t\t\t\t";
                 $upload .= "\$objet->set$Intitule(\$newFilename);\n\t\t\t";
                 $upload .= "}\n";
-                
+
                 while (!feof($handleupload))
                 {
                     $bufferupload = fgets($handleupload);
@@ -88,14 +93,19 @@ class ScaffoldPostgresUploaderFunction
             
             if ($edithandleupload) {
 
+                $file = $intitule."File";
+                $originalFilename = $file."->getClientOriginalName()";
+                $guessExtension = $file."->guessExtension()";
+                $move = $file."->move";
+
                 $editupload .= "\n\t\t\t";
-                $editupload .= "\$brochureFile = \$form->get('$intitule')->getData();\n\n\t\t\t";
-                $editupload .= "if (\$brochureFile) {\n\n\t\t\t\t";
-                $editupload .= "\$originalFilename = pathinfo(\$brochureFile->getClientOriginalName(), PATHINFO_FILENAME);\n\t\t\t\t";
+                $editupload .= "\$$file = \$form->get('$intitule')->getData();\n\n\t\t\t";
+                $editupload .= "if (\$$file) {\n\n\t\t\t\t";
+                $editupload .= "\$originalFilename = pathinfo(\$$originalFilename, PATHINFO_FILENAME);\n\t\t\t\t";
                 $editupload .= "\$safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', \$originalFilename);\n\t\t\t\t";
-                $editupload .= "\$newFilename = \$safeFilename.'-'.uniqid().'.'.\$brochureFile->guessExtension();\n\n\t\t\t\t";
+                $editupload .= "\$newFilename = \$safeFilename.'-'.uniqid().'.'.\$$guessExtension;\n\n\t\t\t\t";
                 $editupload .= "try {\n\t\t\t\t\t";
-                $editupload .= "\$brochureFile->move('../public/uploads/brochures', \$newFilename);\n\t\t\t\t";
+                $editupload .= "\$$move('../public/uploads/brochures', \$newFilename);\n\t\t\t\t";
                 $editupload .= "} catch (FileException \$e) {}\n\n\t\t\t\t";
                 $editupload .= "\$objet->set$Intitule(\$newFilename);\n\t\t\t";
                 $editupload .= "}\n";

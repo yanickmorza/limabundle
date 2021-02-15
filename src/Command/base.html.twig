@@ -68,6 +68,9 @@
 			<script src="{{ asset('bundles/lima/assets/js/jquery.easing.min.js') }}"></script>
 			<script src="{{ asset('bundles/lima/assets/js/datatables-lima.js') }}"></script>
 			<!-- Jquery && Bootstrap -->
+			<script>
+				$("input[type=file]").change(function (e){$(this).next('.custom-file-label').text(e.target.files[0].name);})
+			</script>
 		{% endblock %}
 
 		<footer class="sticky-footer m-4">
