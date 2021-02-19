@@ -71,7 +71,7 @@ class ScaffoldPostgresUploaderFunction
                 $upload .= "\$safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', \$originalFilename);\n\t\t\t\t";
                 $upload .= "\$newFilename = \$safeFilename.'-'.uniqid().'.'.\$$guessExtension;\n\n\t\t\t\t";
                 $upload .= "try {\n\t\t\t\t\t";
-                $upload .= "\$$move('../public/uploads/brochures', \$newFilename);\n\t\t\t\t";
+                $upload .= "\$$move('../public/uploads/$objet', \$newFilename);\n\t\t\t\t";
                 $upload .= "} catch (FileException \$e) {}\n\n\t\t\t\t";
                 $upload .= "\$objet->set$Intitule(\$newFilename);\n\t\t\t";
                 $upload .= "}\n";
@@ -105,7 +105,7 @@ class ScaffoldPostgresUploaderFunction
                 $editupload .= "\$safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', \$originalFilename);\n\t\t\t\t";
                 $editupload .= "\$newFilename = \$safeFilename.'-'.uniqid().'.'.\$$guessExtension;\n\n\t\t\t\t";
                 $editupload .= "try {\n\t\t\t\t\t";
-                $editupload .= "\$$move('../public/uploads/brochures', \$newFilename);\n\t\t\t\t";
+                $editupload .= "\$$move('../public/uploads/$objet', \$newFilename);\n\t\t\t\t";
                 $editupload .= "} catch (FileException \$e) {}\n\n\t\t\t\t";
                 $editupload .= "\$objet->set$Intitule(\$newFilename);\n\t\t\t";
                 $editupload .= "}\n";
