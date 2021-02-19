@@ -15,6 +15,50 @@ class ScaffoldPostgresAuthUser
             $session = new Session;
             $db = $session->get('database');
 
+            // ------- Construction de la vue par Defaut ---------
+            fopen("../templates/defaut.html.twig", "w+");
+            $fichier_vue_defaut = "../templates/defaut.html.twig";
+            $texte_vue_defaut = "{% extends 'base.html.twig' %}
+{% block title %} {{ defaut }} {% endblock %}
+{% block body %}
+<div class=\"row\">
+    <div class=\"col-1\">
+        <a href=\"\" class=\"btn btn-primary\">Lien-1</a>
+    </div>
+    <div class=\"col-1\">
+            <a href=\"\" class=\"btn btn-primary\">Lien-2</a>
+    </div>
+</div>
+{% endblock %}";
+            file_put_contents($fichier_vue_defaut, $texte_vue_defaut);
+            // ------- Construction de la vue par Defaut ---------
+
+            // ------ Construction du controleur par Defaut ------
+            $defautcontroller = "../src/Controller/DefautController.php";
+            fopen($defautcontroller, "w+");
+            $texte_defaut_controller = "<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+            
+class DefautController extends AbstractController
+{
+    /**
+    * @Route(\"/default\", name=\"default_index\", methods={\"GET\",\"POST\"})
+    */
+    public function index(): Response
+    {  	
+        return \$this->render('/defaut.html.twig', [
+            'defaut' => 'Dashboard'
+        ]);
+    }
+}";
+            file_put_contents($defautcontroller, $texte_defaut_controller);
+            // ------ Construction du controleur par Defaut ------
+
             // ----- Construction de la vue Authentification -----
             $vue_authentification = "../templates/authentification";
             if (!is_dir($vue_authentification)) {
@@ -891,6 +935,18 @@ class RegistrationFormType extends AbstractType
     // ------------ Supprimer Authuser -------------
     public function supprimerPostgresAuthuser($option, $namespace)
     {
+        // ------ Supprimer vue et controller Defaut ------
+        $defaut_vue = "../templates/defaut.html.twig";
+        $defaut_controller = "../src/Controller/DefautController.php";
+
+        if (file_exists($defaut_vue)) {
+            unlink($defaut_vue);
+        }
+        if (file_exists($defaut_controller)) {
+            unlink($defaut_controller);
+        }
+        // ------ Supprimer vue et controller Defaut ------
+
         // ----- Supprimer la class Authentification ------
         $path_class = "../src/Authentification";
         $class = $path_class . "/Authentification.php";
