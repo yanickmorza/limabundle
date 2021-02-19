@@ -41,7 +41,7 @@
 			</li>
 			{% if app.user.username is defined %}
 				<li class="nav-item">
-					<span class="mr-2">Bienvenue {{ app.user.username is defined ? app.user.prenom ~' '~ app.user.nom : '' }}</span>
+					<a class="nav-link" href="#">| {{ app.user.username is defined ? app.user.prenom ~' '~ app.user.nom : '' }}</a>
 				</li>
 			{% endif %}
 			</ul>
