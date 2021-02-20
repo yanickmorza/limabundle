@@ -8,6 +8,7 @@
 # Installer
 
 - 1 - <code>composer require yanickmorza/limabundle</code>
+- 2 - <code>php vendor/yanickmorza/limabundle/src/Command/installation.php</code>
 
 # Démarrer
 
