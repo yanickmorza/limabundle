@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}
-	{{ headtitle }}
-{% endblock %}
+{% block title %}{{ headtitle }}{% endblock %}
 {% block body %}
 	{{ include('navigation.html.twig') }}
 	<div class="row">
@@ -28,16 +26,16 @@
 					{% endif %}
 				</div>
 				<div class="card-body m-3 p-3">
-					{% for bd in listedatabases %}
-						{% if bd != 'postgres' and bd != 'information_schema' and bd != 'mysql' and bd != 'performance_schema' and bd != 'phpmyadmin' %}
-							<div class="form-group row">
-								<form method="post" action="">
-									<input type="hidden" name="basedonnee" value="{{ bd }}">
-									<input type="submit" value="{{ bd | capitalize }}">
-								</form>
-							</div>
-						{% endif %}
-					{% endfor %}
+					<form method="post" action="">
+						<select name="basedonnee" class="custom-select col-5" onchange="this.form.submit();">
+						<option value=""> -- Choisir un projet dans la liste -- </option>
+						{% for bd in listedatabases %}
+							{% if bd != 'postgres' and bd != 'information_schema' and bd != 'mysql' and bd != 'performance_schema' and bd != 'phpmyadmin' %}
+							<option value="{{ bd }}"> -- {{ bd }} -- </option>
+							{% endif %}
+						{% endfor %}
+						</select>
+					</form>
 				</div>
 			</div>
 		</div>
