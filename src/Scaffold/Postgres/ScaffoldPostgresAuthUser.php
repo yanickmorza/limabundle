@@ -14,6 +14,7 @@ class ScaffoldPostgresAuthUser
 
             $session = new Session;
             $db = $session->get('database');
+            $driver = $session->get('driver');
 
             // ------- Construction de la vue par Defaut ---------
             fopen("../templates/defaut.html.twig", "w+");
@@ -289,8 +290,11 @@ class AuthentificationController extends AbstractController
     public function login(AuthenticationUtils \$authenticationUtils): Response
     {
         \$session = new Session();
+
         \$session->set('database', '$db');
         \$db = \$session->get('database');
+
+        \$session->set('driver', '$driver');
 
         \$error = \$authenticationUtils->getLastAuthenticationError();
         \$lastUsername = \$authenticationUtils->getLastUsername();
