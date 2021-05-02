@@ -18,7 +18,7 @@
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-lima static-top">
 		<div class="container-fluid">
-		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ app.user.username is defined ? '/default' : 'lima' }}" title="Accueil">
+		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ app.user.username is defined ? '/default' : '/lima/connexion' }}" title="Accueil">
 			<div class="sidebar-brand-text mx-3">
 				<img src="{{ asset('bundles/lima/assets/images/lima.png') }}" class="d-inline-block align-top" width="124px" alt="lima.png">
 			</div>
@@ -78,8 +78,8 @@
 			</script>
 		{% endblock %}
 
-		<footer class="sticky-footer bg-light mb-4">
-			<div class="text-center p-4"><code class="text-secondary small">© Light Interface Maker Application - Développé et maintenu par Yanick MORZA - {{ "now"|date("Y") }}</code></div>
+		<footer class="sticky-footer m-4">
+			<div class="text-secondary small text-center">© Light Interface Maker Application - Développé et maintenu par Yanick MORZA - {{ "now"|date("Y") }}</div>
 		</footer>
 
 	</div>
