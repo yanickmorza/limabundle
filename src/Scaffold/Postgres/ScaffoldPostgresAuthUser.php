@@ -34,6 +34,11 @@ class ScaffoldPostgresAuthUser
             <a class=\"nav-link\" href=\"#\">Roles</a>
         </li>
     </ul>
+    <div class=\"row\">
+        <div class=\"col m-4 text-center\">
+            <img src=\"{{ asset('bundles/lima/assets/images/bienvenue.png') }}\" class=\"d-inline-block align-top\" alt=\"bienvenue.png\">
+        </div>
+    </div>
 </div>
 {% endblock %}";
             file_put_contents($fichier_vue_defaut, $texte_vue_defaut);
