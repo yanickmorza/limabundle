@@ -23,12 +23,17 @@ class ScaffoldMysqlAuthUser
 {% block title %} {{ defaut }} {% endblock %}
 {% block body %}
 <div class=\"row\">
-    <div class=\"col-1\">
-        <a href=\"\" class=\"btn btn-primary\">Lien-1</a>
-    </div>
-    <div class=\"col-1\">
-        <a href=\"\" class=\"btn btn-primary\">Lien-2</a>
-    </div>
+    <ul class=\"nav nav-tabs\">
+        <li class=\"nav-item\">
+            <a class=\"nav-link active\" href=\"logout\">Déconnexion</a>
+        </li>
+        <li class=\"nav-item\">
+            <a class=\"nav-link\" href=\"#\">Utilisateurs</a>
+        </li>
+        <li class=\"nav-item\">
+            <a class=\"nav-link\" href=\"#\">Roles</a>
+        </li>
+    </ul>
 </div>
 {% endblock %}";
             file_put_contents($fichier_vue_defaut, $texte_vue_defaut);
