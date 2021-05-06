@@ -2,6 +2,8 @@ $(document).ready(function() {
   $('#dataTable').DataTable( {
     "language": {
       "info": "",
+      "zeroRecords": "Aucun enregistrement trouvé !",
+      "infoEmpty": "",
       "infoFiltered": "",
         "paginate": {
           "previous": "Précédente",
