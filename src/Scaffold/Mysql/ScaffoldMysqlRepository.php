@@ -85,8 +85,6 @@ class ScaffoldMysqlRepository
             $entity =  "App\Entity\\$Objet";
         }
 
-        $sequence = $objet."_id_seq";
-
         $fichier_repository = $path_repository . "/" . $Objet . "Repository.php";
         $texte_repository = "<?php
         
@@ -114,8 +112,7 @@ class $ObjetRepository extends EntityRepository implements ServiceEntityReposito
     // ------ Vider les donnees de la table -------
     public function truncateTable()
     {
-        \$stmt = \$this->getEntityManager()->getConnection()->prepare('TRUNCATE TABLE $objet')->execute();
-        return \$stmt; 
+        return \$this->getEntityManager()->getConnection()->prepare('TRUNCATE TABLE $objet')->executeQuery(); 
     }
     // ------ Vider les donnees de la table -------
 
@@ -123,9 +120,7 @@ class $ObjetRepository extends EntityRepository implements ServiceEntityReposito
     public function exporterDonnee$Objet()
     {
         \$stmt = \$this->getEntityManager()->getConnection()->prepare('SELECT * FROM $objet ORDER BY id ASC');
-        \$stmt->execute();
-        \$rows = \$stmt->fetchAllAssociative();
-        return \$rows;
+        return \$stmt->executeQuery()->fetchAllAssociative();
     }
     // ----------- Exporter les donnees -----------
 
@@ -148,7 +143,7 @@ class $ObjetRepository extends EntityRepository implements ServiceEntityReposito
 						$ChampData
                         \$rawSql = \"$insert\";
                         \$stmt = \$this->getEntityManager()->getConnection()->prepare(\$rawSql);
-                        \$execution = \$stmt->execute($ChampInsert);
+                        \$execution = \$stmt->executeQuery($ChampInsert);
 					}
             fclose(\$handle);
             unlink(\$path_cache);

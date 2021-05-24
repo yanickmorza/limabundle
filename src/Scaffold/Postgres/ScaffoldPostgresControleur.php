@@ -195,7 +195,7 @@ class $ObjetCreate extends AbstractController
             if (count(\$lignes) > 0 ) {
 
                 \$handle = fopen('php://output', 'w');
-                \$d = ','; 
+                \$d = ';'; 
                 \$e = '\"';
     
                 foreach(\$lignes as \$ligne) {
