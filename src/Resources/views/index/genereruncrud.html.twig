@@ -1,93 +1,116 @@
 {% extends 'base.html.twig' %}
 {% block title %} {{ headtitle }} {% endblock %}
 {% block body %}
-{{ include('navigation.html.twig') }}
-<!-- GENERER UN CRUD -->
-<div class="row">
-<div class="col">
-<div class="card mb-3 ml-3 mr-3 mt-3">
-<div class="card-header breadcrumb-item small">Générer un SCRUD dans {{ affichebasedonnee }}</div>
-<div class="card-body">
-    <form method="post" action="">
-        <div class="form-group row">
-            <label for="tables" class="col-2 col-form-label">&nbsp;</label>
-            <div class="form-group row">
-                    <input type="hidden" name="_token" value="generer">
-            </div>
-            <div class="col-10">
-                {% for table in listetables %}
-                    {% if table != 'doctrine_migration_versions' %}
+	{{ include('navigation.html.twig') }}
+	<!-- GENERER UN CRUD -->
+	<div class="row">
+		<div class="col">
+			<div class="card m-3">
+				<div class="card-header breadcrumb-item small">Générer un SCRUD dans {{ affichebasedonnee | upper }}</div>
+				<div class="card-body">
+					<form method="post" action="">
                         <div class="form-group row">
-                            <input type="checkbox" class="checkClass" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
-                            &nbsp;&nbsp;
-                            <a href="/{{ table }}">{{ table | capitalize }}</a>
+                            <input type="hidden" name="_token" value="generer">
                         </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-3">
-                <input type="radio" id="cocher" title="Tout cocher"> Cocher 
-                    &nbsp;&nbsp; 
-                <input type="radio" id="decocher" title="Tout décocher" checked> Décocher
-            </div>
-        </div>      
-        <div class="form-group row">
-        <label for="namespace" class="col-3 col-form-label">Namespace : </label>
-            <div class="col-3">
-                <input type="text" name="namespace" id="switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
-            </div>
-            <div class="col-3">
-                <input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="switchActif" checked>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-3">Template : 
-                <input type="radio" name="vue" value="1" title="Ajouter une vue" checked> 1 vue
-                    &nbsp;&nbsp; 
-                <input type="radio" name="vue" value="2" title="Ajouter 2 vues"> 2 vues
-            </div>
-            <div class="col-3">Filtre Twig : 
-                <input type="radio" name="filtre" value="OUI" title="Ajouter un filtre" checked> Oui
-                    &nbsp;&nbsp;
-                <input type="radio" name="filtre" value="NON" title="Ne pas ajouter de filtre"> Non
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary" title="Générer un Crud dans {{ affichebasedonnee }}">Générer</button>
-            </div>
-        </div>
-    </form>
-</div>
-</div>
-</div>
-</div>
-<!-- GENERER UN CRUD -->
+                        <div class="row">
+                            <div class="col-sm-7 mt-5">
+                                <div class="form-group row">
+                                    <div class="col-4 mb-2">Template :&nbsp;
+                                        <input type="radio" name="vue" value="1" title="Ajouter une vue" checked> 1 vue
+                                            &nbsp;&nbsp;
+                                        <input type="radio" name="vue" value="2" title="Ajouter 2 vues"> 2 vues
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="namespace" class="col-2 col-form-label">Namespace :</label>
+                                    <div class="col-4 mb-2">
+                                        <input type="text" name="namespace" id="switch" enabled="enabled" class="form-control" autocomplete="off" value="/{{ affichebasedonnee | capitalize }}">
+                                    </div>
+                                    <div class="col-1 mb-2">
+                                        <input type="checkbox" name="reponsenamespace" title="Activer ou pas le namespace" id="switchActif" checked>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-4 mb-5">Filtre Twig :
+                                        <input type="radio" name="filtre" value="OUI" title="Ajouter un filtre" checked> Oui
+                                            &nbsp;&nbsp;
+                                        <input type="radio" name="filtre" value="NON" title="Ne pas ajouter de filtre"> Non
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col mb-2"><code class="text-primary">Générer :</code>
+                                            &nbsp;&nbsp;
+                                        <input type="checkbox" name="controller" value="controller" title="Générer Controller" checked>&nbsp;&nbsp;Controller
+                                            &nbsp;&nbsp;
+                                        <input type="checkbox" name="entity" value="entity" title="Générer Entity" checked>&nbsp;&nbsp;Entity
+                                            &nbsp;&nbsp;
+                                        <input type="checkbox" name="form" value="form" title="Générer Form" checked>&nbsp;&nbsp;Form
+                                            &nbsp;&nbsp;
+                                        <input type="checkbox" name="repository" value="repository" title="Générer Repository" checked>&nbsp;&nbsp;Repository
+                                            &nbsp;&nbsp;
+                                        <input type="checkbox" name="template" value="template" title="Générer Template" checked>&nbsp;&nbsp;Template
+                                            &nbsp;&nbsp;
+                                        <input type="checkbox" name="test" value="test" title="Générer Test">&nbsp;&nbsp;Test (Entity)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group row">
+                                    <div class="col-4">
+                                        <input type="radio" id="cocher" title="Tout cocher"> Cocher 
+                                            &nbsp;&nbsp;
+                                        <input type="radio" id="decocher" title="Tout décocher" checked> Décocher
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-4 ml-4">
+                                        {% for table in listetables %}
+                                            {% if table != 'doctrine_migration_versions' %}
+                                                <div class="form-group row">
+                                                    <input type="checkbox" class="checkClass" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
+                                                        &nbsp;&nbsp;
+                                                    <a href="/{{ table }}">{{ table | capitalize }}</a>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-7">&nbsp;</div>
+                            <div class="col">
+                                <button type="submit" class="btn btn-primary" title="Générer un Crud dans {{ affichebasedonnee }}">Générer</button>
+                            </div>
+                        </div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- GENERER UN CRUD -->
 <script type="text/javascript">
-	document.getElementById('switchActif').onclick = function() {
-		var $switch = document.getElementById('switch');
-		$switch.disabled = !$switch.disabled;
-	};
+	document.getElementById('switchActif').onclick = function () {
+        var $switch = document.getElementById('switch');
+        $switch.disabled = ! $switch.disabled;
+    };
 </script>
 <script type="text/javascript">
-$(document).ready(function(){
-	// TOUT COCHER
-	$(":radio#cocher").click(function(){
-	$(':checkbox.checkClass').prop('checked', true);
-	$(":radio#decocher").prop('checked', false);
-	});
-	// TOUT DECOCHER
-	$(":radio#decocher").click(function(){
-	$(':checkbox.checkClass').prop('checked', false);
-	$(":radio#cocher").prop('checked', false);
-	});
-	// UNCHECK SI UNE CHECKBOX EST SELECTIONNEE
-	$(':checkbox.checkClass').click(function(){
-	$(":radio#cocher").prop('checked', false);
-	$(":radio#decocher").prop('checked', false);
-	});
+	$(document).ready(function () { // TOUT COCHER
+    $(":radio#cocher").click(function () {
+    $(':checkbox.checkClass').prop('checked', true);
+    $(":radio#decocher").prop('checked', false);
+    });
+    // TOUT DECOCHER
+    $(":radio#decocher").click(function () {
+    $(':checkbox.checkClass').prop('checked', false);
+    $(":radio#cocher").prop('checked', false);
+    });
+    // UNCHECK SI UNE CHECKBOX EST SELECTIONNEE
+    $(':checkbox.checkClass').click(function () {
+    $(":radio#cocher").prop('checked', false);
+    $(":radio#decocher").prop('checked', false);
+    });
 });
 </script>
 {% endblock %}

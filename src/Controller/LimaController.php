@@ -622,22 +622,44 @@ class LimaController extends AbstractController
                 foreach ($options as $option) {
 
                     // commun a Mysql et PostgreSql
-                    $scaffoldPostgresControleur->genererPostgresControleur($option, $vue, $namespace);
-                    $scaffoldPostgresExtension->genererPostgresExtension($option, $filtre, $namespace);
-
-                    if ($driver == 'pgsql') {
-                        $scaffoldPostgresEntity->genererPostgresEntity($option, $namespace);
-                        $scaffoldPostgresForm->genererPostgresForm($option, $namespace);
-                        $scaffoldPostgresRepository->genererPostgresRepository($option, $namespace);
-                        $scaffoldPostgresVue->genererPostgresVue($option, $vue, $namespace);
-                        $scaffoldPostgresTestEntity->genererPostgresTestEntity($option, $namespace);
+                    if ($request->request->get('controller') == 'controller') {
+                        $scaffoldPostgresControleur->genererPostgresControleur($option, $vue, $namespace);
+                        $scaffoldPostgresExtension->genererPostgresExtension($option, $filtre, $namespace);
                     }
-                    else {
-                        $scaffoldMysqlEntity->genererMysqlEntity($option, $namespace);
-                        $scaffoldMysqlForm->genererMysqlForm($option, $namespace);
-                        $scaffoldMysqlRepository->genererMysqlRepository($option, $namespace);
-                        $scaffoldMysqlVue->genererMysqlVue($option, $vue, $namespace);
-                        $scaffoldMysqlTestEntity->genererMysqlTestEntity($option, $namespace);
+
+                    if ($driver == 'pgsql') {   // PostgreSql
+                        if ($request->request->get('entity') == 'entity') {
+                            $scaffoldPostgresEntity->genererPostgresEntity($option, $namespace);
+                        }
+                        if ($request->request->get('form') == 'form') {
+                            $scaffoldPostgresForm->genererPostgresForm($option, $namespace);
+                        }
+                        if ($request->request->get('repository') == 'repository') {
+                            $scaffoldPostgresRepository->genererPostgresRepository($option, $namespace);
+                        }
+                        if ($request->request->get('template') == 'template') {
+                            $scaffoldPostgresVue->genererPostgresVue($option, $vue, $namespace);
+                        }
+                        if ($request->request->get('test') == 'test') {
+                            $scaffoldPostgresTestEntity->genererPostgresTestEntity($option, $namespace);
+                        }
+                    }
+                    else {  // Mysql
+                        if ($request->request->get('entity') == 'entity') {
+                            $scaffoldMysqlEntity->genererMysqlEntity($option, $namespace);
+                        }
+                        if ($request->request->get('form') == 'form') {
+                            $scaffoldMysqlForm->genererMysqlForm($option, $namespace);
+                        }
+                        if ($request->request->get('repository') == 'repository') {
+                            $scaffoldMysqlRepository->genererMysqlRepository($option, $namespace);
+                        }
+                        if ($request->request->get('template') == 'template') {
+                            $scaffoldMysqlVue->genererMysqlVue($option, $vue, $namespace);
+                        }
+                        if ($request->request->get('test') == 'test') {
+                            $scaffoldMysqlTestEntity->genererMysqlTestEntity($option, $namespace);
+                        }
                     }
 
                     $this->addFlash('success', 'La création du SCRUD ' . $option . ' a été un succès');
