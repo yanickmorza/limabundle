@@ -1047,7 +1047,7 @@ class RegistrationFormType extends AbstractType
         // ------- Supprimer templates Registration -------
 
         // ------- Supprimer Entity Option (Objet) --------
-        if ($namespace !== null) {
+        /* if ($namespace !== null) {
             $path_entity = "../src/Entity/" . $namespace . "/" . ucfirst($option) . ".php";
         } 
         else {
@@ -1055,7 +1055,7 @@ class RegistrationFormType extends AbstractType
         }
         if (file_exists($path_entity)) {
             unlink($path_entity);
-        }
+        } */
         // ------- Supprimer Entity Option (Objet) --------
 
         // -------- Supprimer FORM Option (Objet) ---------  

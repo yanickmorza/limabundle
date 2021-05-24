@@ -134,16 +134,20 @@ class $ObjetRepository extends EntityRepository implements ServiceEntityReposito
         \$tmp_file = \$_FILES['charger']['tmp_name'];
         
         if ((\$tmp_file) && (\$tmp_file != \"none\")) {
+
             \$path_cache = \"../var/tmp/\".\$_FILES['charger']['name'];
+
 			move_uploaded_file (\$tmp_file, \$path_cache);
+
 				\$file = \$path_cache;
 				\$fichier = file_get_contents(\$path_cache);
+
                 \$newfile = trim(\$fichier);
                 file_put_contents(\$file, \$newfile);
+
                 \$handle = fopen(\$path_cache, \"r\");
-                    while (!feof(\$handle)) {
-                        \$buffer = fgets(\$handle);
-						\$data = explode(\";\",\$buffer);
+
+                    while ((\$data = fgetcsv(\$handle, 0, ";")) !== FALSE) {
 						$ChampData
                         \$rawSql = \"$insert\";
                         \$stmt = \$this->getEntityManager()->getConnection()->prepare(\$rawSql);
