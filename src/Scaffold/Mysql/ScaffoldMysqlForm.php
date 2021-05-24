@@ -102,16 +102,22 @@ class ScaffoldMysqlForm
                     }
 
                     if ($type == 'date') {
-                        $champs_form .= "->add('$champ', DateType::class, ['widget' => 'single_text', 'format' => 'yyyy-MM-dd', 'data' => new \DateTime()])\n\t\t";
+                        $champs_form .= "->add('$champ', DateType::class, [
+            'widget' => 'single_text',
+            'format' => 'yyyy-MM-dd',
+            'data' => new \DateTime()])\n\t\t";
                     } elseif ($type == 'datetime') {
-                        $champs_form .= "->add('$champ', DateTimeType::class, ['widget' => 'single_text', 'input_format' => 'yyyy-MM-dd', 'data' => new \DateTime()])\n\t\t";
+                        $champs_form .= "->add('$champ', DateTimeType::class, [
+            'widget' => 'single_text',
+            'input_format' => 'yyyy-MM-dd',
+            'data' => new \DateTime()])\n\t\t";
                     } elseif ($type == 'json') {
                         $Champ = ucfirst(substr($field, 0, -1));
                         $entityClass .= "use App\Entity$nameSpace\\$Field;\n";
                         $champs_form .= "->add('$champ', ChoiceType::class, [
-            'choices' => \$this->getChoix$Field(), 
-            'expanded' => true, 
-            'multiple' => true, 
+            'choices' => \$this->getChoix$Field(),
+            'expanded' => true,
+            'multiple' => true,
             'required' => false])\n\t\t";
 
                         $n = ($n + 1);
@@ -133,7 +139,11 @@ class ScaffoldMysqlForm
                         $fonction .= "return \$choix;\n\t";
                         $fonction .= "}\n\n\t";
                     } elseif ($type == 'boolean') {
-                        $champs_form .= "->add('$champ', ChoiceType::class, ['attr' => ['class' => 'custom-select border-lima'], 'choices' => ['OUI' => true, 'NON' => false], 'placeholder' => '--- Choisir dans la liste ---', 'required' => true])\n\t\t";
+                        $champs_form .= "->add('$champ', ChoiceType::class, [
+            'placeholder' => '--- Choisir dans la liste ---',
+            'choices' => ['OUI' => true, 'NON' => false],
+            'attr' => ['class' => 'custom-select border-lima'],
+            'required' => true])\n\t\t";
                     } elseif ($type == 'text') {
                         $champs_form .= "->add('$champ', TextareaType::class, ['required' => false])\n\t\t";
                     } else {
@@ -171,9 +181,9 @@ class ScaffoldMysqlForm
                     $fonction .= "}\n\n\t";
 
                     $champs_form .= "->add('$champ', ChoiceType::class, [
+            'placeholder' => '--- Choisir dans la liste ---',
             'choices' => \$this->getChoix$Class(),
             'choice_label' => 'id',
-            'placeholder' => '--- Choisir dans la liste ---', 
             'label' => '$Class :',
             'expanded' => false,
             'multiple' => false,
