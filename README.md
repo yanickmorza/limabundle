@@ -9,6 +9,7 @@
 
 - 1 - <code>composer require yanickmorza/limabundle</code>
 - 2 - <code>php vendor/yanickmorza/limabundle/src/Command/installation.php</code>
+- 3 - <code>Pour éviter un message d'erreur, renseigner le fichier .env.local pour créer le bridge Symfony/Doctrine.</code>
 
 # Démarrer
 

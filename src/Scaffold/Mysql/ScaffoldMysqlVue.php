@@ -141,7 +141,7 @@ class ScaffoldMysqlVue
 {% block body %}
 <div class=\"row\">
 <div class=\"col-sm-4\">
-<div class=\"card mt-3 mb-3 ml-3 border-lima\">
+<div class=\"card m-3 shadow border-lima\">
 {% if edition %}
 <div class=\"card-header breadcrumb-item small bg-lima\">
     <a href=\"{{ path('$nameIndex') }}\" class=\"float-right\" title=\"Fermer\"><img src=\"{{ asset('bundles/lima/assets/images/fermer_24.png') }}\"></a>
@@ -161,7 +161,7 @@ class ScaffoldMysqlVue
 </div>
 
 <div class=\"col-sm-8\">
-<div class=\"card mt-3 mb-3 mr-3 border-lima\">
+<div class=\"card m-3 shadow border-lima\">
 <div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
 <div class=\"card-body\">
 <div class=\"table-responsive\">
@@ -287,7 +287,7 @@ class ScaffoldMysqlVue
 {% block body %}
 <div class=\"row\">
 <div class=\"col\">
-<div class=\"card mt-3 mb-3 ml-3 mr-3 border-lima\">
+<div class=\"card m-3 shadow border-lima\">
 <div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
 <div class=\"card-body\">
 <div class=\"table-responsive\">
@@ -378,7 +378,7 @@ class ScaffoldMysqlVue
 {% block body %}
 <div class=\"row\">
 <div class=\"col\">
-<div class=\"card mt-3 mb-3 ml-3 mr-3 border-lima\">
+<div class=\"card m-3 shadow border-lima\">
 <div class=\"card-header breadcrumb-item small bg-lima\">
     <a href=\"{{ path('$nameIndex') }}\" class=\"float-right\" title=\"Fermer\"><img src=\"{{ asset('bundles/lima/assets/images/fermer_24.png') }}\"></a>
 </div>
