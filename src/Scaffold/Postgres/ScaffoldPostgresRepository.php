@@ -132,7 +132,7 @@ class $ObjetRepository extends EntityRepository implements ServiceEntityReposito
     public function uploaderDonnee$Objet()
 	{
         \$tmp_file = \$_FILES['charger']['tmp_name'];
-        \$colonnes = \$this->getEntityManager()->getConnection()->getSchemaManager()->listTableColumns('sites');
+        \$colonnes = \$this->getEntityManager()->getConnection()->getSchemaManager()->listTableColumns('$objet');
 
         \$parameter = '';
         \$values = '';
@@ -175,7 +175,7 @@ class $ObjetRepository extends EntityRepository implements ServiceEntityReposito
 						}
 					}
 
-                    \$rawSql = \"INSERT INTO sites (\$parameter) VALUES (\$values)\";
+                    \$rawSql = \"INSERT INTO $objet (\$parameter) VALUES (\$values)\";
             		\$execution = \$this->getEntityManager()->getConnection()->prepare(\$rawSql)->executeQuery(\$datas);
 				}
 
