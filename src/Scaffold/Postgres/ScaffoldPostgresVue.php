@@ -125,18 +125,18 @@ class ScaffoldPostgresVue
 <div class=\"row\">
 <div class=\"col-sm-4\">
 <div class=\"card shadow border-lima\">
-{% if edition %}
-<div class=\"card-header breadcrumb-item small bg-lima\">
-    <a href=\"{{ path('$nameIndex') }}\" class=\"float-right\" title=\"Fermer\"><img src=\"{{ asset('bundles/lima/assets/images/fermer_24.png') }}\"></a>
-</div>
-{% else %}
-<div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
-{% endif %}
 <div class=\"card-body\">
     {{ form_start(form) }}
     $form_widget
-    <div class=\"col\">
-        <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+    <div class=\"row\">
+        {% if edition %}
+        <div class=\"col-2\">
+            <a href=\"{{ path('$nameIndex') }}\" class=\"btn btn-primary\">Fermer</a>
+        </div>
+        {% endif %}
+        <div class=\"col-2\">
+            <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+        </div>
     </div>
     {{ form_end(form) }}
 </div>
@@ -145,7 +145,6 @@ class ScaffoldPostgresVue
 
 <div class=\"col-sm-8\">
 <div class=\"card shadow border-lima\">
-<div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
 <div class=\"card-body\">
 <div class=\"table-responsive\">
 <table class=\"table\" id=\"dataTable\">
@@ -271,7 +270,6 @@ class ScaffoldPostgresVue
 <div class=\"row\">
 <div class=\"col\">
 <div class=\"card shadow border-lima\">
-<div class=\"card-header breadcrumb-item small bg-lima\">&nbsp;</div>
 <div class=\"card-body\">
 <div class=\"table-responsive\">
 <table class=\"table\" id=\"dataTable\">
@@ -362,14 +360,16 @@ class ScaffoldPostgresVue
 <div class=\"row\">
 <div class=\"col\">
 <div class=\"card shadow border-lima\">
-<div class=\"card-header breadcrumb-item small bg-lima\">
-    <a href=\"{{ path('$nameIndex') }}\" class=\"float-right\" title=\"Fermer\"><img src=\"{{ asset('bundles/lima/assets/images/fermer_24.png') }}\"></a>
-</div>
 <div class=\"card-body\">
     {{ form_start(form) }}
     $form_widget
-    <div class=\"col\">
-        <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+    <div class=\"row\">
+        <div class=\"col-1\">
+            <a href=\"{{ path('$nameIndex') }}\" class=\"btn btn-primary\">Fermer</a>
+        </div>
+        <div class=\"col-1\">
+            <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+        </div>
     </div>
     {{ form_end(form) }}
 </div>
