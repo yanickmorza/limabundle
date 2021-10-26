@@ -4,8 +4,7 @@
     "description": "Light Interface Maker Application",
     "homepage": "https://github.com/yanickmorza/limabundle",
     "license": "MIT",
-    "minimum-stability": "stable",
-    "prefer-stable": true,
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Yanick Morza",
