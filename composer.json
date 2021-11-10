@@ -5,6 +5,7 @@
     "homepage": "https://github.com/yanickmorza/limabundle",
     "license": "MIT",
     "minimum-stability": "stable",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Yanick Morza",
