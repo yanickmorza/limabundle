@@ -66,6 +66,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ManagerRegistry;
 use $entity;
 use $form;
 use $reposi;
@@ -78,7 +79,7 @@ class $ObjetCreate extends AbstractController
     * @Route(\"/$objet\", name=\"$nameIndex\", methods={\"GET\",\"POST\"})
     * /*** SecurityFunction ***
     */
-    public function index(Request \$request, $ObjetRepository \$liste/**/): Response
+    public function index(Request \$request, ManagerRegistry \$registry, $ObjetRepository \$liste/**/): Response
     {  	
         \$objet = new $Objet();       
         \$form = \$this->createForm($ObjetType::class, \$objet);
@@ -86,7 +87,7 @@ class $ObjetCreate extends AbstractController
         
         if (\$form->isSubmitted() && \$form->isValid()) {
             /***/
-            \$entityManager = \$this->getDoctrine()->getManager('$db');
+            \$entityManager = \$registry->getManager('$db');
             \$entityManager->persist(\$objet);
             \$entityManager->flush();
             
@@ -108,14 +109,15 @@ class $ObjetCreate extends AbstractController
     * @Route(\"/$objet/{id}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
     * /*** SecurityFunction ***
     */
-    public function edit(Request \$request, $Objet \$objet, $ObjetRepository \$liste/**/): Response
+    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$objet, $ObjetRepository \$liste/**/): Response
     {	
         \$form = \$this->createForm($ObjetType::class, \$objet);
         \$form->handleRequest(\$request);
 
         if (\$form->isSubmitted() && \$form->isValid()) {
             /****/
-            \$this->getDoctrine()->getManager('$db')->flush();          
+            \$entityManager = \$registry->getManager('$db');
+            \$entityManager->flush();
             \$this->addFlash('success', 'La modification a été un succès');
             
             return \$this->redirectToRoute('$nameIndex');
@@ -137,13 +139,13 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id}/delete\", name=\"$nameDelete\", methods={\"DELETE\"})
+    * @Route(\"/$objet/{id}/delete\", name=\"$nameDelete\", methods={\"POST\"})
     * /*** SecurityFunction ***
     */
-    public function delete(Request \$request, $Objet \$id): Response
+    public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
     {   	
         if (\$this->isCsrfTokenValid('delete'.\$id->getId(), \$request->request->get('_token'))) {
-            \$entityManager = \$this->getDoctrine()->getManager('$db');
+            \$entityManager = \$registry->getManager('$db');
             \$entityManager->remove(\$id);
             \$entityManager->flush();          
             
@@ -227,6 +229,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Persistence\ManagerRegistry;
 use $entity;
 use $form;
 use $reposi;
@@ -252,7 +255,7 @@ class $ObjetCreate extends AbstractController
     * @Route(\"/$objet/new\", name=\"$nameNew\", methods={\"GET\",\"POST\"})
     * /*** SecurityFunction ***
     */
-    public function new(Request \$request/**/): Response
+    public function new(Request \$request, ManagerRegistry \$registry/**/): Response
     {	
         \$objet = new $Objet();       
         \$form = \$this->createForm($ObjetType::class, \$objet);
@@ -260,7 +263,7 @@ class $ObjetCreate extends AbstractController
         
         if (\$form->isSubmitted() && \$form->isValid()) {
             /***/
-            \$entityManager = \$this->getDoctrine()->getManager('$db');
+            \$entityManager = \$registry->getManager('$db');
             \$entityManager->persist(\$objet);
             \$entityManager->flush();
             
@@ -280,14 +283,15 @@ class $ObjetCreate extends AbstractController
     * @Route(\"/$objet/{id}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
     * /*** SecurityFunction ***
     */
-    public function edit(Request \$request, $Objet \$objet/**/): Response
+    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$objet/**/): Response
     {  	
         \$form = \$this->createForm($ObjetType::class, \$objet);
         \$form->handleRequest(\$request);
 
         if (\$form->isSubmitted() && \$form->isValid()) {
             /****/
-            \$this->getDoctrine()->getManager('$db')->flush();          
+            \$entityManager = \$registry->getManager('$db');
+            \$entityManager->flush();
             \$this->addFlash('success', 'La modification a été un succès');
             
             return \$this->redirectToRoute('$nameIndex');
@@ -307,13 +311,13 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id}/delete\", name=\"$nameDelete\", methods={\"DELETE\"})
+    * @Route(\"/$objet/{id}/delete\", name=\"$nameDelete\", methods={\"POST\"})
     * /*** SecurityFunction ***
     */
-    public function delete(Request \$request, $Objet \$id): Response
+    public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
     {   	
         if (\$this->isCsrfTokenValid('delete'.\$id->getId(), \$request->request->get('_token'))) {
-            \$entityManager = \$this->getDoctrine()->getManager('$db');
+            \$entityManager = \$registry->getManager('$db');
             \$entityManager->remove(\$id);
             \$entityManager->flush();          
             
