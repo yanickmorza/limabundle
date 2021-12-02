@@ -9,6 +9,8 @@ class ScaffoldPostgresExtension
     {
         if ($filtre == "OUI") {
 
+            $Objet = ucfirst($objet);
+
             if ($namespace !== null) {
                 @mkdir("../src/Twig/".$namespace, 0755, true);
                 $path_extension = "../src/Twig/".$namespace;
@@ -20,16 +22,15 @@ class ScaffoldPostgresExtension
                     mkdir("../src/Twig/", 0755, true);
                     $path_extension = "../src/Twig";
                     $nameSpace = "";
-                    $entity =  "App\Entity\\$objet";
+                    $entity =  "App\Entity\\$Objet";
                 }
                 else {
                     $path_extension = "../src/Twig";
                     $nameSpace = "";
-                    $entity =  "App\Entity\\$objet";
+                    $entity =  "App\Entity\\$Objet";
                 }
             }
 
-            $Objet = ucfirst($objet);
             $ObjetExtension = $Objet."Extension";
             $ObjetsMajSingulier = substr($Objet, 0, -1);
             $objetsMinSingulier = substr($objet, 0, -1);
