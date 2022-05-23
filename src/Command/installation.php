@@ -1,11 +1,11 @@
 <?php
 
-$filename = "config/routes/dev/lima_bundle.yaml";
+$filename = "config/routes/lima_bundle.yaml";
 
 if (!file_exists($filename)) {
 
     // **** Ecriture dans le fichier lima_bundle.yaml ****
-    $path = "config/routes/dev/lima_bundle.yaml";
+    $path = "config/routes/lima_bundle.yaml";
     fopen($path, "w+");
 
     $texte = "app_file:
@@ -21,7 +21,7 @@ if (!file_exists($filename)) {
     fopen($path, "a");
 
     $texte = "    App\LimaBundle\:
-            resource: '../vendor/yanickmorza/limabundle/src/'";
+        resource: '../vendor/yanickmorza/limabundle/src/'";
 
     file_put_contents($path, PHP_EOL.$texte, FILE_APPEND);
     // **** Ecriture dans le fichier services.yaml ****
@@ -56,10 +56,4 @@ if (!file_exists($filename)) {
     copy('vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig', 'templates/_flashes.html.twig');
     copy('vendor/yanickmorza/limabundle/src/Command/base.html.twig', 'templates/base.html.twig');
     // *** Copier les fichiers base.html.twig, _flashes.html.twig dans templates ***
-
-    // ***** Supprimer composer-sf4-5.txt ****
-    @unlink('composer-sf4.txt');
-    @unlink('composer-sf5.txt');
-    // ***** Supprimer composer-sf4-5.txt ****
-
 }
