@@ -13,8 +13,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2.5",
-        "symfony/mailer": "5.4.*"
+        "php": ">=7.2.5"
     },
     "config": {
         "optimize-autoloader": true
