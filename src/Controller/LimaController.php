@@ -139,7 +139,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'uploaderFunction') {
 
                 $namespace = trim($request->request->get('namespace', null, true));
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
                 $intitule = $request->request->get('intitule', null, true);
 
                     foreach ($options as $objet) {
@@ -208,7 +208,7 @@ class LimaController extends AbstractController
             elseif ($request->request->get('_token') == 'swiftmailerFunction') {
 
                 $namespace = trim($request->request->get('namespace', null, true));
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
 
                 foreach ($options as $objet) {
                     $scaffoldPostgresSwiftMailerFunction->swiftMailerPostgresFunction($namespace, $objet);
@@ -318,7 +318,7 @@ class LimaController extends AbstractController
 
             if ($request->request->get('_token') == 'generersecurite') {
 
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
                 $namespace = $request->request->get('namespace', null, true);
                 $securite = $request->request->get('securite', null, true);
                 $role = $request->request->get('role', null, true);
@@ -334,7 +334,7 @@ class LimaController extends AbstractController
             } 
             elseif ($request->request->get('_token') == 'authentification') {
 
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
                 $namespace = $request->request->get('namespace', null, true);
                 $authuser = $request->request->get('authuser', null, true);
 
@@ -407,7 +407,7 @@ class LimaController extends AbstractController
 
             if ($request->request->get('_token') == 'enregistrerrelation') {
 
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
                 $namespace = $request->request->get('namespace', null, true);
                 $relation = $request->request->get('relation', null, true);
                 $othernamespace = $request->request->get('othernamespace', null, true);
@@ -475,7 +475,7 @@ class LimaController extends AbstractController
 
             if ($request->request->get('_token') == 'supprimer') {
 
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
                 $namespace = $request->request->get('namespace', null, true);
 
                 foreach ($options as $option) {
@@ -616,7 +616,7 @@ class LimaController extends AbstractController
 
                 $vue = $request->request->get('vue', null, true);
                 $filtre = $request->request->get('filtre', null, true);
-                $options = $request->request->get('options', null, true);
+                $options = $request->request->all()['options'];
                 $namespace = $request->request->get('namespace', null, true);
 
                 foreach ($options as $option) {
