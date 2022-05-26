@@ -509,7 +509,7 @@ class LimaController extends AbstractController
             if ($request->request->get('_token') == 'supprimerrepertoire') {
 
                 $repertoire = $request->request->get('repertoire', null, true);
-                $tables = $request->request->get('tables', null, true);
+                $tables = $request->request->all()['tables'];
 
                 $pathController = "../src/Controller/" . $repertoire;
                 $pathEntity = "../src/Entity/" . $repertoire;
