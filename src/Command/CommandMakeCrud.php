@@ -104,7 +104,7 @@ final class CommandMakeCrud extends AbstractMaker
 
         //$this->generateTests = $io->confirm('Do you want to generate tests for the controller?. [Experimental]', false);
 
-        $this->numberviews = $io->confirm('Souhaitez-vous avoir 2 vues ? [(Yes) 2-vues][(No) 3-vues]', true);
+        $this->numberviews = $io->confirm('Souhaitez-vous avoir 1 vue ? [(Yes) 1-vue][(No) 2-vues]', true);
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
@@ -171,7 +171,7 @@ final class CommandMakeCrud extends AbstractMaker
             Route::class,
         ]);
 
-        if ($this->numberviews == true) {   // 2 vues
+        if ($this->numberviews == true) {   // 1 vues
             $generator->generateController(
                 $controllerClassDetails->getFullName(),
                 __DIR__.'/../Resources/skeleton/crud/controller/1/Controller.tpl.php',
@@ -192,7 +192,7 @@ final class CommandMakeCrud extends AbstractMaker
                     $repositoryVars
                 )
             );
-        } else {    // 3 vues
+        } else {    // 2 vues
             $generator->generateController(
                 $controllerClassDetails->getFullName(),
                 __DIR__.'/../Resources/skeleton/crud/controller/2/Controller.tpl.php',
@@ -229,6 +229,8 @@ final class CommandMakeCrud extends AbstractMaker
             ],
             '_form' => [
                 'route_name' => $routeName,
+                'entity_identifier' => $entityDoctrineDetails->getIdentifier(),
+                'entity_twig_var_singular' => $entityTwigVarSingular,
             ],
             'edit' => [
                 'entity_class_name' => $entityClassDetails->getShortName(),
@@ -326,12 +328,15 @@ final class CommandMakeCrud extends AbstractMaker
 
         $this->writeSuccessMessage($io);
 
-        if ($this->numberviews == true) {   // 2 vues
+        if ($this->numberviews == true) {   // 1 vue
             unlink('templates/'.$templatesPath.'/_form.html.twig');
             unlink('templates/'.$templatesPath.'/new.html.twig');
             unlink('templates/'.$templatesPath.'/edit.html.twig');
             unlink('templates/'.$templatesPath.'/show.html.twig');
-            $io->info(['Supprimé du dossier templates/'.$templatesPath.':', 'new.html.twig', 'edit.html.twig', '_form.html.twig', 'show.html.twig', 'Ces templates ne sont pas utilisés dans les 2 vues.',]);
+            $io->info(['Supprimé du dossier templates/'.$templatesPath.':', 'new.html.twig', 'edit.html.twig', '_form.html.twig', 'show.html.twig', 'Ces templates ne sont pas utilisés dans les vues.',]);
+        } else {    // 2 vues
+            unlink('templates/'.$templatesPath.'/show.html.twig');
+            $io->info(['Supprimé du dossier templates/'.$templatesPath.':', 'show.html.twig', 'Ce template n\'est pas utilisé dans les vues.',]);
         }
 
         // $io->text(sprintf('Ensuite: Retrouvez votre nouveau CRUD en allant sur <fg=yellow>%s/</>', Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix())));
@@ -375,4 +380,5 @@ final class CommandMakeCrud extends AbstractMaker
         );
     }
 }
+
 

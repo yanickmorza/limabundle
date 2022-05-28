@@ -49,14 +49,14 @@ class <?= $class_name ?> extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $<?= $repository_var ?>->add($<?= $entity_var_singular ?>, true);
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } else { ?>
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($<?= $entity_var_singular ?>);
             $entityManager->flush();
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } ?>
 
@@ -64,20 +64,29 @@ class <?= $class_name ?> extends AbstractController
         return $this->renderForm('<?= $templates_path ?>/new.html.twig', [
             '<?= $entity_twig_var_singular ?>' => $<?= $entity_var_singular ?>,
             'form' => $form,
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } else { ?>
         return $this->render('<?= $templates_path ?>/new.html.twig', [
             '<?= $entity_twig_var_singular ?>' => $<?= $entity_var_singular ?>,
             'form' => $form->createView(),
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } ?>
     }
 
-<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}', $entity_identifier), sprintf('%s_show', $route_name), ['GET']) ?>
-    public function show(<?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
+<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}show', $entity_identifier), sprintf('%s_show', $route_name), ['GET']) ?>
+    public function show(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
-        return $this->render('<?= $templates_path ?>/show.html.twig', [
+        $form = $this->createForm(<?= $form_class_name ?>::class, $<?= $entity_var_singular ?>, ['disabled' => true]);
+        $form->handleRequest($request);
+
+        return $this->renderForm('<?= $templates_path ?>/edit.html.twig', [
             '<?= $entity_twig_var_singular ?>' => $<?= $entity_var_singular ?>,
+            'form' => $form,
+            'is_show' => true,
         ]);
     }
 
@@ -95,13 +104,13 @@ class <?= $class_name ?> extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $<?= $repository_var ?>->add($<?= $entity_var_singular ?>, true);
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } else { ?>
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } ?>
 
@@ -109,11 +118,15 @@ class <?= $class_name ?> extends AbstractController
         return $this->renderForm('<?= $templates_path ?>/edit.html.twig', [
             '<?= $entity_twig_var_singular ?>' => $<?= $entity_var_singular ?>,
             'form' => $form,
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } else { ?>
         return $this->render('<?= $templates_path ?>/edit.html.twig', [
             '<?= $entity_twig_var_singular ?>' => $<?= $entity_var_singular ?>,
             'form' => $form->createView(),
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } ?>
     }
@@ -136,6 +149,7 @@ class <?= $class_name ?> extends AbstractController
         }
 <?php } ?>
 
-        return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('<?= $route_name ?>_index');
     }
 }
+
