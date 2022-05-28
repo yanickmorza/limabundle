@@ -23,10 +23,10 @@ if (!file_exists($filename)) {
     $texte = "    App\LimaBundle\:
         resource: '../vendor/yanickmorza/limabundle/src/'
 
-        app.lima_bundle.command.command_make_crud:
-            class: App\LimaBundle\Command\CommandMakeCrud
-            arguments: ['@maker.doctrine_helper', '@maker.renderer.form_type_renderer']
-        ";
+    app.lima_bundle.command.command_make_crud:
+        class: App\LimaBundle\Command\CommandMakeCrud
+        arguments: ['@maker.doctrine_helper', '@maker.renderer.form_type_renderer']
+    ";
 
     file_put_contents($path, PHP_EOL.$texte, FILE_APPEND);
     // **** Ecriture dans le fichier services.yaml ****
@@ -58,7 +58,7 @@ if (!file_exists($filename)) {
     // *** Ecriture dans le fichier translation.yaml **
 
     // *** Copier les fichiers base.html.twig, _flashes.html.twig dans templates ***
-    copy('vendor/yanickmorza/limabundle/src/Command/_flashes.html.twig', 'templates/_flashes.html.twig');
-    copy('vendor/yanickmorza/limabundle/src/Command/base.html.twig', 'templates/base.html.twig');
+    copy('vendor/yanickmorza/limabundle/src/Command/twig/_flashes.html.twig', 'templates/_flashes.html.twig');
+    copy('vendor/yanickmorza/limabundle/src/Command/twig/base.html.twig', 'templates/base.html.twig');
     // *** Copier les fichiers base.html.twig, _flashes.html.twig dans templates ***
 }

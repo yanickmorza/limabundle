@@ -104,7 +104,7 @@ final class CommandMakeCrud extends AbstractMaker
 
         //$this->generateTests = $io->confirm('Do you want to generate tests for the controller?. [Experimental]', false);
 
-        $this->numberviews = $io->confirm('Combien de vue souhaitez-vous avoir ?. [1][0]', true);
+        $this->numberviews = $io->confirm('Souhaitez-vous avoir 2 vues ? [(Yes)-2 vues][(No)-3 vues]', true);
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
