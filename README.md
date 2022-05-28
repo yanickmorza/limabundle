@@ -1,5 +1,5 @@
 # LIMA - Light Interface Maker Application
-- C'est un bundle pour le Framework Symfony <code>Versions 4 et 5</code>.
+- C'est un bundle pour le Framework Symfony <code>Versions 5 et 6</code>.
 - Le bundle permet principalement de générer des SCRUD pour un Back-Office (Seach, Create, Read, Update, Delete).
 - Mais il n'est pas uniquement dédiée qu'à cette tache.
 - Le bundle est également en mesure de concevoir une application multicomplexe en Symfony avec 60% de No-code, le reste est à votre libre imagination.
