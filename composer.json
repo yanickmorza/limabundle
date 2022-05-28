@@ -1,17 +1,17 @@
 {
-    "name": "yanickmorza/limabundle",
-    "type": "symfony-bundle",
     "description": "Light Interface Maker Application",
     "homepage": "https://github.com/yanickmorza/limabundle",
+    "name": "yanickmorza/limabundle",
+    "type": "symfony-bundle",
     "license": "MIT",
-    "minimum-stability": "stable",
-    "prefer-stable": true,
+    "keywords": ["generator", "code generator", "scaffolding", "scaffold"],
     "authors": [
         {
             "name": "Yanick Morza",
             "email": "yanick.morza@free.fr"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.2.5"
     },
@@ -30,7 +30,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.0.x-dev"
+            "dev-master": "2.0-dev"
         }
     }
 }
