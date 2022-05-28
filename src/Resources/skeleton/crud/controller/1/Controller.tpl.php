@@ -44,12 +44,14 @@ class <?= $class_name ?> extends AbstractController
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form,
             'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } else { ?>
         return $this->render('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form->createView(),
             'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } ?>
     }
@@ -83,21 +85,29 @@ class <?= $class_name ?> extends AbstractController
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form,
             'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } else { ?>
         return $this->render('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form->createView(),
             'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => false,
         ]);
 <?php } ?>
     }
 
-<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}', $entity_identifier), sprintf('%s_show', $route_name), ['GET']) ?>
-    public function show(<?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
+<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}/show', $entity_identifier), sprintf('%s_show', $route_name), ['GET']) ?>
+    public function show(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>, <?= $repository_class_name ?> $<?= $repository_var ?>): Response
     {
-        return $this->render('<?= $templates_path ?>/show.html.twig', [
-            '<?= $entity_twig_var_singular ?>' => $<?= $entity_var_singular ?>,
+        $form = $this->createForm(<?= $form_class_name ?>::class, $<?= $entity_var_singular ?>, ['disabled' => true]);
+        $form->handleRequest($request);
+
+        return $this->renderForm('<?= $templates_path ?>/index.html.twig', [
+            '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
+            'form' => $form,
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
+            'is_show' => true,
         ]);
     }
 

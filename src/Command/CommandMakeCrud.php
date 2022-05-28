@@ -330,7 +330,8 @@ final class CommandMakeCrud extends AbstractMaker
             unlink('templates/'.$templatesPath.'/_form.html.twig');
             unlink('templates/'.$templatesPath.'/new.html.twig');
             unlink('templates/'.$templatesPath.'/edit.html.twig');
-            $io->info(['Supprimé du dossier templates/'.$templatesPath.':', 'new.html.twig', 'edit.html.twig', '_form.html.twig', 'Ces templates ne sont pas utilisés dans les 2 vues.',]);
+            unlink('templates/'.$templatesPath.'/show.html.twig');
+            $io->info(['Supprimé du dossier templates/'.$templatesPath.':', 'new.html.twig', 'edit.html.twig', '_form.html.twig', 'show.html.twig', 'Ces templates ne sont pas utilisés dans les 2 vues.',]);
         }
 
         // $io->text(sprintf('Ensuite: Retrouvez votre nouveau CRUD en allant sur <fg=yellow>%s/</>', Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix())));

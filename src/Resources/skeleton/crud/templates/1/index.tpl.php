@@ -9,10 +9,12 @@
             <div class="card-body">
                 {{ form_start(form) }}
                     {{ form_widget(form) }}
-                    <button class="btn btn-success">Enregistrer</button>
-                {% if edit %}
-                    <a href="{{ path('<?= $route_name ?>_index') }}" class="btn btn-warning">Fermer</a>
-                {% endif %}
+                        {% if is_show == false %}
+                            <button class="btn btn-success">{{ edit == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+                        {% endif %}
+                        {% if edit %}
+                            <a href="{{ path('<?= $route_name ?>_index') }}" class="btn btn-warning">Fermer</a>
+                        {% endif %}
                 {{ form_end(form) }}
             </div>
         </div>
