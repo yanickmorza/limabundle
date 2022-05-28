@@ -28,14 +28,14 @@ class <?= $class_name ?> extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $<?= $repository_var ?>->add($<?= $entity_var_singular ?>, true);
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } else { ?>
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($<?= $entity_var_singular ?>);
             $entityManager->flush();
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } ?>
 
@@ -43,11 +43,13 @@ class <?= $class_name ?> extends AbstractController
         return $this->renderForm('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form,
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
         ]);
 <?php } else { ?>
         return $this->render('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form->createView(),
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
         ]);
 <?php } ?>
     }
@@ -66,13 +68,13 @@ class <?= $class_name ?> extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $<?= $repository_var ?>->add($<?= $entity_var_singular ?>, true);
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } else { ?>
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('<?= $route_name ?>_index');
         }
 <?php } ?>
 
@@ -80,11 +82,13 @@ class <?= $class_name ?> extends AbstractController
         return $this->renderForm('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form,
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
         ]);
 <?php } else { ?>
         return $this->render('<?= $templates_path ?>/index.html.twig', [
             '<?= $entity_twig_var_plural ?>' => $<?= $repository_var ?>->findAll(),
             'form' => $form->createView(),
+            'edit' => $<?= $entity_var_singular ?>->getId() !== null,
         ]);
 <?php } ?>
     }
@@ -115,6 +119,7 @@ class <?= $class_name ?> extends AbstractController
         }
 <?php } ?>
 
-        return $this->redirectToRoute('<?= $route_name ?>_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('<?= $route_name ?>_index');
     }
 }
+

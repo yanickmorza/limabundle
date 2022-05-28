@@ -10,6 +10,9 @@
                 {{ form_start(form) }}
                     {{ form_widget(form) }}
                     <button class="btn btn-success">Enregistrer</button>
+                {% if edit %}
+                    <a href="{{ path('<?= $route_name ?>_index') }}" class="btn btn-warning">Fermer</a>
+                {% endif %}
                 {{ form_end(form) }}
             </div>
         </div>
@@ -21,6 +24,7 @@
                 <table class="table" id="dataTable">
                     <thead>
                         <tr class="list-group-item-lima bg-lima text-white">
+                            <th>#</th>
             <?php foreach ($entity_fields as $field): ?>
                 <?php if ($field['fieldName'] != 'id'): ?>
                             <th><?= ucfirst($field['fieldName']) ?></th>
@@ -32,13 +36,13 @@
                     <tbody>
                 {% for <?= $entity_twig_var_singular ?> in <?= $entity_twig_var_plural ?> %}
                         <tr>
+                            <td><a href="{{ path('<?= $route_name ?>_show', {'<?= $entity_identifier ?>': <?= $entity_twig_var_singular ?>.<?= $entity_identifier ?>}) }}" class="btn btn-warning">{{ loop.index }}</a></td>
             <?php foreach ($entity_fields as $field): ?>
                 <?php if ($field['fieldName'] != 'id'): ?>
                             <td>{{ <?= $helper->getEntityFieldPrintCode($entity_twig_var_singular, $field) ?> }}</td>
                 <?php endif; ?>
             <?php endforeach; ?>
                             <td>
-                                <a href="{{ path('<?= $route_name ?>_show', {'<?= $entity_identifier ?>': <?= $entity_twig_var_singular ?>.<?= $entity_identifier ?>}) }}" class="btn btn-warning">Afficher</a>
                                 <a href="{{ path('<?= $route_name ?>_edit', {'<?= $entity_identifier ?>': <?= $entity_twig_var_singular ?>.<?= $entity_identifier ?>}) }}" class="btn btn-success">Editer</a>
                             </td>
                             <td>
@@ -57,3 +61,4 @@
     </div>
 </div>
 {% endblock %}
+

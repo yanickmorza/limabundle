@@ -62,7 +62,7 @@ final class CommandMakeCrud extends AbstractMaker
 
     public static function getCommandName(): string
     {
-        return 'make-app:crud';
+        return 'lima:crud';
     }
 
     public static function getCommandDescription(): string
@@ -104,7 +104,7 @@ final class CommandMakeCrud extends AbstractMaker
 
         //$this->generateTests = $io->confirm('Do you want to generate tests for the controller?. [Experimental]', false);
 
-        $this->numberviews = $io->confirm('Souhaitez-vous avoir 2 vues ? [(Yes)-2 vues][(No)-3 vues]', true);
+        $this->numberviews = $io->confirm('Souhaitez-vous avoir 2 vues ? [(Yes) 2-vues][(No) 3-vues]', true);
     }
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
@@ -171,7 +171,7 @@ final class CommandMakeCrud extends AbstractMaker
             Route::class,
         ]);
 
-        if ($this->numberviews == true) {   // 1 vue
+        if ($this->numberviews == true) {   // 2 vues
             $generator->generateController(
                 $controllerClassDetails->getFullName(),
                 __DIR__.'/../Resources/skeleton/crud/controller/1/Controller.tpl.php',
@@ -192,7 +192,7 @@ final class CommandMakeCrud extends AbstractMaker
                     $repositoryVars
                 )
             );
-        } else {    // 2 vues
+        } else {    // 3 vues
             $generator->generateController(
                 $controllerClassDetails->getFullName(),
                 __DIR__.'/../Resources/skeleton/crud/controller/2/Controller.tpl.php',
@@ -261,7 +261,7 @@ final class CommandMakeCrud extends AbstractMaker
             ],
         ];
 
-        if ($this->numberviews == true) {   // 1 vue
+        if ($this->numberviews == true) {   // 2 vues
             foreach ($templates as $template => $variables) {
                 $generator->generateTemplate(
                     $templatesPath.'/'.$template.'.html.twig',
@@ -269,7 +269,7 @@ final class CommandMakeCrud extends AbstractMaker
                     $variables
                 );
             }
-        } else {    // 2 vues
+        } else {    // 3 vues
             foreach ($templates as $template => $variables) {
                 $generator->generateTemplate(
                     $templatesPath.'/'.$template.'.html.twig',
@@ -326,11 +326,14 @@ final class CommandMakeCrud extends AbstractMaker
 
         $this->writeSuccessMessage($io);
 
-        //unlink('../../templates'.$templatesPath.'/_form.html.twig');
-        //unlink('../../templates'.$templatesPath.'/new.html.twig');
-        //unlink('../../templates'.$templatesPath.'/edit.html.twig');
+        if ($this->numberviews == true) {   // 2 vues
+            unlink('templates/'.$templatesPath.'/_form.html.twig');
+            unlink('templates/'.$templatesPath.'/new.html.twig');
+            unlink('templates/'.$templatesPath.'/edit.html.twig');
+            $io->info(['Supprimé du dossier templates/'.$templatesPath.':', 'new.html.twig', 'edit.html.twig', '_form.html.twig', 'Ces templates ne sont pas utilisés dans les 2 vues.',]);
+        }
 
-        $io->text(sprintf('Ensuite : Vérifiez votre nouveau CRUD en allant sur <fg=yellow>%s/</>', Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix())));
+        // $io->text(sprintf('Ensuite: Retrouvez votre nouveau CRUD en allant sur <fg=yellow>%s/</>', Str::asRoutePath($controllerClassDetails->getRelativeNameWithoutSuffix())));
     }
 
     public function configureDependencies(DependencyBuilder $dependencies): void
@@ -371,3 +374,4 @@ final class CommandMakeCrud extends AbstractMaker
         );
     }
 }
+
