@@ -18,4 +18,9 @@ if (!file_exists($filename)) {
 
     file_put_contents($path, PHP_EOL.$texte, FILE_APPEND);
     // **** Ecriture dans le fichier services.yaml ****
+
+    echo "\n\n L'installation du service Lima-Bundle a été un succès ! \n\n";
+} 
+else {
+    echo "\n\n Le service de Lima-Bundle est déjà installé ! \n\n";
 }
