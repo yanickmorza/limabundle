@@ -24,7 +24,10 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php"
+        "post-install-cmd": [
+            "@InstallService"
+        ],
+        "InstallService": "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php"
     },
     "extra": {
         "branch-alias": {
