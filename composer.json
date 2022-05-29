@@ -25,7 +25,7 @@
     },
     "scripts": {
         "pre-install-cmd": [
-            "@php vendor/yanickmorza/limabundle/src/Command/installation.php"
+            "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php"
         ]
     },
     "extra": {
