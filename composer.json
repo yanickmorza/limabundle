@@ -24,7 +24,7 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
+        "post-create-project-cmd": [
             "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php"
         ]
     },
