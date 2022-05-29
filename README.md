@@ -7,14 +7,14 @@
 
 # Installer
 
-- 1 - <code>composer require yanickmorza/limabundle @dev</code>
-- 2 - <code>php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php</code>
-- 3 - <code>Pour éviter un message d'erreur, renseigner le fichier .env.local pour créer le bridge Symfony/Doctrine.</code>
+- 1 - <code>Installer le bundle: composer require yanickmorza/limabundle @dev</code>
+- 2 - <code>Installer le service de LIMA: php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php</code>
+- 3 - <code>Installer la configuration de LIMA: symfony console config:lima (ou) bin/console config:lima</code>
 
 # Démarrer
 
 - 1 - Démarrer votre serveur web avec la commande 'Symfony' (http ou https) : 
-<code>symfony serve</code>
+<code>symfony server:start</code>
 - 1 - Si vous n'avez pas installé le binaire 'Symfony' alors :
 <code>php -S localhost:8000 -t public/</code>
 
