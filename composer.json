@@ -24,7 +24,7 @@
         }
     },
     "scripts": {
-        "post-update-cmd": [
+        "post-install-cmd": [
             "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php"
         ]
     },
