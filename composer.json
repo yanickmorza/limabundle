@@ -24,10 +24,17 @@
         }
     },
     "scripts": {
+        "auto-scripts": {
+            "config:lima": "symfony-cmd"
+        },
         "post-install-cmd": [
-            "@InstallService"
+            "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php",
+            "@auto-scripts"
         ],
-        "InstallService": "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php"
+        "post-update-cmd": [
+            "@php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php",
+            "@auto-scripts"
+        ]
     },
     "extra": {
         "branch-alias": {
