@@ -106,7 +106,7 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
+    * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
     * /*** SecurityFunction ***
     */
     public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$objet, $ObjetRepository \$liste/**/): Response
@@ -139,7 +139,7 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id}/delete\", name=\"$nameDelete\", methods={\"POST\"})
+    * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
     * /*** SecurityFunction ***
     */
     public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
@@ -280,7 +280,7 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
+    * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
     * /*** SecurityFunction ***
     */
     public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$objet/**/): Response
@@ -311,7 +311,7 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id}/delete\", name=\"$nameDelete\", methods={\"POST\"})
+    * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
     * /*** SecurityFunction ***
     */
     public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response

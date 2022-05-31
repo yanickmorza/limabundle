@@ -73,7 +73,9 @@ class ScaffoldPostgresEnvironnement
     dbal:
         connections:
             default:
-
+                driver: $driver
+                charset: utf8
+                url: '%env(resolve:DATABASE_URL)%'
             $liste_db
 
     orm:

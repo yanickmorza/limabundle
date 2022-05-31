@@ -77,7 +77,7 @@ class <?= $class_name ?> extends AbstractController
 <?php } ?>
     }
 
-<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}show', $entity_identifier), sprintf('%s_show', $route_name), ['GET']) ?>
+<?= $generator->generateRouteForControllerMethod(sprintf('/{%s<\d+>}show', $entity_identifier), sprintf('%s_show', $route_name), ['GET']) ?>
     public function show(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>): Response
     {
         $form = $this->createForm(<?= $form_class_name ?>::class, $<?= $entity_var_singular ?>, ['disabled' => true]);
@@ -90,7 +90,7 @@ class <?= $class_name ?> extends AbstractController
         ]);
     }
 
-<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}/edit', $entity_identifier), sprintf('%s_edit', $route_name), ['GET', 'POST']) ?>
+<?= $generator->generateRouteForControllerMethod(sprintf('/{%s<\d+>}/edit', $entity_identifier), sprintf('%s_edit', $route_name), ['GET', 'POST']) ?>
 <?php if (isset($repository_full_class_name) && $generator->repositoryHasAddRemoveMethods($repository_full_class_name)) { ?>
     public function edit(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>, <?= $repository_class_name ?> $<?= $repository_var ?>): Response
 <?php } else { ?>
@@ -131,7 +131,7 @@ class <?= $class_name ?> extends AbstractController
 <?php } ?>
     }
 
-<?= $generator->generateRouteForControllerMethod(sprintf('/{%s}', $entity_identifier), sprintf('%s_delete', $route_name), ['POST']) ?>
+<?= $generator->generateRouteForControllerMethod(sprintf('/{%s<\d+>}', $entity_identifier), sprintf('%s_delete', $route_name), ['POST']) ?>
 <?php if (isset($repository_full_class_name) && $generator->repositoryHasAddRemoveMethods($repository_full_class_name)) { ?>
     public function delete(Request $request, <?= $entity_class_name ?> $<?= $entity_var_singular ?>, <?= $repository_class_name ?> $<?= $repository_var ?>): Response
 <?php } else { ?>
