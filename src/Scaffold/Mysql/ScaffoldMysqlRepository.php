@@ -91,9 +91,10 @@ class ScaffoldMysqlRepository
 namespace App\Repository$nameSpace;
 
 use $entity;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface;
-use Doctrine\ORM\EntityRepository;
 
 /**
 * @method $Objet|null find(\$id, \$lockMode = null, \$lockVersion = null)
@@ -101,126 +102,38 @@ use Doctrine\ORM\EntityRepository;
 * @method $ObjetTableau    findAll()
 * @method $ObjetTableau    findBy(array \$criteria, array \$orderBy = null, \$limit = null, \$offset = null)
 */
-class $ObjetRepository extends EntityRepository implements ServiceEntityRepositoryInterface
+class $ObjetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry \$registry)
     {
-        \$manager = \$registry->getManager('$db');
-        parent::__construct(\$manager, \$manager->getClassMetadata($Objet::class));
+        parent::__construct(\$registry, $Objet::class);
     }
 
-    // ------ Vider les donnees de la table -------
-    public function truncateTable()
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function add($Objet \$entity, bool \$flush): void
     {
-        return \$this->getEntityManager()->getConnection()->prepare('TRUNCATE TABLE $objet')->executeQuery(); 
-    }
-    // ------ Vider les donnees de la table -------
-
-    // ----------- Exporter les donnees -----------
-    public function exporterDonnee$Objet()
-    {
-        \$stmt = \$this->getEntityManager()->getConnection()->prepare('SELECT * FROM $objet ORDER BY id ASC');
-        return \$stmt->executeQuery()->fetchAllAssociative();
-    }
-    // ----------- Exporter les donnees -----------
-
-    // ----------- Uploader les donnees -----------
-    public function uploaderDonnee$Objet()
-	{
-        \$tmp_file = \$_FILES['charger']['tmp_name'];
-        \$colonnes = \$this->getEntityManager()->getConnection()->getSchemaManager()->listTableColumns('$objet');
-
-        \$parameter = '';
-        \$values = '';
-        \$datas = [];
-		
-			foreach (\$colonnes as \$colonne) 
-            {
-                if (\$colonne->getName() != 'id') {
-                    \$values .= ':'.\$colonne->getName().', ';
-                    \$parameter .= \$colonne->getName().', ';
-                }
-            }
-
-        // Enlever la derniere virgule
-        \$values = substr(\$values, 0, -2);
-        \$parameter = substr(\$parameter, 0, -2);
-
-        \$tmp_file = \$_FILES['charger']['tmp_name'];
-        
-        if ((\$tmp_file) && (\$tmp_file != \"none\")) {
-
-            \$path_cache = \"../var/tmp/\".\$_FILES['charger']['name'];
-			move_uploaded_file (\$tmp_file, \$path_cache);
-
-			\$file = \$path_cache;
-			\$fichier = file_get_contents(\$path_cache);
-
-            \$newfile = trim(\$fichier);
-            file_put_contents(\$file, \$newfile);
-
-            \$handle = fopen(\$path_cache, \"r\");
-	
-				while ((\$data = fgetcsv(\$handle, 0, \";\")) !== FALSE) {
-					\$i = 0;
-					foreach (\$colonnes as \$colonne)
-            		{
-                		if (\$colonne->getName() != 'id') {
-							\$datas[\$colonne->getName()] = [\$colonne->getName() => \$data[\$i]][\$colonne->getName()];
-							\$i++;
-						}
-					}
-
-                    \$rawSql = \"INSERT INTO $objet (\$parameter) VALUES (\$values)\";
-            		\$execution = \$this->getEntityManager()->getConnection()->prepare(\$rawSql)->executeQuery(\$datas);
-				}
-
-            fclose(\$handle);
-            unlink(\$path_cache);
+        \$this->_em->persist(\$entity);
+        if (\$flush) {
+            \$this->_em->flush();
         }
-        return \$execution;
     }
-    // ----------- Uploader les donnees -----------
 
-    // ----- Rechercher par Ordre Croissant -------
-    public function findBy$Objet()
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function remove($Objet \$entity, bool \$flush): void
     {
-        return \$this->createQueryBuilder('u')
-            ->orderBy('u.$objet', 'ASC')
-            ->getQuery()
-            ->getResult()
-        ;
+        \$this->_em->remove(\$entity);
+        if (\$flush) {
+            \$this->_em->flush();
+        }
     }
-    // ----- Rechercher par Ordre Croissant -------
-
-    // /**
-    //  * @return $ObjetTableau Retourne un tableau de l'objet $Objet
-    //  */
-    /*
-    public function findByExampleField(\$value)
-    {
-        return \$this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', \$value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-    /*
-    public function findOneBySomeField(\$value): ?$Objet
-    {
-        return \$this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', \$value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-}";
+}
+";
         file_put_contents($fichier_repository, $texte_repository);
     }
     // ---- Generer un Repository ----

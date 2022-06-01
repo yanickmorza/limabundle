@@ -67,9 +67,9 @@ class ScaffoldMysqlEntity
                 if (substr($entity, -3) == "_id") {
                     // --- getter setter avec _id ---                      
                     $private_type_entity .= "/**\n\t";
-                    $private_type_entity .= "* @ORM\ManyToOne(targetEntity=\"App\Entity$nameSpace\\$Class\", inversedBy=\"$objet\", cascade={\"persist\"})\n\t";
-                    $private_type_entity .= "* @ORM\JoinColumn(nullable=false)\n\t";
-                    $private_type_entity .= "*/\n\t";
+                    $private_type_entity .= " * @ORM\ManyToOne(targetEntity=\"App\Entity$nameSpace\\$Class\", inversedBy=\"$objet\", cascade={\"persist\"})\n\t";
+                    $private_type_entity .= " * @ORM\JoinColumn(nullable=false)\n\t";
+                    $private_type_entity .= " */\n\t";
                     $private_type_entity .= "private $" . $champ . ";\n\n\t";
 
                     // ---- Mapper vers la table de correspondance ----                      
@@ -87,8 +87,8 @@ class ScaffoldMysqlEntity
                         if ($position === false) {
 
                             $private_mappe .= "/**\n\t";
-                            $private_mappe .= "* @ORM\OneToMany(targetEntity=\"App\Entity$nameSpace\\$Objet\", mappedBy=\"$champ\")\n\t";
-                            $private_mappe .= "*/\n\t";
+                            $private_mappe .= " * @ORM\OneToMany(targetEntity=\"App\Entity$nameSpace\\$Objet\", mappedBy=\"$champ\")\n\t";
+                            $private_mappe .= " */\n\t";
                             $private_mappe .= "private $" . $objet . ";\n\t";
                             $private_mappe .= "\n\t/*** ***/";
 
@@ -124,14 +124,14 @@ class ScaffoldMysqlEntity
                     if ($type == "json") {
                         $crocher = " = []";
                         $private_type_entity .= "/**\n\t";
-                        $private_type_entity .= "* @ORM\Column(type=\"$type\")\n\t";
-                        $private_type_entity .= "*/\n\t";
+                        $private_type_entity .= " * @ORM\Column(type=\"$type\")\n\t";
+                        $private_type_entity .= " */\n\t";
                         $private_type_entity .= "private $" . $entity . $crocher.";\n\n\t";
                     }
                     else {
                         $private_type_entity .= "/**\n\t";
-                        $private_type_entity .= "* @ORM\Column(type=\"$type\")\n\t";
-                        $private_type_entity .= "*/\n\t";
+                        $private_type_entity .= " * @ORM\Column(type=\"$type\")\n\t";
+                        $private_type_entity .= " */\n\t";
                         $private_type_entity .= "private $" . $entity . ";\n\n\t";
                     }
                     
@@ -212,16 +212,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
-* @ORM\Entity(repositoryClass=\"App\Repository$nameSpace\\$ObjetRepository\")
-*/
-/* @UniqueEntity(fields=\"rubrique\", message=\"Attention cette rubrique existe déjà !\") */
+ * @ORM\Entity(repositoryClass=\"App\Repository$nameSpace\\$ObjetRepository\")
+ */
+/* @UniqueEntity(fields=\"champs\", message=\"Attention ce champs existe déjà !\") */
 class $Objet
 {
     /**
-    * @ORM\Id()
-    * @ORM\GeneratedValue()
-    * @ORM\Column(type=\"integer\")
-    */
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type=\"integer\")
+     */
     private \$id;
 
     $private_type_entity
