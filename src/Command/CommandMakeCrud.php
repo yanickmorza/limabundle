@@ -164,7 +164,6 @@ final class CommandMakeCrud extends AbstractMaker
             $entityClassDetails->getFullName(),
             $formClassDetails->getFullName(),
             $repositoryClassName,
-            EntityManagerInterface::class, /* Rajouté le 27-05-2022 */
             AbstractController::class,
             Request::class,
             Response::class,
