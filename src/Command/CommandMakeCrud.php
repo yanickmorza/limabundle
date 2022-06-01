@@ -96,11 +96,12 @@ final class CommandMakeCrud extends AbstractMaker
         }
 
         $defaultControllerClass = Str::asClassName(sprintf('%s Controller', $input->getArgument('entity-class')));
+        $this->controllerClassName = $defaultControllerClass;
 
-        $this->controllerClassName = $io->ask(
+        /* $this->controllerClassName = $io->ask(
             sprintf('Choisissez un nom pour votre class de controller (e.g. <fg=yellow>%s</>)', $defaultControllerClass),
             $defaultControllerClass
-        );
+        ); */
 
         //$this->generateTests = $io->confirm('Do you want to generate tests for the controller?. [Experimental]', false);
 
