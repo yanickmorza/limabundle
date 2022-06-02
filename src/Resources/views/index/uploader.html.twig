@@ -33,7 +33,7 @@
                         <label for="namespace" class="col col-form-label">Tables : </label>
                             <div class="col m-2">
                                 {% for table in listetables %}
-                                    {% if table != 'doctrine_migration_versions' %}
+                                    {% if table != 'doctrine_migration_versions' and table != 'messenger_messages' %}
                                         <div class="form-group row">
                                             <input type="checkbox" class="checkClass" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
                                             &nbsp;&nbsp;

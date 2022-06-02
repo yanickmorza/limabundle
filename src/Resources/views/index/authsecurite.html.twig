@@ -16,7 +16,7 @@
 		</div>
 		<div class="col-10">
 				{% for table in listetables %}
-					{% if table != 'doctrine_migration_versions' %}
+					{% if table != 'doctrine_migration_versions' and table != 'messenger_messages' %}
 						<div class="form-group row">
 							<input type="checkbox" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
 							&nbsp;&nbsp;
@@ -74,7 +74,7 @@
 	</div>
 	<div class="col-10">
 		{% for table in listetables %}
-			{% if table != 'doctrine_migration_versions' %}
+			{% if table != 'doctrine_migration_versions' and table != 'messenger_messages' %}
 				<div class="form-group row">
 					<input type="checkbox" name="options[]" value="{{ table }}" title="Cocher la table {{ table }}">
 					&nbsp;&nbsp;

@@ -69,7 +69,7 @@
 <div class="form-group row">
     <div class="col alert alert-primary text-center">
         {% for table in listetables %}
-            {% if table != 'doctrine_migration_versions' %}
+            {% if table != 'doctrine_migration_versions' and table != 'messenger_messages' %}
                 <div class="form-group row">
                 <form method="post" action="">
                     <input type="hidden" name="_token" value="champdata">

@@ -9,7 +9,7 @@
 					{{ headtitle }}</div>
 				<div class="card-body m-3 p-3">
 					{% for table in listetables %}
-						{% if table != 'doctrine_migration_versions' %}
+						{% if table != 'doctrine_migration_versions' and table != 'messenger_messages' %}
 							<div class="form-group row">
 								<a href="/{{ table }}">{{ table | capitalize }}</a>
 							</div>
