@@ -56,7 +56,7 @@ class ScaffoldPostgresEntity
 
                 $Champ = ucfirst(substr($entity, 0, -3));
                 $champ = substr($entity, 0, -3);
-                $Class = ucfirst(substr($entity, 0, -3)) . "s";
+                $Class = ucfirst(substr($entity, 0, -3));
 
                 if (substr($entity, -3) == "_id") {
                     // --- getter setter avec _id ---                      
