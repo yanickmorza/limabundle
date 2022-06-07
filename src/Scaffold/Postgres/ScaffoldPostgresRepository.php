@@ -155,7 +155,6 @@ class $ObjetRepository extends ServiceEntityRepository
     // ----------- Uploader les donnees -----------
     public function uploaderDonnee$Objet()
 	{
-        \$tmp_file = \$_FILES['charger']['tmp_name'];
         \$colonnes = \$this->getEntityManager()->getConnection()->createSchemaManager()->listTableColumns('sites');
 
         \$parameter = '';
