@@ -152,7 +152,7 @@ class $ObjetRepository extends ServiceEntityRepository
     public function uploaderDonnee$Objet()
 	{
         \$tmp_file = \$_FILES['charger']['tmp_name'];
-        \$colonnes = \$this->getEntityManager()->getConnection()->getSchemaManager()->listTableColumns('sites');
+        \$colonnes = \$this->getEntityManager()->getConnection()->createSchemaManager()->listTableColumns('sites');
 
         \$parameter = '';
         \$values = '';
