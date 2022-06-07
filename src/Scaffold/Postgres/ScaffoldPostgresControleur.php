@@ -43,6 +43,8 @@ class ScaffoldPostgresControleur
         $findAll = '->findAll()';
         $truncateTable = '->truncateTable()';
         $getId = '->getId()';
+        $add = '->add';
+        $remove = '->remove';
 
         if ($namespace !== null) {
             $nameSpace = str_replace("/", "\\", $namespace);
@@ -70,7 +72,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Persistence\ManagerRegistry;
 use $entity;
 use $form;
 use $reposi;
@@ -83,7 +84,7 @@ class $ObjetCreate extends AbstractController
      * @Route(\"/$objet\", name=\"$nameIndex\", methods={\"GET\",\"POST\"})
      * /*** SecurityFunction ***
      */
-    public function index(Request \$request, ManagerRegistry \$registry, $ObjetRepository \$$objetRepository/**/): Response
+    public function index(Request \$request, $ObjetRepository \$$objetRepository/**/): Response
     {
         \$$objet = new $Objet();
         \$form = \$this->createForm($ObjetType::class, \$$objet);
@@ -91,9 +92,7 @@ class $ObjetCreate extends AbstractController
 
         if (\$form->isSubmitted() && \$form->isValid()) {
             /***/
-            \$entityManager = \$registry->getManager('$db');
-            \$entityManager->persist(\$$objet);
-            \$entityManager->flush();
+            \$$objetRepository$add(\$$objet, true);
 
             \$this->addFlash('success', 'L\'enregistrement a été un succès');
 
@@ -113,15 +112,15 @@ class $ObjetCreate extends AbstractController
      * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
      * /*** SecurityFunction ***
      */
-    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$$objet, $ObjetRepository \$$objetRepository/**/): Response
+    public function edit(Request \$request, $Objet \$$objet, $ObjetRepository \$$objetRepository/**/): Response
     {
         \$form = \$this->createForm($ObjetType::class, \$$objet);
         \$form->handleRequest(\$request);
 
         if (\$form->isSubmitted() && \$form->isValid()) {
             /****/
-            \$entityManager = \$registry->getManager('$db');
-            \$entityManager->flush();
+            \$$objetRepository$add(\$$objet, true);
+
             \$this->addFlash('success', 'La modification a été un succès');
 
             return \$this->redirectToRoute('$nameIndex');
@@ -146,12 +145,11 @@ class $ObjetCreate extends AbstractController
      * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
      * /*** SecurityFunction ***
      */
-    public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
+    public function delete(Request \$request, $ObjetRepository \$$objetRepository, $Objet \$$objet): Response
     {
-        if (\$this->isCsrfTokenValid('delete'.\$id$getId, \$request->request->get('_token'))) {
-            \$entityManager = \$registry->getManager('$db');
-            \$entityManager->remove(\$id);
-            \$entityManager->flush();
+        if (\$this->isCsrfTokenValid('delete'.\$$objet$getId, \$request->request->get('_token'))) {
+
+            \$$objetRepository$remove(\$$objet, true);
 
             \$this->addFlash('success', 'La suppression a été un succès');
         }
@@ -234,7 +232,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\Persistence\ManagerRegistry;
 use $entity;
 use $form;
 use $reposi;
@@ -260,7 +257,7 @@ class $ObjetCreate extends AbstractController
      * @Route(\"/$objet/new\", name=\"$nameNew\", methods={\"GET\",\"POST\"})
      * /*** SecurityFunction ***
      */
-    public function new(Request \$request, ManagerRegistry \$registry/**/): Response
+    public function new(Request \$request, $ObjetRepository \$$objetRepository/**/): Response
     {
         \$$objet = new $Objet();
         \$form = \$this->createForm($ObjetType::class, \$$objet);
@@ -268,9 +265,7 @@ class $ObjetCreate extends AbstractController
 
         if (\$form->isSubmitted() && \$form->isValid()) {
             /***/
-            \$entityManager = \$registry->getManager('$db');
-            \$entityManager->persist(\$$objet);
-            \$entityManager->flush();
+            \$$objetRepository$add(\$$objet, true);
 
             \$this->addFlash('success', 'L\'enregistrement a été un succès');
 
@@ -288,15 +283,15 @@ class $ObjetCreate extends AbstractController
      * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
      * /*** SecurityFunction ***
      */
-    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$$objet/**/): Response
+    public function edit(Request \$request, $ObjetRepository \$$objetRepository, $Objet \$$objet/**/): Response
     {
         \$form = \$this->createForm($ObjetType::class, \$$objet);
         \$form->handleRequest(\$request);
 
         if (\$form->isSubmitted() && \$form->isValid()) {
             /****/
-            \$entityManager = \$registry->getManager('$db');
-            \$entityManager->flush();
+            \$$objetRepository$add(\$$objet, true);
+
             \$this->addFlash('success', 'La modification a été un succès');
 
             return \$this->redirectToRoute('$nameIndex');
@@ -319,13 +314,12 @@ class $ObjetCreate extends AbstractController
      * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
      * /*** SecurityFunction ***
      */
-    public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
+    public function delete(Request \$request, $ObjetRepository \$$objetRepository, $Objet \$$objet): Response
     {
-        if (\$this->isCsrfTokenValid('delete'.\$id$getId, \$request->request->get('_token'))) {
-            \$entityManager = \$registry->getManager('$db');
-            \$entityManager->remove(\$id);
-            \$entityManager->flush();
+        if (\$this->isCsrfTokenValid('delete'.\$$objet$getId, \$request->request->get('_token'))) {
             
+            \$$objetRepository$remove(\$$objet, true);
+
             \$this->addFlash('success', 'La suppression a été un succès');
         }
 
