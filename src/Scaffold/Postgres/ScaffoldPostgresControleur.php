@@ -31,6 +31,7 @@ class ScaffoldPostgresControleur
         $Objet = ucfirst($objet);
         $ObjetCreate = $Objet . "Controller";
         $ObjetRepository = $Objet . "Repository";
+        $objetRepository = $objet . "Repository";
         $ObjetType = $Objet . "Type";
         $nameIndex = $objet . "_index_" . $db;
         $nameEdit  = $objet . "_edit_" . $db;
@@ -39,6 +40,9 @@ class ScaffoldPostgresControleur
         $nameNew  = $objet . "_new_" . $db;
         $nameUploader = $objet . "_uploader_" . $db;
         $nameExporter = $objet . "_exporter_" . $db;
+        $findAll = '->findAll()';
+        $truncateTable = '->truncateTable()';
+        $getId = '->getId()';
 
         if ($namespace !== null) {
             $nameSpace = str_replace("/", "\\", $namespace);
@@ -76,42 +80,42 @@ use $reposi;
 class $ObjetCreate extends AbstractController
 {
     /**
-    * @Route(\"/$objet\", name=\"$nameIndex\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
-    public function index(Request \$request, ManagerRegistry \$registry, $ObjetRepository \$liste/**/): Response
-    {  	
-        \$objet = new $Objet();       
-        \$form = \$this->createForm($ObjetType::class, \$objet);
+     * @Route(\"/$objet\", name=\"$nameIndex\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
+    public function index(Request \$request, ManagerRegistry \$registry, $ObjetRepository \$$objetRepository/**/): Response
+    {
+        \$$objet = new $Objet();
+        \$form = \$this->createForm($ObjetType::class, \$$objet);
         \$form->handleRequest(\$request);
-        
+
         if (\$form->isSubmitted() && \$form->isValid()) {
             /***/
             \$entityManager = \$registry->getManager('$db');
-            \$entityManager->persist(\$objet);
+            \$entityManager->persist(\$$objet);
             \$entityManager->flush();
-            
+
             \$this->addFlash('success', 'L\'enregistrement a été un succès');
-            
+
             return \$this->redirectToRoute('$nameIndex');
         }
-        
+
         return \$this->render('$render$objet/$objet.html.twig', [
             'titre' => 'Liste des $objet',
-            'listes' => \$liste->findAll(),
+            'listes' => \$$objetRepository$findAll,
             'form' => \$form->createView(),
-            'edition' => \$objet->getId() !== null,
-            'countliste' => count(\$liste->findAll())
+            'edition' => \$$objet$getId !== null,
+            'countliste' => count(\$$objetRepository$findAll)
         ]);
     }
 
     /**
-    * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
-    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$objet, $ObjetRepository \$liste/**/): Response
-    {	
-        \$form = \$this->createForm($ObjetType::class, \$objet);
+     * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
+    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$$objet, $ObjetRepository \$$objetRepository/**/): Response
+    {
+        \$form = \$this->createForm($ObjetType::class, \$$objet);
         \$form->handleRequest(\$request);
 
         if (\$form->isSubmitted() && \$form->isValid()) {
@@ -119,18 +123,18 @@ class $ObjetCreate extends AbstractController
             \$entityManager = \$registry->getManager('$db');
             \$entityManager->flush();
             \$this->addFlash('success', 'La modification a été un succès');
-            
+
             return \$this->redirectToRoute('$nameIndex');
         }
 
-        if (\$this->isCsrfTokenValid('edit'.\$objet->getId(), \$request->request->get('_token'))) {
+        if (\$this->isCsrfTokenValid('edit'.\$$objet$getId, \$request->request->get('_token'))) {
 
             return \$this->render('$render$objet/$objet.html.twig', [
                 'titre' => 'Liste des $objet',
-                'listes' => \$liste->findAll(),
+                'listes' => \$$objetRepository$findAll,
                 'form' => \$form->createView(),
-                'edition' => \$objet->getId() !== null,
-                'countliste' => count(\$liste->findAll())
+                'edition' => \$$objet$getId !== null,
+                'countliste' => count(\$$objetRepository$findAll)
             ]);
         }
         else {
@@ -139,55 +143,55 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
-    {   	
-        if (\$this->isCsrfTokenValid('delete'.\$id->getId(), \$request->request->get('_token'))) {
+    {
+        if (\$this->isCsrfTokenValid('delete'.\$id$getId, \$request->request->get('_token'))) {
             \$entityManager = \$registry->getManager('$db');
             \$entityManager->remove(\$id);
-            \$entityManager->flush();          
-            
+            \$entityManager->flush();
+
             \$this->addFlash('success', 'La suppression a été un succès');
         }
 
         return \$this->redirectToRoute('$nameIndex');
     }
-  
+
     /**
-    * @Route(\"/$objet/truncate\", name=\"$nameTruncate\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
-    public function truncate(Request \$request, $ObjetRepository \$liste): Response
-    {   	
+     * @Route(\"/$objet/truncate\", name=\"$nameTruncate\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
+    public function truncate(Request \$request, $ObjetRepository \$$objetRepository): Response
+    {
         if (\$this->isCsrfTokenValid('truncate', \$request->request->get('_token'))) {
-            
-            \$liste->truncateTable();
-           
+
+            \$$objetRepository$truncateTable;
+
             \$this->addFlash('success', 'L\'exécution de la requête a été un succès');
         }
-        
+
         return \$this->redirectToRoute('$nameIndex');
     }
 
     /**
-    * @Route(\"/$objet/uploader\", name=\"$nameUploader\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/uploader\", name=\"$nameUploader\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function uploader(Request \$request, $ObjetRepository \$upload): Response
     {
         if (\$this->isCsrfTokenValid('uploader', \$request->request->get('_token'))) {
             \$upload->uploaderDonnee$Objet();
-            \$this->addFlash('success', 'L\'enregistrement a été un succès');           
+            \$this->addFlash('success', 'L\'enregistrement a été un succès');
             return \$this->redirectToRoute('$nameIndex');
         }
     }
 
     /**
-    * @Route(\"/$objet/exporter\", name=\"$nameExporter\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/exporter\", name=\"$nameExporter\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function exporter(Request \$request, $ObjetRepository \$export): Response
 	{
         if (\$this->isCsrfTokenValid('exporter', \$request->request->get('_token'))) {
@@ -197,13 +201,13 @@ class $ObjetCreate extends AbstractController
             if (count(\$lignes) > 0 ) {
 
                 \$handle = fopen('php://output', 'w');
-                \$d = ';'; 
+                \$d = ';';
                 \$e = '\"';
-    
+
                 foreach(\$lignes as \$ligne) {
                     fputcsv(\$handle, \$ligne, \$d, \$e);
                 }
-    
+
                 fclose(\$handle);
             }
 
@@ -214,7 +218,8 @@ class $ObjetCreate extends AbstractController
             return \$response;
         }
     }
-}";
+}
+";
         }
         // ----- 1 vue cochée ----- 
 
@@ -239,53 +244,53 @@ use $reposi;
 class $ObjetCreate extends AbstractController
 {
     /**
-    * @Route(\"/$objet\", name=\"$nameIndex\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */   
-    public function index($ObjetRepository \$liste): Response
-    {      
+     * @Route(\"/$objet\", name=\"$nameIndex\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
+    public function index($ObjetRepository \$$objetRepository): Response
+    {
         return \$this->render('$render$objet/$objet.html.twig', [
             'titre' => 'Liste des $objet',
-            'listes' => \$liste->findAll(),
-            'countliste' => count(\$liste->findAll())
+            'listes' => \$$objetRepository$findAll,
+            'countliste' => count(\$$objetRepository$findAll)
         ]);
     }
 
     /**
-    * @Route(\"/$objet/new\", name=\"$nameNew\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/new\", name=\"$nameNew\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function new(Request \$request, ManagerRegistry \$registry/**/): Response
-    {	
-        \$objet = new $Objet();       
-        \$form = \$this->createForm($ObjetType::class, \$objet);
+    {
+        \$$objet = new $Objet();
+        \$form = \$this->createForm($ObjetType::class, \$$objet);
         \$form->handleRequest(\$request);
-        
+
         if (\$form->isSubmitted() && \$form->isValid()) {
             /***/
             \$entityManager = \$registry->getManager('$db');
-            \$entityManager->persist(\$objet);
+            \$entityManager->persist(\$$objet);
             \$entityManager->flush();
-            
+
             \$this->addFlash('success', 'L\'enregistrement a été un succès');
-            
+
             return \$this->redirectToRoute('$nameIndex');
         }
-        
+
         return \$this->render('$render$objet/form_$objet.html.twig', [
-            'titre' => 'Enregistrer un $objet',          
+            'titre' => 'Enregistrer un $objet',
             'form' => \$form->createView(),
-            'edition' => \$objet->getId() !== null
+            'edition' => \$$objet$getId !== null
         ]);
     }
 
     /**
-    * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
-    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$objet/**/): Response
-    {  	
-        \$form = \$this->createForm($ObjetType::class, \$objet);
+     * @Route(\"/$objet/{id<\d+>}/edit\", name=\"$nameEdit\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
+    public function edit(Request \$request, ManagerRegistry \$registry, $Objet \$$objet/**/): Response
+    {
+        \$form = \$this->createForm($ObjetType::class, \$$objet);
         \$form->handleRequest(\$request);
 
         if (\$form->isSubmitted() && \$form->isValid()) {
@@ -293,16 +298,16 @@ class $ObjetCreate extends AbstractController
             \$entityManager = \$registry->getManager('$db');
             \$entityManager->flush();
             \$this->addFlash('success', 'La modification a été un succès');
-            
+
             return \$this->redirectToRoute('$nameIndex');
         }
 
-        if (\$this->isCsrfTokenValid('edit'.\$objet->getId(), \$request->request->get('_token'))) {
+        if (\$this->isCsrfTokenValid('edit'.\$$objet$getId, \$request->request->get('_token'))) {
 
             return \$this->render('$render$objet/form_$objet.html.twig', [
                 'titre' => 'Modifier un $objet',
                 'form' => \$form->createView(),
-                'edition' => \$objet->getId() !== null
+                'edition' => \$$objet$getId !== null
             ]);
         }
         else {
@@ -311,55 +316,55 @@ class $ObjetCreate extends AbstractController
     }
 
     /**
-    * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/{id<\d+>}/delete\", name=\"$nameDelete\", methods={\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function delete(Request \$request, ManagerRegistry \$registry, $Objet \$id): Response
-    {   	
-        if (\$this->isCsrfTokenValid('delete'.\$id->getId(), \$request->request->get('_token'))) {
+    {
+        if (\$this->isCsrfTokenValid('delete'.\$id$getId, \$request->request->get('_token'))) {
             \$entityManager = \$registry->getManager('$db');
             \$entityManager->remove(\$id);
-            \$entityManager->flush();          
+            \$entityManager->flush();
             
             \$this->addFlash('success', 'La suppression a été un succès');
         }
 
         return \$this->redirectToRoute('$nameIndex');
     }
-  
+
     /**
-    * @Route(\"/$objet/truncate\", name=\"$nameTruncate\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
-    public function truncate(Request \$request, $ObjetRepository \$liste): Response
+     * @Route(\"/$objet/truncate\", name=\"$nameTruncate\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
+    public function truncate(Request \$request, $ObjetRepository \$$objetRepository): Response
     {
         if (\$this->isCsrfTokenValid('truncate', \$request->request->get('_token'))) {
-            
-            \$liste->truncateTable();
-           
+
+            \$$objetRepository$truncateTable;
+
             \$this->addFlash('success', 'L\'exécution de la requête a été un succès');
         }
-        
+
         return \$this->redirectToRoute('$nameIndex');
     }
 
     /**
-    * @Route(\"/$objet/uploader\", name=\"$nameUploader\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/uploader\", name=\"$nameUploader\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function uploader(Request \$request, $ObjetRepository \$upload): Response
     {
         if (\$this->isCsrfTokenValid('uploader', \$request->request->get('_token'))) {
             \$upload->uploaderDonnee$Objet();
-            \$this->addFlash('success', 'L\'enregistrement a été un succès');           
+            \$this->addFlash('success', 'L\'enregistrement a été un succès');
             return \$this->redirectToRoute('$nameIndex');
         }
     }
 
     /**
-    * @Route(\"/$objet/exporter\", name=\"$nameExporter\", methods={\"GET\",\"POST\"})
-    * /*** SecurityFunction ***
-    */
+     * @Route(\"/$objet/exporter\", name=\"$nameExporter\", methods={\"GET\",\"POST\"})
+     * /*** SecurityFunction ***
+     */
     public function exporter(Request \$request, $ObjetRepository \$export): Response
 	{
         if (\$this->isCsrfTokenValid('exporter', \$request->request->get('_token'))) {
@@ -369,13 +374,13 @@ class $ObjetCreate extends AbstractController
             if (count(\$lignes) > 0 ) {
 
                 \$handle = fopen('php://output', 'w');
-                \$d = ','; 
+                \$d = ',';
                 \$e = '\"';
-    
+
                 foreach(\$lignes as \$ligne) {
                     fputcsv(\$handle, \$ligne, \$d, \$e);
                 }
-    
+
                 fclose(\$handle);
             }
 
@@ -386,7 +391,8 @@ class $ObjetCreate extends AbstractController
             return \$response;
         }
     }
-}";
+}
+";
         }
         // ---- 2 vues cochées ----
 
