@@ -73,9 +73,9 @@ class ScaffoldPostgresRelation
                             // ---- Inversed By Table dans Base concernee ----
                             $NameSpace = ucfirst($NameSpace);
                             $private_type_entity .= "/**\n\t";
-                            $private_type_entity .= "* @ORM\ManyToOne(targetEntity=\"App\Entity\\$NameSpace\\$Class\", inversedBy=\"$objet\", cascade={\"persist\"})\n\t";
-                            $private_type_entity .= "* @ORM\JoinColumn(nullable=false)\n\t";
-                            $private_type_entity .= "*/\n\t";
+                            $private_type_entity .= " * @ORM\ManyToOne(targetEntity=\"App\Entity\\$NameSpace\\$Class\", inversedBy=\"$objet\", cascade={\"persist\"})\n\t";
+                            $private_type_entity .= " * @ORM\JoinColumn(nullable=false)\n\t";
+                            $private_type_entity .= " */\n\t";
                             $private_type_entity .= "private $" . $champ . ";\n\n\t";
                             // ---- Inversed By table dans Base concernee ----
 
@@ -111,8 +111,8 @@ class ScaffoldPostgresRelation
         
                                 if ($position === false) {
                                     $private_mappe .= "/**\n\t";
-                                    $private_mappe .= "* @ORM\OneToMany(targetEntity=\"App\Entity$nameSpace\\$Objet\", mappedBy=\"$champ\")\n\t";
-                                    $private_mappe .= "*/\n\t";
+                                    $private_mappe .= " * @ORM\OneToMany(targetEntity=\"App\Entity$nameSpace\\$Objet\", mappedBy=\"$champ\")\n\t";
+                                    $private_mappe .= " */\n\t";
                                     $private_mappe .= "private $" . $objet . ";\n\t";
                                     $private_mappe .= "\n\t/*** ***/";
                                    
@@ -135,9 +135,9 @@ class ScaffoldPostgresRelation
                     else {
                         // --- Declaration du private ---
                         $private_type_entity .= "/**\n\t";
-                        $private_type_entity .= "* @ORM\ManyToOne(targetEntity=\"App\Entity$nameSpace\\$Class\", inversedBy=\"$objet\", cascade={\"persist\"})\n\t";
-                        $private_type_entity .= "* @ORM\JoinColumn(nullable=false)\n\t";
-                        $private_type_entity .= "*/\n\t";
+                        $private_type_entity .= " * @ORM\ManyToOne(targetEntity=\"App\Entity$nameSpace\\$Class\", inversedBy=\"$objet\", cascade={\"persist\"})\n\t";
+                        $private_type_entity .= " * @ORM\JoinColumn(nullable=false)\n\t";
+                        $private_type_entity .= " */\n\t";
                         $private_type_entity .= "private $" . $champ . ";\n\n\t";
                         // --- Declaration du private ---
                     }
@@ -154,8 +154,8 @@ class ScaffoldPostgresRelation
 
                         if ($position === false) {
                             $private_mappe .= "/**\n\t";
-                            $private_mappe .= "* @ORM\OneToMany(targetEntity=\"App\Entity$nameSpace\\$Objet\", mappedBy=\"$champ\")\n\t";
-                            $private_mappe .= "*/\n\t";
+                            $private_mappe .= " * @ORM\OneToMany(targetEntity=\"App\Entity$nameSpace\\$Objet\", mappedBy=\"$champ\")\n\t";
+                            $private_mappe .= " */\n\t";
                             $private_mappe .= "private $" . $objet . ";\n\t";
                             $private_mappe .= "\n\t/*** ***/";
                            
@@ -196,9 +196,9 @@ class ScaffoldPostgresRelation
                             // ---- Inversed By Table dans Base concernee ----
                             $NameSpace = ucfirst($NameSpace);
                             $private_type_entity .= "/**\n\t";
-                            $private_type_entity .= "* @ORM\OneToOne(targetEntity=\"App\Entity\\$NameSpace\\$Class\", cascade={\"persist\", \"remove\"})\n\t";
-                            $private_type_entity .= "* @ORM\JoinColumn(nullable=false)\n\t";
-                            $private_type_entity .= "*/\n\t";
+                            $private_type_entity .= " * @ORM\OneToOne(targetEntity=\"App\Entity\\$NameSpace\\$Class\", cascade={\"persist\", \"remove\"})\n\t";
+                            $private_type_entity .= " * @ORM\JoinColumn(nullable=false)\n\t";
+                            $private_type_entity .= " */\n\t";
                             $private_type_entity .= "private $" . $champ . ";\n\n\t";
                             // ---- Inversed By table dans Base concernee ----
 
@@ -225,9 +225,9 @@ class ScaffoldPostgresRelation
                     else {
                         // --- Declaration du private ---
                         $private_type_entity .= "/**\n\t";
-                        $private_type_entity .= "* @ORM\OneToOne(targetEntity=\"App\Entity$nameSpace\\$Class\", cascade={\"persist\", \"remove\"})\n\t";                    
-                        $private_type_entity .= "* @ORM\JoinColumn(nullable=false)\n\t";
-                        $private_type_entity .= "*/\n\t";
+                        $private_type_entity .= " * @ORM\OneToOne(targetEntity=\"App\Entity$nameSpace\\$Class\", cascade={\"persist\", \"remove\"})\n\t";                    
+                        $private_type_entity .= " * @ORM\JoinColumn(nullable=false)\n\t";
+                        $private_type_entity .= " */\n\t";
                         $private_type_entity .= "private $" . $champ . ";\n\t";
                         // --- Declaration du private ---
 
@@ -250,14 +250,14 @@ class ScaffoldPostgresRelation
                     if ($type == "json") {
                         $crocher = " = []";
                         $private_type_entity .= "/**\n\t";
-                        $private_type_entity .= "* @ORM\Column(type=\"$type\")\n\t";
-                        $private_type_entity .= "*/\n\t";
+                        $private_type_entity .= " * @ORM\Column(type=\"$type\")\n\t";
+                        $private_type_entity .= " */\n\t";
                         $private_type_entity .= "private $" . $entity . $crocher.";\n\n\t";
                     }
                     else {
                         $private_type_entity .= "/**\n\t";
-                        $private_type_entity .= "* @ORM\Column(type=\"$type\")\n\t";
-                        $private_type_entity .= "*/\n\t";
+                        $private_type_entity .= " * @ORM\Column(type=\"$type\")\n\t";
+                        $private_type_entity .= " */\n\t";
                         $private_type_entity .= "private $" . $entity . ";\n\n\t";
                     }
 
@@ -333,16 +333,16 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
-* @ORM\Entity(repositoryClass=\"App\Repository$nameSpace\\$ObjetRepository\")
-*/
-/* @UniqueEntity(fields=\"element\", message=\"Attention cet element existe déjà !\") */
+ * @ORM\Entity(repositoryClass=\"App\Repository$nameSpace\\$ObjetRepository\")
+ */
+/* @UniqueEntity(fields=\"champs\", message=\"Attention ce champs existe déjà !\") */
 class $Objet
 {
     /**
-    * @ORM\Id()
-    * @ORM\GeneratedValue()
-    * @ORM\Column(type=\"integer\")
-    */
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type=\"integer\")
+     */
     private \$id;
 
     $private_type_entity
@@ -355,7 +355,8 @@ class $Objet
     }
 
     $getter_setter
-}";
+}
+";
 
         file_put_contents($fichier_entity, $texte_entity);
         // ------ Creation du fichier entity ------

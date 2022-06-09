@@ -228,7 +228,8 @@ class $Objet
     }
 
     $getter_setter
-}";
+}
+";
 
         file_put_contents($fichier_entity, $texte_entity);
     }
