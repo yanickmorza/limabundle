@@ -147,7 +147,7 @@ class UtilitairePostgresDatabase
 						$nullable = "NULL,";
 					}
 
-					$key .= $row['data_type'] . " " . $nullable . " " . $foreign_key['constraint_type'] . " (" . $foreign_key['column_name'] . ") REFERENCES " . substr($foreign_key['column_name'], 0, -3) . "s";
+					$key .= $row['data_type'] . " " . $nullable . " " . $foreign_key['constraint_type'] . " (" . $foreign_key['column_name'] . ") REFERENCES " . substr($foreign_key['column_name'], 0, -3);
 				} else {
 
 					$key .= $row['data_type'];
@@ -186,7 +186,7 @@ class UtilitairePostgresDatabase
 						$nullable = "NULL,";
 					}
 
-					$key .= $row['data_type'] . '(' . $row['character_maximum_length'] . ') ' . $nullable . ' ' . $foreign_key['constraint_type'] . " (" . $foreign_key['column_name'] . ") REFERENCES " . substr($foreign_key['column_name'], 0, -3) . "s";
+					$key .= $row['data_type'] . '(' . $row['character_maximum_length'] . ') ' . $nullable . ' ' . $foreign_key['constraint_type'] . " (" . $foreign_key['column_name'] . ") REFERENCES " . substr($foreign_key['column_name'], 0, -3);
 				} else {
 
 					if (!$row['character_maximum_length']) {

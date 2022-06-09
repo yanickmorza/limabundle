@@ -176,7 +176,7 @@ class UtilitaireMysqlDatabase
 						$nullable = "NULL,";
 					}
 
-					$key .= $row['Type'] . '(' . $row['Extra'] . ') ' . $nullable . ' ' . $foreign_key['constraint_type'] . " (" . $foreign_key['column_name'] . ") REFERENCES " . substr($foreign_key['column_name'], 0, -3) . "s";
+					$key .= $row['Type'] . '(' . $row['Extra'] . ') ' . $nullable . ' ' . $foreign_key['constraint_type'] . " (" . $foreign_key['column_name'] . ") REFERENCES " . substr($foreign_key['column_name'], 0, -3);
 				} 
 				else {
 					if (!$row['Key']) {
