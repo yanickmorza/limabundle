@@ -147,7 +147,7 @@ class ScaffoldPostgresForm
                     }
                 } elseif (substr($field, -3) == "_id") {
                     $champ = substr($field, 0, -3);
-                    $Class = ucfirst(substr($field, 0, -3)) . "s";
+                    $Class = ucfirst(substr($field, 0, -3));
                     $entityClass .= "use App\Entity$nameSpace\\$Class;\n";
 
                     $n = ($n + 1);
