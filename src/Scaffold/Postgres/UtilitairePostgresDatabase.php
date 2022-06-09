@@ -97,6 +97,7 @@ class UtilitairePostgresDatabase
 		$key = "";
 
 		$key .= "DROP TABLE IF EXISTS " . $table . ";\n";
+		$key .= "DROP SEQUENCE " . $table . "_id_seq CASCADE;\n";
 		$key .= "CREATE TABLE IF NOT EXISTS " . $table . " (\n";
 
 		while ($row = $stmt->fetch()) {
@@ -283,10 +284,15 @@ class UtilitairePostgresDatabase
 		$utilitaireDatabase = new UtilitairePostgresDatabase();
 		$count = count($utilitaireDatabase->listerTables());
 		$tableau = "";
+		$sequence = "";
 
 		for ($i = 0; $i < $count; $i++) {
 			$droptable = $utilitaireDatabase->listerTables();
 			$tableau .= $droptable[$i] . ', ';
+			
+			if ($droptable[$i] != 'doctrine_migration_versions') {
+				$sequence .= "DROP SEQUENCE " . $droptable[$i] . "_id_seq CASCADE;\n";
+			}
 		}
 
 		// Enlever la derniere virgule
@@ -294,6 +300,7 @@ class UtilitairePostgresDatabase
 
 		$contenu = "";
 		$contenu .= "DROP TABLE IF EXISTS " . $tableau . ";\n";
+		$contenu .= $sequence;
 
 		return $contenu;
 	}
