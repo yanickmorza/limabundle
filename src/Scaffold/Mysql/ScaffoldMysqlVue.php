@@ -28,6 +28,7 @@ class ScaffoldMysqlVue
         $champs_donnee = "";
         $nameIndex = $objet . "_index_" . $db;
         $nameEdit  = $objet . "_edit_" . $db;
+        $nameShow  = $objet . "_show_" . $db;
         $nameDelete = $objet . "_delete_" . $db;
         $nameTruncate = $objet . "_truncate_" . $db;
         $nameNew  = $objet . "_new_" . $db;
@@ -146,14 +147,16 @@ class ScaffoldMysqlVue
     {{ form_start(form) }}
     $form_widget
     <div class=\"row\">
-        {% if edition %}
-        <div class=\"col-2\">
-            <a href=\"{{ path('$nameIndex') }}\" class=\"btn btn-primary\">Fermer</a>
-        </div>
+        {% if is_show == false %}
+            <div class=\"col-2\">
+                <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+            </div>
         {% endif %}
-        <div class=\"col-2\">
-            <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
-        </div>
+        {% if edition %}
+            <div class=\"col-2\">
+                <a href=\"{{ path('$nameIndex') }}\" class=\"btn btn-warning\">Fermer</a>
+            </div>
+        {% endif %}
     </div>
     {{ form_end(form) }}
 </div>
@@ -176,7 +179,7 @@ class ScaffoldMysqlVue
         <tbody>
         {% for $objet in listes %}
             <tr>
-                <td>{{ loop.index }}</td>
+                <td><a href=\"{{ path('$nameShow', {'id': $objet.id}) }}\" class=\"btn btn-success\" title=\"Afficher\">{{ loop.index }}</a></td>
                 $champs_donnee
                 <td>
                     <form method=\"post\" action=\"{{ path('$nameEdit', {'id': $objet.id}) }}\">
@@ -301,7 +304,7 @@ class ScaffoldMysqlVue
         <tbody>
         {% for $objet in listes %}
             <tr>
-                <td>{{ loop.index }}</td>
+                <td><a href=\"{{ path('$nameShow', {'id': $objet.id}) }}\" class=\"btn btn-success\" title=\"Afficher\">{{ loop.index }}</a></td>
                 $champs_donnee
                 <td>
                     <form method=\"post\" action=\"{{ path('$nameEdit', {'id': $objet.id}) }}\">
@@ -381,11 +384,13 @@ class ScaffoldMysqlVue
     {{ form_start(form) }}
     $form_widget
     <div class=\"row\">
-        <div class=\"col-2\">
-            <a href=\"{{ path('$nameIndex') }}\" class=\"btn btn-primary\">Fermer</a>
-        </div>
-        <div class=\"col-2\">
-            <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+        {% if is_show == false %}
+            <div class=\"col-1\">
+                <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
+            </div>
+        {% endif %}
+        <div class=\"col-1\">
+            <a href=\"{{ path('$nameIndex') }}\" class=\"btn btn-warning\">Fermer</a>
         </div>
     </div>
     {{ form_end(form) }}

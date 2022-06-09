@@ -35,6 +35,7 @@ class ScaffoldPostgresControleur
         $ObjetType = $Objet . "Type";
         $nameIndex = $objet . "_index_" . $db;
         $nameEdit  = $objet . "_edit_" . $db;
+        $nameShow  = $objet . "_show_" . $db;
         $nameDelete = $objet . "_delete_" . $db;
         $nameTruncate = $objet . "_truncate_" . $db;
         $nameNew  = $objet . "_new_" . $db;
@@ -104,7 +105,8 @@ class $ObjetCreate extends AbstractController
             'listes' => \$$objetRepository$findAll,
             'form' => \$form->createView(),
             'edition' => \$$objet$getId !== null,
-            'countliste' => count(\$$objetRepository$findAll)
+            'countliste' => count(\$$objetRepository$findAll),
+            'is_show' => false,
         ]);
     }
 
@@ -133,12 +135,32 @@ class $ObjetCreate extends AbstractController
                 'listes' => \$$objetRepository$findAll,
                 'form' => \$form->createView(),
                 'edition' => \$$objet$getId !== null,
-                'countliste' => count(\$$objetRepository$findAll)
+                'countliste' => count(\$$objetRepository$findAll),
+                'is_show' => false,
             ]);
         }
         else {
             return \$this->redirectToRoute('$nameIndex');
         }
+    }
+
+    /**
+     * @Route(\"/$objet/{id<\d+>}/show\", name=\"$nameShow\", methods={\"GET\"})
+     * /*** SecurityFunction ***
+     */
+    public function show(Request \$request, $Objet \$$objet, $ObjetRepository \$$objetRepository): Response
+    {
+        \$form = \$this->createForm($ObjetType::class, \$$objet, ['disabled' => true]);
+        \$form->handleRequest(\$request);
+
+        return \$this->render('$render$objet/$objet.html.twig', [
+            'titre' => 'Liste des $objet',
+            'listes' => \$$objetRepository$findAll,
+            'form' => \$form->createView(),
+            'edition' => \$$objet$getId !== null,
+            'countliste' => count(\$$objetRepository$findAll),
+            'is_show' => true,
+        ]);
     }
 
     /**
@@ -275,7 +297,8 @@ class $ObjetCreate extends AbstractController
         return \$this->render('$render$objet/form_$objet.html.twig', [
             'titre' => 'Enregistrer un $objet',
             'form' => \$form->createView(),
-            'edition' => \$$objet$getId !== null
+            'edition' => \$$objet$getId !== null,
+            'is_show' => false,
         ]);
     }
 
@@ -302,12 +325,30 @@ class $ObjetCreate extends AbstractController
             return \$this->render('$render$objet/form_$objet.html.twig', [
                 'titre' => 'Modifier un $objet',
                 'form' => \$form->createView(),
-                'edition' => \$$objet$getId !== null
+                'edition' => \$$objet$getId !== null,
+                'is_show' => false,
             ]);
         }
         else {
             return \$this->redirectToRoute('$nameIndex');
         }
+    }
+
+    /**
+     * @Route(\"/$objet/{id<\d+>}/show\", name=\"$nameShow\", methods={\"GET\"})
+     * /*** SecurityFunction ***
+     */
+    public function show(Request \$request, $ObjetRepository \$$objetRepository, $Objet \$$objet): Response
+    {
+        \$form = \$this->createForm($ObjetType::class, \$$objet, ['disabled' => true]);
+        \$form->handleRequest(\$request);
+
+        return \$this->render('$render$objet/form_$objet.html.twig', [
+            'titre' => 'Afficher un $objet',
+            'form' => \$form->createView(),
+            'edition' => \$$objet$getId !== null,
+            'is_show' => true,
+        ]);
     }
 
     /**
