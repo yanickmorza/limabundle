@@ -55,4 +55,6 @@ php -S localhost:8000 -t public/
 ```
 
 - 2 - <code>Ouvrir votre navigateur internet en http : <a href="http://localhost:8000/lima/">http://localhost:8000/lima/</a>
-- 2 - Ouvrir votre navigateur internet en https : <a href="https://localhost:8000/lima/">https://localhost:8000/lima/</a></code>
+</code>
+
+- 2 - <code>Ouvrir votre navigateur internet en https : <a href="https://localhost:8000/lima/">https://localhost:8000/lima/</a></code>
