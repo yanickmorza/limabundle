@@ -36,8 +36,7 @@ composer require yanickmorza/limabundle @dev
  php vendor/yanickmorza/limabundle/src/Command/installServiceLima.php
 ```
 
-- 3 - <code>Installer la configuration de LIMA:
-</code> 
+- 3 - <code>Installer la configuration de LIMA:</code> 
 ```bash
 symfony console config:lima (ou) bin/console config:lima
 ```
