@@ -131,7 +131,7 @@ class ScaffoldPostgresVue
     $form_widget
     <div class=\"row\">
         {% if is_show == false %}
-            <div class=\"col-2\">
+            <div class=\"col-3\">
                 <button type=\"submit\" class=\"btn btn-primary\">{{ edition == 'Enregistrer' ? 'Modifier' : 'Enregistrer' }}</button>
             </div>
         {% endif %}

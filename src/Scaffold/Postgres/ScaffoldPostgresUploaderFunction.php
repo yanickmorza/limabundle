@@ -28,6 +28,7 @@ class ScaffoldPostgresUploaderFunction
         $texteupload = "";
         $editupload = "";
         $texteditupload = "";
+        $set = "->set";
 
         $controller = $path_controller."/".$Objet."Controller.php";
         $formtype = $path_form."/".$Objet."Type.php";
@@ -73,7 +74,7 @@ class ScaffoldPostgresUploaderFunction
                 $upload .= "try {\n\t\t\t\t\t";
                 $upload .= "\$$move('../public/uploads/$objet', \$newFilename);\n\t\t\t\t";
                 $upload .= "} catch (FileException \$e) {}\n\n\t\t\t\t";
-                $upload .= "\$objet->set$Intitule(\$newFilename);\n\t\t\t";
+                $upload .= "\$$objet$set$Intitule(\$newFilename);\n\t\t\t";
                 $upload .= "}\n";
 
                 while (!feof($handleupload))
@@ -107,7 +108,7 @@ class ScaffoldPostgresUploaderFunction
                 $editupload .= "try {\n\t\t\t\t\t";
                 $editupload .= "\$$move('../public/uploads/$objet', \$newFilename);\n\t\t\t\t";
                 $editupload .= "} catch (FileException \$e) {}\n\n\t\t\t\t";
-                $editupload .= "\$objet->set$Intitule(\$newFilename);\n\t\t\t";
+                $editupload .= "\$$objet$set$Intitule(\$newFilename);\n\t\t\t";
                 $editupload .= "}\n";
 
                 while (!feof($edithandleupload))

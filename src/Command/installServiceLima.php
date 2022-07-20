@@ -19,7 +19,12 @@ if (!file_exists($filename)) {
     file_put_contents($path, PHP_EOL.$texte, FILE_APPEND);
     // **** Ecriture dans le fichier services.yaml ****
 
-    //echo "\n\n L'installation du service Lima-Bundle a été un succès ! \n\n";
+    // **** Creer un fichier repere ****
+    $pathrepere = 'lima.lock';
+    fopen($pathrepere, 'w+');
+    $texte = 'Installation Service Lima';
+    file_put_contents($pathrepere, $texte);
+    // **** Creer un fichier repere ****
 } 
 else {
     //echo "\n\n Le service de Lima-Bundle est déjà installé ! \n\n";
