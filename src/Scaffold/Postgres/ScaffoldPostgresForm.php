@@ -102,7 +102,7 @@ class ScaffoldPostgresForm
             'input_format' => 'yyyy-MM-dd',
             'data' => new \DateTime()])\n\t\t";
                     } elseif ($type == 'json') {
-                        $Champ = ucfirst(substr($field, 0, -1));
+                        $Champ = ucfirst($field);
                         $entityClass .= "use App\Entity$nameSpace\\$Field;\n";
                         $champs_form .= "->add('$champ', ChoiceType::class, [
             'choices' => \$this->getChoix$Field(),
