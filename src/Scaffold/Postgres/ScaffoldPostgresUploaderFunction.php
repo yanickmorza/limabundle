@@ -30,6 +30,10 @@ class ScaffoldPostgresUploaderFunction
         $texteditupload = "";
         $set = "->set";
 
+        // Enleve les '_' met la 1ere lettre en majuscule et supprime les espaces
+        $Intitule = str_replace('_', ' ', $Intitule);
+        $Intitule = str_replace(' ', '', ucwords($Intitule));
+
         $controller = $path_controller."/".$Objet."Controller.php";
         $formtype = $path_form."/".$Objet."Type.php";
         
